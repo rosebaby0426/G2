@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.util.*;
 
 
-
 public class ContractJDBCDAO implements ContractDAO_interface{
 	
 	String driver = "oracle.jdbc.driver.OracleDriver";
