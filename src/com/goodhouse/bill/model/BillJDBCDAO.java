@@ -1,4 +1,4 @@
-package com.goodhouse.keyword.model;
+package com.goodhouse.bill.model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,28 +9,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class KeyWordJDBCDAO implements KeyWordDAO_interface{
-
+public class BillJDBCDAO implements BillDAO_interface{
+	
 	String driver = "oracle.jdbc.driver.OracleDriver";
 	String url = "jdbc:oracle:thin:@localhost:1521:XE";
 	String userid = "GOODHOUSE";
 	String passwd = "123456";
 	
 	private static final String INSERT_STMT = //新增
-			"INSERT INTO KEYWORD (KW_ID,KW_KEYWORD,KW_COUNT) VALUES ('KW'||LPAD(KW_SEQ.NEXTVAL,8,0),?,?)";
+			"INSERT INTO BILL (BILL_ID,ELE_CON_ID,EMP_ID,BILL_PAY,BILL_DATE,BILL_PRODUCETIME," + 
+			"BILL_STATUS,BILL_PAYMETHOD,BILL_PAYMENTTYPE) VALUES (to_char(sysdate,'yyyymmdd')||'-B'||LPAD(BILL_SEQ.NEXTVAL,5,0)," + 
+			"?,?,?,?,?,?,?,?)";
 	private static final String UPDATE = //修改
-			"UPDATE KEYWORD SET KW_KEYWORD = ? , KW_COUNT = ? WHERE KW_ID = ?";
+			"UPDATE BILL SET ELE_CON_ID = ? , EMP_ID = ? , BILL_PAY = ? , BILL_DATE = ?  , BILL_PRODUCETIME = ? , BILL_STATUS = ? , BILL_PAYMETHOD = ? , BILL_PAYMENTTYPE = ? WHERE BILL_ID = ?";
 	private static final String DELETE = //刪除
-			"DELETE FROM KEYWORD WHERE KW_ID = ? ";
+			"DELETE FROM BILL WHERE BILL_ID = ? ";
 	private static final String GET_ONE_STMT = //單一查詢
-			"SELECT KW_ID,KW_KEYWORD,KW_COUNT FROM KEYWORD WHERE KW_ID=?";
+			"SELECT BILL_ID , ELE_CON_ID , EMP_ID , BILL_PAY , BILL_DATE , BILL_PRODUCETIME , BILL_STATUS , BILL_PAYMETHOD , BILL_PAYMENTTYPE FROM BILL WHERE BILL_ID=?";
 	private static final String GET_ALL_STMT = //查詢全部
-			"SELECT KW_ID,KW_KEYWORD,KW_COUNT FROM KEYWORD ORDER BY KW_ID";
+			"SELECT BILL_ID , ELE_CON_ID , EMP_ID , BILL_PAY , BILL_DATE , BILL_PRODUCETIME , BILL_STATUS , BILL_PAYMETHOD , BILL_PAYMENTTYPE FROM BILL ORDER BY BILL_ID";
 	
-
 	@Override//新增
-	public void insert(KeyWordVO kwVO) {
-
+	public void insert(BillVO bVO) {
+		
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		
@@ -38,14 +39,24 @@ public class KeyWordJDBCDAO implements KeyWordDAO_interface{
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(INSERT_STMT);
-			//INSERT INTO KEYWORD (KW_ID,KW_KEYWORD,KW_COUNT) VALUES ('KW'||LPAD(KW_SEQ.NEXTVAL,8,0,?,?)
 			
-			pstmt.setString(1,kwVO.getKw_keyword());
-			pstmt.setInt(2, kwVO.getKw_count());
+			pstmt.setString(1, bVO.getEle_con_id());
+			pstmt.setString(2, bVO.getEmp_id());
+			pstmt.setInt(3, bVO.getBill_pay());
+			pstmt.setDate(4, bVO.getBill_date());
+			pstmt.setDate(5, bVO.getBill_producetime());
+			pstmt.setString(6, bVO.getBill_status());
+			pstmt.setString(7, bVO.getBill_paymethod());
+			pstmt.setString(8, bVO.getBill_paymenttype());
 			
+			/*
+			 "INSERT INTO BILL (BILL_ID,ELE_CON_ID,EMP_ID,BILL_PAY,BILL_DATE,BILL_PRODUCETIME," + 
+			 "BILL_STATUS,BILL_PAYMETHOD,BILL_PAYMENTTYPE) VALUES (to_char(sysdate,'yyyymmdd')||'-B'||LPAD(BILL_SEQ.NEXTVAL,5,0)," + 
+			 "?,?,?,?,?,?,?,?)"
+			 */
 			pstmt.executeUpdate();
 			
-		}catch (ClassNotFoundException e){
+		} catch (ClassNotFoundException e){
 			throw new RuntimeException("Couldn't load database driver. "
 					+ e.getMessage());
 		}catch (SQLException se) {
@@ -67,12 +78,11 @@ public class KeyWordJDBCDAO implements KeyWordDAO_interface{
 				}
 			}
 		}
-		
 	}
-
+	
 	@Override//修改
-	public void update(KeyWordVO kwVO) {
-
+	public void update(BillVO bVO) {
+		
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		
@@ -80,15 +90,21 @@ public class KeyWordJDBCDAO implements KeyWordDAO_interface{
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(UPDATE);
-			//UPDATE KEYWORD SET KW_KEYWORD = ? , KW_COUNT = ? WHERE KW_ID = ?
 			
-			pstmt.setString(1,kwVO.getKw_keyword());
-			pstmt.setInt(2, kwVO.getKw_count());
-			pstmt.setString(3, kwVO.getKw_id());
+			pstmt.setString(1, bVO.getEle_con_id());
+			pstmt.setString(2, bVO.getEmp_id());
+			pstmt.setInt(3, bVO.getBill_pay());
+			pstmt.setDate(4, bVO.getBill_date());
+			pstmt.setDate(5, bVO.getBill_producetime());
+			pstmt.setString(6, bVO.getBill_status());
+			pstmt.setString(7, bVO.getBill_paymethod());
+			pstmt.setString(8, bVO.getBill_paymenttype());
+			pstmt.setString(9, bVO.getBill_id());
 			
+			//"UPDATE BILL SET ELE_CON_ID = ? , EMP_ID = ? , BILL_PAY = ? , BILL_DATE = ?  , BILL_PRODUCETIME = ? , BILL_STATUS = ? , BILL_PAYMETHOD = ? , BILL_PAYMENTTYPE = ? WHERE BILL_ID = ?"
 			pstmt.executeUpdate();
 			
-		}catch(ClassNotFoundException e) {
+		} catch(ClassNotFoundException e) {
 			throw new RuntimeException("Couldn't load database driver. "
 					+ e.getMessage());
 		}catch(SQLException se) {
@@ -111,9 +127,10 @@ public class KeyWordJDBCDAO implements KeyWordDAO_interface{
 			}
 		}
 	}
-
+	
 	@Override//刪除
-	public void delete(String kw_id) {
+	public void delete(String bill_id) {
+		
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		
@@ -121,14 +138,14 @@ public class KeyWordJDBCDAO implements KeyWordDAO_interface{
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(DELETE);
-			//DELETE FROM KEYWORD WHERE KW_ID = ? 
 			
-			pstmt.setString(1, kw_id);
+			pstmt.setString(1, bill_id);
 			
+			//DELETE FROM BILL WHERE BILL_ID = ? 
 			pstmt.executeUpdate();
 			
 			
-		} catch (ClassNotFoundException e) {
+		}  catch (ClassNotFoundException e) {
 			throw new RuntimeException("Couldn't load database driver. "
 					+ e.getMessage());
 		}catch (SQLException se) {
@@ -151,10 +168,11 @@ public class KeyWordJDBCDAO implements KeyWordDAO_interface{
 			}
 		}
 	}
-
+	
 	@Override//單一查詢
-	public KeyWordVO findByPrimaryKey(String kw_id) {
-		KeyWordVO kwVO = null;
+	public BillVO findByPrimaryKey(String bill_id) {
+		
+		BillVO bVO = new BillVO();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -163,20 +181,27 @@ public class KeyWordJDBCDAO implements KeyWordDAO_interface{
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(GET_ONE_STMT);
-			//SELECT KW_ID,KW_KEYWORD,KW_COUNT FROM KEYWORD WHERE KW_ID=?
 			
-			pstmt.setString(1, kw_id);
+			pstmt.setString(1, bill_id);
 			
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				kwVO = new KeyWordVO();
-				kwVO.setKw_id(rs.getString("KW_ID"));
-				kwVO.setKw_keyword(rs.getString("KW_KEYWORD"));
-				kwVO.setKw_count(rs.getInt("KW_COUNT"));
+				
+				bVO = new BillVO();
+				bVO.setBill_id(rs.getString("BILL_ID"));
+				bVO.setEle_con_id(rs.getString("ELE_CON_ID"));
+				bVO.setEmp_id(rs.getString("EMP_ID"));
+				bVO.setBill_pay(rs.getInt("BILL_PAY"));
+				bVO.setBill_date(rs.getDate("BILL_DATE"));
+				bVO.setBill_producetime(rs.getDate("BILL_PRODUCETIME"));
+				bVO.setBill_status(rs.getString("BILL_STATUS"));
+				bVO.setBill_paymethod(rs.getString("BILL_PAYMETHOD"));
+				bVO.setBill_paymenttype(rs.getString("BILL_PAYMENTTYPE"));
 				
 			}
-			
+		//SELECT BILL_ID , ELE_CON_ID , EMP_ID , BILL_PAY , BILL_DATE , BILL_PRODUCETIME , BILL_STATUS , BILL_PAYMETHOD , BILL_PAYMENTTYPE FROM BILL WHERE BILL_ID=?
+		
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException("Couldn't load database driver. "
 					+ e.getMessage());
@@ -207,13 +232,14 @@ public class KeyWordJDBCDAO implements KeyWordDAO_interface{
 			}
 		}
 		
-		return kwVO;
+		return bVO;
 	}
-
+	
 	@Override//全部查詢
-	public List<KeyWordVO> getAll() {
-		List<KeyWordVO> list = new ArrayList();
-		KeyWordVO kwVO = null;
+	public List<BillVO> getAll(){
+		
+		List<BillVO> list = new ArrayList();
+		BillVO bVO = null;
 		
 		Connection con = null;
 		PreparedStatement pstmt = null;
@@ -223,20 +249,26 @@ public class KeyWordJDBCDAO implements KeyWordDAO_interface{
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(GET_ALL_STMT);
-			//SELECT KW_ID,KW_KEYWORD,KW_COUNT FROM KEYWORD ORDER BY KW_ID
+			
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
-				kwVO = new KeyWordVO();
-				kwVO.setKw_id(rs.getString("KW_ID"));
-				kwVO.setKw_keyword(rs.getString("KW_KEYWORD"));
-				kwVO.setKw_count(rs.getInt("KW_COUNT"));
-				list.add(kwVO);
 				
+				bVO = new BillVO();
+				bVO.setBill_id(rs.getString("BILL_ID"));
+				bVO.setEle_con_id(rs.getString("ELE_CON_ID"));
+				bVO.setEmp_id(rs.getString("EMP_ID"));
+				bVO.setBill_pay(rs.getInt("BILL_PAY"));
+				bVO.setBill_date(rs.getDate("BILL_DATE"));
+				bVO.setBill_producetime(rs.getDate("BILL_PRODUCETIME"));
+				bVO.setBill_status(rs.getString("BILL_STATUS"));
+				bVO.setBill_paymethod(rs.getString("BILL_PAYMETHOD"));
+				bVO.setBill_paymenttype(rs.getString("BILL_PAYMENTTYPE"));
+				
+				list.add(bVO);
 			}
-			
-			
-		} catch (ClassNotFoundException e) {
+		
+		}  catch (ClassNotFoundException e) {
 			throw new RuntimeException("Couldn't load database driver. "
 					+ e.getMessage());
 		} catch(SQLException se) {
@@ -268,5 +300,5 @@ public class KeyWordJDBCDAO implements KeyWordDAO_interface{
 		
 		return list;
 	}
-
+	
 }
