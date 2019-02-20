@@ -79,7 +79,7 @@ public class House_EvaluateServlet extends HttpServlet{
 				
 				req.setAttribute("House_EvaluateVO", heVO);
 				String url = "/front/house_evaluate/listOneHouse_Evaluate.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneHouse_evaluate.jsp
 				successView.forward(req, res);
 				
 				/***************************其他可能的錯誤處理*************************************/

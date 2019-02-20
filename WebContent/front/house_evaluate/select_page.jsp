@@ -47,7 +47,6 @@
 	<ul>
 	  <li><a href='listAllHouse_Evaluate.jsp'>List</a> 所有評價列表  <br><br></li>
 	  
-	  
 	  <li>
 	    <FORM METHOD="post" ACTION="house_evaluate.do" >
 	        <b>輸入房屋評價編號 (如EVA0000010):</b>
