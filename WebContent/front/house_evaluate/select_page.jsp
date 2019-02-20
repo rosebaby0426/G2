@@ -58,32 +58,7 @@
 	  </li>
 	
 	  <jsp:useBean id="houEvaSvc" scope="page" class="com.goodhouse.house_evaluate.model.House_EvaluateService" />
-	   
-	  <li>
-	     <FORM METHOD="post" ACTION="house_evaluate.do" >
-	       <b>選擇員工編號:</b>
-	       <select size="1" name="hou_eva_id">
-	         <c:forEach var="heVO" items="${House_EvaluateService.all}" > 
-	          <option value="${House_EvaluateVO.hou_eva_id}">${House_EvaluateVO.hou_eva_id}
-	         </c:forEach>   
-	       </select>
-	       <input type="hidden" name="action" value="getOne_For_Display">
-	       <input type="submit" value="送出">
-	    </FORM>
-	  </li>
-	  
-	  <li>
-	     <FORM METHOD="post" ACTION="house_evaluate.do" >
-	       <b>選擇評價者姓名:</b>
-	       <select size="1" name="hou_eva_id">
-	         <c:forEach var="House_EvaluateVO" items="${House_EvaluateService.all}" > 
-	          <option value="${House_EvaluateVO.hou_eva_id}">${House_EvaluateVO.hou_eva_id}
-	         </c:forEach>   
-	       </select>
-	       <input type="hidden" name="action" value="getOne_For_Display">
-	       <input type="submit" value="送出">
-	     </FORM>
-	  </li>
+
 	</ul>
 
 <ul>
