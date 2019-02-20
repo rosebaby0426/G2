@@ -25,7 +25,8 @@ public class House_EvaluateServlet extends HttpServlet{
 		
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
-	
+		
+		//單一查詢
 		if ("getOne_For_Display".equals(action)) { //來自select_page.jsp的要求
 			
 			List<String> errorMsgs = new LinkedList<String>();
@@ -78,7 +79,7 @@ public class House_EvaluateServlet extends HttpServlet{
 				/***************************3.查詢完成,準備轉交(Send the Success view)*************/
 				
 				req.setAttribute("House_EvaluateVO", heVO);
-				String url = "/front/house_evaluate/listOneHouse_Evaluate.jsp";
+				String url = "/front/house_evaluate/listOne_house_evaluate.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneHouse_evaluate.jsp
 				successView.forward(req, res);
 				
@@ -92,6 +93,7 @@ public class House_EvaluateServlet extends HttpServlet{
 			
 		}
 		
+		//選擇單一修改
 		if ("getOne_For_Update".equals(action)) { // 來自listAllEmp.jsp的請求
 			
 			List<String> errorMsgs = new LinkedList<String>();
@@ -117,11 +119,12 @@ public class House_EvaluateServlet extends HttpServlet{
 			}catch (Exception e) {
 				errorMsgs.add("無法取得要修改的資料:" + e.getMessage());
 				RequestDispatcher failureView = req
-						.getRequestDispatcher("/front/house_evaluate/listAllHouse_Evaluate.jsp");
+						.getRequestDispatcher("/front/house_evaluate/listAll_house_evaluate.jsp");
 				failureView.forward(req, res);
 			}
 		}
 		
+		//修改
 		if ("update".equals(action)) {
 			
 			List<String> errorMsgs = new LinkedList<String>();
@@ -139,21 +142,21 @@ public class House_EvaluateServlet extends HttpServlet{
 				 	正規表達式
 				 	^[指定的字元]{最少幾個,最多幾個}$
 				 */
-				String mem_idReg = "^[M]{1}[0-9]{9}$";
-				if(mem_id == null || mem_id.trim().length() == 0) {
-					errorMsgs.add("會員編號不能空白");
-				} else if (!mem_id.trim().matches(mem_idReg)){
-					errorMsgs.add("會員編號 : 由 M + 9個數字組成 ");
-				}
+//				String mem_idReg = "^[M]{1}[0-9]{9}$";
+//				if(mem_id == null || mem_id.trim().length() == 0) {
+//					errorMsgs.add("會員編號不能空白");
+//				} else if (!mem_id.trim().matches(mem_idReg)){
+//					errorMsgs.add("會員編號 : 由 M + 9個數字組成 ");
+//				}
 				
 				//房屋編號比對
 				String hou_id = req.getParameter("hou_id");
-				String hou_idReg = "^[(HOU)]{1}[0-9]{7}$";
-				if(hou_id == null || hou_id.trim().length() == 0 ) {
-					errorMsgs.add("房屋編號不能空白");
-				}else if(!hou_id.trim().matches(hou_idReg)) {
-					errorMsgs.add("房屋編號 : 由 HOU + 7個數字組成 ");
-				}
+//				String hou_idReg = "^[(HOU)]{1}[0-9]{7}$";
+//				if(hou_id == null || hou_id.trim().length() == 0 ) {
+//					errorMsgs.add("房屋編號不能空白");
+//				}else if(!hou_id.trim().matches(hou_idReg)) {
+//					errorMsgs.add("房屋編號 : 由 HOU + 7個數字組成 ");
+//				}
 				
 				//評價等級
 				String hou_eva_grade = req.getParameter("hou_eva_grade");
@@ -163,7 +166,7 @@ public class House_EvaluateServlet extends HttpServlet{
 				}
 				
 				//評價內容
-				String hou_eva_content = req.getParameter("hou_eva_grade");
+				String hou_eva_content = req.getParameter("hou_eva_content");
 				
 				House_EvaluateVO heVO = new House_EvaluateVO();
 				heVO.setHou_eva_id(hou_eva_id);
@@ -187,8 +190,8 @@ public class House_EvaluateServlet extends HttpServlet{
 				heVO = heSvc.updateHE(hou_eva_id, mem_id, hou_id, hou_eva_grade, hou_eva_content);
 				
 				/***************************3.修改完成,準備轉交(Send the Success view)*************/
-				req.setAttribute("House_EvaluateVO", heVO); // 資料庫update成功後,正確的的empVO物件,存入req
-				String url = "/front/house_evaluate/listOneEmp.jsp";
+				req.setAttribute("House_EvaluateVO", heVO); // 資料庫update成功後,正確的House_EvaluateVO物件,存入req
+				String url = "/front/house_evaluate/listOne_house_evaluate.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneHouse_evaluate.jsp
 				successView.forward(req, res);
 				
@@ -200,7 +203,63 @@ public class House_EvaluateServlet extends HttpServlet{
 				failureView.forward(req, res);
 			}
 		}
+		//刪除
+		if ("insert".equals(action)) {//來自add_house_evaluate.jsp請求
+			
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				
+				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
+				
+				
+				
+			} catch (Exception e) {
+				errorMsgs.add(e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front/house_evaluate/add_house_evaluate.jsp");
+				failureView.forward(req, res);
+			}
+			
 		
+		}
 		
+		//刪除
+		if ("delete".equals(action)) {
+			
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			
+			try {
+				
+				/***************************1.接收請求參數***************************************/
+				
+				String hou_eva_id = new String(req.getParameter("hou_eva_id"));
+				
+				/***************************2.開始刪除資料***************************************/
+				
+				House_EvaluateService heSvc = new House_EvaluateService();
+				heSvc.deleteHE(hou_eva_id);
+				
+				/***************************3.刪除完成,準備轉交(Send the Success view)***********/
+				
+				String url = "/front/house_evaluate/listAll_house_evaluate.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁
+				successView.forward(req, res);
+				
+				/***************************其他可能的錯誤處理**********************************/
+			}catch (Exception e) {
+				errorMsgs.add("刪除資料失敗:"+e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front/house_evaluate/listAll_house_evaluate.jsp");
+				failureView.forward(req, res);
+			}
+		}
 	}
 }

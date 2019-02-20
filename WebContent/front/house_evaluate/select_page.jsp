@@ -45,7 +45,7 @@
 	</c:if>
 	
 	<ul>
-	  <li><a href='listAllHouse_Evaluate.jsp'>List</a> 所有評價列表  <br><br></li>
+	  <li><a href='listAll_house_evaluate.jsp'>List</a> 所有評價列表  <br><br></li>
 	  
 	  <li>
 	    <FORM METHOD="post" ACTION="house_evaluate.do" >
@@ -61,7 +61,7 @@
 	</ul>
 
 <ul>
-  <li><a href='addHouEva.jsp'>Add</a> 新增評價 </li>
+  <li><a href='add_house_evaluate.jsp'>Add</a> 新增評價 </li>
 </ul>
 
 </body>

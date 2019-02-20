@@ -87,14 +87,14 @@
 				<td>${House_EvaluateVO.hou_eva_grade}</td>
 				<td>${House_EvaluateVO.hou_eva_content}</td>
 				<td>
-				  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/front/house_evaluate.do" style="margin-bottom: 0px;">
+				  <FORM METHOD="post" ACTION="house_evaluate.do" style="margin-bottom: 0px;">
 				     <input type="submit" value="修改">
 				     <input type="hidden" name="hou_eva_id"  value="${House_EvaluateVO.hou_eva_id}">
 				     <input type="hidden" name="action"	value="getOne_For_Update">
 				  </FORM>
 				</td>
 				<td>
-				  <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/front/house_evaluate.do" style="margin-bottom: 0px;">
+				  <FORM METHOD="post" ACTION="house_evaluate.do" style="margin-bottom: 0px;">
 				     <input type="submit" value="刪除">
 				     <input type="hidden" name="hou_eva_id"  value="${House_EvaluateVO.hou_eva_id}">
 				     <input type="hidden" name="action" value="delete">

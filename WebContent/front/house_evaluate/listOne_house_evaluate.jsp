@@ -29,7 +29,7 @@
   }
   
    table {
-	width: 600px;
+	width: 800px;
 	background-color: white;
 	margin-top: 5px;
 	margin-bottom: 5px;
