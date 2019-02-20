@@ -37,24 +37,55 @@
 	
 	<form method="post" action="house_evaluate.do" name="form1">
 		<table>
+		
+			<jsp:useBean id="memSvc" scope="page" class="com.goodhouse.member.model.MemberService" />
 			<tr>
-				<td>會員編號</td>
+				<td>會員姓名</td>
 				<td>
-					<select >
-						<c:forEach var="House_EvaluateVO" items="${heSvc.all}" > 
-          				<option value="${heVO.hou_eva_id}">${empVO.ename}
-         				</c:forEach>
+					<select>
+						<c:forEach var="MenberVO" items="${MenberSvc.all}" > 
+				        <option value="${MenberVO.mem_id}">${MenberVO.mem_name}
+				        </c:forEach>
+					</select>
+				</td>
+			</tr>
+			
+			<jsp:useBean id="houSvc" scope="page" class="com.goodhouse.house.model.HouseService" />
+			<tr>
+				<td>請選擇你的房屋名稱</td>
+				<td>
+					<select>
+						<c:forEach var="HouseVO" items="${HouseSvc.all}" > 
+				        <option value="${HouseVO.hou_id}">${HouseVO.hou_name}
+				        </c:forEach>
 					</select>
 				</td>
 			</tr>
 			<tr>
-				<td>房屋編號</td>
+				<td>請選擇評價等級</td>
+				<td>
+					<label>
+						<input type="radio" name="hou_eva_grade" value="G1非常不好">非常不好<br>
+					</label>
+					<label>
+						<input type="radio" name="hou_eva_grade" value="G2不好">不好<br>
+					</label>
+					<label>
+						<input type="radio" name="hou_eva_grade" value="G3普通">普通<br>
+					</label>
+					<label>
+						<input type="radio" name="hou_eva_grade" value="G4好">好<br>
+					</label>
+					<label>
+						<input type="radio" name="hou_eva_grade" value="G5非常好">非常好<br>
+					</label>
+				</td>
 			</tr>
 			<tr>
-				<td>評價等級</td>
-			</tr>
-			<tr>
-				<td>評價內容</td>
+				<td>請寫下評論</td>
+				<td>
+					<textarea name="hou_eva_content" rows="3" cols=50></textarea>
+				</td>
 			</tr>
 		</table>
 		
