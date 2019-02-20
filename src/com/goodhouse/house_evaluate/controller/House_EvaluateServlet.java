@@ -261,5 +261,74 @@ public class House_EvaluateServlet extends HttpServlet{
 				failureView.forward(req, res);
 			}
 		}
+		
+		//新增，來自add_house_evaluate.jsp請求
+		if ("insert".equals(action)) {
+			
+			List<String> errorMsgs = new LinkedList<String>();
+			// Store this set in the request scope, in case we need to
+			// send the ErrorPage view.
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				
+				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
+				
+				String mem_id = req.getParameter("mem_id");
+				//會員編號比對
+				String mem_idReg = "^[M]{1}[0-9]{9}$";
+				if(mem_id == null || mem_id.trim().length() ==0 ) {
+					errorMsgs.add("姓名請勿空白");
+				}else if(!mem_id.trim().matches(mem_idReg)) {
+					errorMsgs.add("姓名輸入錯誤");
+				}
+				
+				String hou_id = req.getParameter("hou_id");
+				//房屋編號比對
+				String hou_idReg = "^[(HOU)]{1}[0-9]{7}$";
+				if(hou_id == null || hou_id.trim().length() == 0 ) {
+					errorMsgs.add("房屋名稱不能空白");
+				}
+				
+				String hou_eva_grade = req.getParameter("hou_eva_grade");
+				if(hou_eva_grade == null || hou_eva_grade.trim().length() == 0) {
+					errorMsgs.add("請選擇評價等級");
+				}
+				
+				String hou_eva_content = req.getParameter("hou_eva_content");
+				
+				House_EvaluateVO heVO = new House_EvaluateVO();
+				heVO.setMem_id(mem_id);
+				heVO.setHou_id(hou_id);
+				heVO.setHou_eva_grade(hou_eva_grade);
+				heVO.setHou_eva_content(hou_eva_content);
+				
+				// Send the use back to the form, if there were errors
+				if (!errorMsgs.isEmpty()) {
+					req.setAttribute("House_EvaluateVO", heVO); // 含有輸入格式錯誤的empVO物件,也存入req
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/front/house_evaluate/add_house_evaluate.jsp");
+					failureView.forward(req, res);
+					return;
+				}
+				
+				/***************************2.開始新增資料***************************************/
+				
+				House_EvaluateService heSvc = new House_EvaluateService();
+				heVO = heSvc.addHE(mem_id, hou_id, hou_eva_grade, hou_eva_content);
+				
+				/***************************3.新增完成,準備轉交(Send the Success view)***********/
+				String url = "/front/house_evaluate/listAll_house_evaluate.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAll_house_evaluate.jsp"
+				successView.forward(req, res);
+				
+				/***************************其他可能的錯誤處理**********************************/
+			}catch (Exception e) {
+				errorMsgs.add(e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front/house_evaluate/add_house_evaluate.jsp");
+				failureView.forward(req, res);
+			}
+		}
 	}
 }

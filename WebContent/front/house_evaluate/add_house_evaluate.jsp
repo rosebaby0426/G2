@@ -42,11 +42,7 @@
 			<tr>
 				<td>會員姓名</td>
 				<td>
-					<select>
-						<c:forEach var="MenberVO" items="${MenberSvc.all}" > 
-				        <option value="${MenberVO.mem_id}">${MenberVO.mem_name}
-				        </c:forEach>
-					</select>
+				    <input type="text" name="mem_id" value="${MenberVO.mem_id}" size="45">
 				</td>
 			</tr>
 			
@@ -88,7 +84,8 @@
 				</td>
 			</tr>
 		</table>
-		
+		<input type="hidden" name="action" value="insert">
+		<input type="submit" value="送出新增">
 	</form>
 </body>
 </html>

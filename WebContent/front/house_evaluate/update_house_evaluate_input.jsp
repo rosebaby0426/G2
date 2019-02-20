@@ -40,26 +40,30 @@
 		<table>
 			
 			<tr>
-				<p>評價等級<br>
-				<label>
-					<input type="radio" name="hou_eva_grade" value="G1非常不好">非常不好<br>
-				</label>
-				<label>
-					<input type="radio" name="hou_eva_grade" value="G2不好">不好<br>
-				</label>
-				<label>
-					<input type="radio" name="hou_eva_grade" value="G3普通">普通<br>
-				</label>
-				<label>
-					<input type="radio" name="hou_eva_grade" value="G4好">好<br>
-				</label>
-				<label>
-					<input type="radio" name="hou_eva_grade" value="G5非常好">非常好<br>
-				</label>
+				<td>評價等級</td><br>
+				<td>
+					<label>
+						<input type="radio" name="hou_eva_grade" value="G1非常不好">非常不好<br>
+					</label>
+					<label>
+						<input type="radio" name="hou_eva_grade" value="G2不好">不好<br>
+					</label>
+					<label>
+						<input type="radio" name="hou_eva_grade" value="G3普通">普通<br>
+					</label>
+					<label>
+						<input type="radio" name="hou_eva_grade" value="G4好">好<br>
+					</label>
+					<label>
+						<input type="radio" name="hou_eva_grade" value="G5非常好">非常好<br>
+					</label>
+				</td>
 			</tr><br>
 			<tr>
-				<p>評價內容<br>
-				<textarea name="hou_eva_content" rows="3" cols=50></textarea>
+				<td>評價內容</td><br>
+				<td>
+					<textarea name="hou_eva_content" rows="3" cols=50></textarea>
+				</td>
 			</tr>
 		</table>
 		<input type="hidden" name="action" value="update">

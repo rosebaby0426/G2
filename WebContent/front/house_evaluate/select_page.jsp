@@ -5,6 +5,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<!-- Required meta tags -->
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- Bootstrap CSS start-->
+<link rel="stylesheet" href="<%=request.getContextPath()%>/bootstrap/css/bootstrap.min.css">
+<!-- Bootstrap CSS end-->
 <title>房屋評價</title>
 
 <style>
@@ -63,6 +69,12 @@
 <ul>
   <li><a href='add_house_evaluate.jsp'>Add</a> 新增評價 </li>
 </ul>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="<%=request.getContextPath()%>/bootstrap/jquery-3.3.1.slim.min.js"></script>
+<script src="<%=request.getContextPath()%>/bootstrap/popper.min.js"></script>
+<script src="<%=request.getContextPath()%>/bootstrap/js/bootstrap.min.js"></script>
 
 </body>
 </html>
