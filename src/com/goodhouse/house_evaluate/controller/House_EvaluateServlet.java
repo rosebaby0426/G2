@@ -281,7 +281,6 @@ public class House_EvaluateServlet extends HttpServlet{
 			req.setAttribute("errorMsgs", errorMsgs);
 			
 			MemService mSvc = new MemService();
-			HouseService hSvc = new HouseService();
 			
 			try {
 				
