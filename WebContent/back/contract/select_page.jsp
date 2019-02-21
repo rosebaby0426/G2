@@ -57,25 +57,13 @@
 	  
 	  <jsp:useBean id="conSvc" scope="page" class="com.goodhouse.contract.model.ContractService" />
 	   
-	  <li>
-	     <FORM METHOD="post" ACTION="contract.do" >
-	       <b>選擇合約分類編號:</b>
-	       <select size="1" name="con_id">
-	         <c:forEach var="conVO" items="${conSvc.all}" > 
-	          <option value="${conVO.con_id}">${conVO.con_id}
-	         </c:forEach>   
-	       </select>
-	       <input type="hidden" name="action" value="getOne_For_Display">
-	       <input type="submit" value="送出">
-	    </FORM>
-	  </li>
 	  
 	  <li>
 	     <FORM METHOD="post" ACTION="contract.do" >
 	       <b>選擇合約分類名稱:</b>
-	       <select size="1" name="con_name">
+	       <select size="1" name="con_id">
 	         <c:forEach var="conVO" items="${conSvc.all}" > 
-	          <option value="${conVO.con_id}">${conVO.con_name}
+	          	<option value="${conVO.con_id}">${conVO.con_name}
 	         </c:forEach>   
 	       </select>
 	       <input type="hidden" name="action" value="getOne_For_Display">

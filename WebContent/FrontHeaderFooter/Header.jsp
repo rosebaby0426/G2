@@ -4,31 +4,46 @@
 <html>
 <head>
 <style>
-header{
-position:fixed;
-z-index:999;
-}
+	header{
+		position:fixed;
+		z-index:999;
+	}
+	.navbar{
+		background-color: #EDFCD9 !important;
+	}
+	img{
+		width:45px;
+		height:45px;
+	}
 </style>
 </head>
 <body>
-<header class="container-fluid">
-		<div class="container-fluid">
-			<div class="row justify-content-center">
-				<div class="col-5">
-					<button class="btn btn-secondary dropdown-toggle" type="button"
-						id="dropdownMenuButton" data-toggle="dropdown"
-						aria-haspopup="true" aria-expanded="false">廳院管理</button>
-					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-						<a class="dropdown-item" href="<%=request.getContextPath()%>/Back_end/cinema/ListAllCinema.jsp">瀏覽廳院</a> 
-						<a class="dropdown-item" href="#">新增廳院</a>
-						<a class="dropdown-item" href="#">設定廳院</a>
-					</div>
-				</div>
-			</div>
-		</div>
+<!-- Feader頭 -->
+	<header class="container-fluid">
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+             <span class="navbar-toggler-icon"></span>
+           </button>
+           <image src="logo_color.png"></image>
+           <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+               <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                   <li class="nav-item active">
+                       <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                   </li>
+                   <li class="nav-item">
+                       <a class="nav-link" href="#">Link</a>
+                   </li>
+                   <li class="nav-item">
+                       <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                   </li>
+               </ul>
+               <form class="form-inline my-2 my-lg-0">
+                   <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                   <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+               </form>
+           </div>
 	</header>
-	<div style="height:40px;">
-	</div>
-
+	<div style="height:60px;"></div>
+<!-- Feader尾-->
 </body>
 </html>

@@ -4,19 +4,25 @@
 <html>
 <head>
 <style>
-footer{
-position:fixed;
-z-index:999;
-bottom:0px;
-
-}
+	footer{
+		position:fixed;
+		z-index:999;
+		bottom:0px;
+	}
+	.jumbotron{
+		background-color: #EDFCD9;
+	}
 </style>
 </head>
 <body>
-<div style="height:40px;">
+	<div style="height:40px ;"  >
 	</div>
-<footer class="container-fluid">
-<p>我是Footer</p>
-</footer>
+	<!-- Footer頭 -->
+	<footer class="container-fluid">
+	    <div class="jumbotron text-center" style="margin-bottom:0">
+		  <p>Footer</p>
+		</div>
+	</footer>
+	 <!-- Footer尾 -->
 </body>
 </html>
