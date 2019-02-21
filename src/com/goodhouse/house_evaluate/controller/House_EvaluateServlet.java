@@ -1,17 +1,26 @@
 package com.goodhouse.house_evaluate.controller;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
 
+import com.goodhouse.house.model.*;
 import com.goodhouse.house_evaluate.model.House_EvaluateService;
 import com.goodhouse.house_evaluate.model.House_EvaluateVO;
+import com.goodhouse.member.model.*;
 
 public class House_EvaluateServlet extends HttpServlet{
 	
@@ -19,6 +28,7 @@ public class House_EvaluateServlet extends HttpServlet{
 			throws ServletException, IOException {
 		doPost(req, res);
 	}
+	
 	
 	public void doPost(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
@@ -270,25 +280,40 @@ public class House_EvaluateServlet extends HttpServlet{
 			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
 			
+			MemService mSvc = new MemService();
+			HouseService hSvc = new HouseService();
+			
 			try {
 				
 				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
 				
-				String mem_id = req.getParameter("mem_id");
-				//會員編號比對
-				String mem_idReg = "^[M]{1}[0-9]{9}$";
-				if(mem_id == null || mem_id.trim().length() ==0 ) {
+				//會員資料比對
+				String mem_id = null;
+				String mem_name = req.getParameter("mem_name");
+				
+				if(mem_name == null || mem_name.trim().length() == 0 ) {
 					errorMsgs.add("姓名請勿空白");
-				}else if(!mem_id.trim().matches(mem_idReg)) {
+				}
+				
+				for(MemVO mVO : mSvc.getAll()) {
+					if(mVO.getMem_name().equals(mem_name)) {
+						mem_id = mVO.getMem_id();
+					} 
+				}
+				
+				if(mem_id == null){
 					errorMsgs.add("姓名輸入錯誤");
 				}
 				
-				String hou_id = req.getParameter("hou_id");
+				
 				//房屋編號比對
-				String hou_idReg = "^[(HOU)]{1}[0-9]{7}$";
-				if(hou_id == null || hou_id.trim().length() == 0 ) {
-					errorMsgs.add("房屋名稱不能空白");
-				}
+				String hou_id = req.getParameter("hou_id");
+//				for(HouseVO hVO : hSvc.getAll()) {
+//					if(hVO.getHou_id().equals(hou_id)) {
+//						hou_id = hVO.getHou_id();
+//					}
+//				}
+				
 				
 				String hou_eva_grade = req.getParameter("hou_eva_grade");
 				if(hou_eva_grade == null || hou_eva_grade.trim().length() == 0) {

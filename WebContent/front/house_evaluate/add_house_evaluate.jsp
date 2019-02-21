@@ -38,11 +38,11 @@
 	<form method="post" action="house_evaluate.do" name="form1">
 		<table>
 		
-			<jsp:useBean id="memSvc" scope="page" class="com.goodhouse.member.model.MemberService" />
+			<jsp:useBean id="memSvc" scope="page" class="com.goodhouse.member.model.MemService" />
 			<tr>
 				<td>會員姓名</td>
 				<td>
-				    <input type="text" name="mem_id" value="${MenberVO.mem_id}" size="45">
+				    <input type="text" name="mem_name" value="${MenVO.mem_name}" size="45">
 				</td>
 			</tr>
 			
@@ -50,9 +50,9 @@
 			<tr>
 				<td>請選擇你的房屋名稱</td>
 				<td>
-					<select>
-						<c:forEach var="HouseVO" items="${HouseSvc.all}" > 
-				        <option value="${HouseVO.hou_id}">${HouseVO.hou_name}
+					<select name="hou_id" >
+						<c:forEach var="HouseVO" items="${houSvc.all}" > 
+				        <option  value="${HouseVO.hou_id}">${HouseVO.hou_name}
 				        </c:forEach>
 					</select>
 				</td>

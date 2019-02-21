@@ -28,4 +28,13 @@
 		<url-pattern>/front/house_evaluate/house_evaluate.do</url-pattern>
 	</servlet-mapping>
 	
+	<servlet>
+		<servlet-name>Contract</servlet-name>
+		<servlet-class>com.goodhouse.contract.controller.ContractServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Contract</servlet-name>
+		<url-pattern>/back/contract/contract.do</url-pattern>
+	</servlet-mapping>
+	
 </web-app>
