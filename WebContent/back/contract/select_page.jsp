@@ -9,7 +9,7 @@
 
 <style>
   table#table-1 {
-	width: 450px;
+	width: 800px;
 	background-color: #CCCCFF;
 	margin-top: 5px;
 	margin-bottom: 10px;
@@ -31,13 +31,13 @@
 </head>
 <body bgcolor='white'>
 
-<table id="table-1">
-   <tr>
-   	<td>
-   		<h3>GoodHouse Contract: Home</h3><h4>( MVC )</h4>
-   	</td>
-   </tr>
-</table>
+	<table id="table-1">
+	   <tr>
+	   	<td>
+	   		<h3>GoodHouse Contract: Home</h3><h4>( MVC )</h4>
+	   	</td>
+	   </tr>
+	</table>
 
 	<p>This is the Home page for GoodHouse Contract: Home</p>
 

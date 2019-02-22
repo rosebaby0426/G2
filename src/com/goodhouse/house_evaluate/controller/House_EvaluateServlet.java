@@ -298,7 +298,7 @@ public class House_EvaluateServlet extends HttpServlet{
 				//利用service的getAll方法取出所有會員的資料
 				for(MemVO mVO : mSvc.getAll()) {
 					//把每筆所取出的資料跟使用者輸入的名字做比對
-					if(mVO.getMem_name().equals(mem_name)) {
+					if(mem_name.equals(mVO.getMem_name())) {
 						//符合資料庫裡有的名字才取出會員ID
 						mem_id = mVO.getMem_id();
 					} 
