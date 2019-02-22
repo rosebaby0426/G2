@@ -10,12 +10,13 @@
 		bottom:0px;
 	}
 	.jumbotron{
-		background-color: #EDFCD9;
+		background-color: #EDF9DE;
+		
 	}
 </style>
 </head>
 <body>
-	<div style="height:40px ;"  >
+	<div style="height:px ;"  >
 	</div>
 	<!-- Footer頭 -->
 	<footer class="container-fluid">

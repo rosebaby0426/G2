@@ -7,13 +7,16 @@
 	header{
 		position:fixed;
 		z-index:999;
+		
 	}
 	.navbar{
-		background-color: #EDFCD9 !important;
+		background-color: #EDF9DE !important;
+		
+		border-radius: 0 !important;
 	}
 	img{
-		width:45px;
-		height:45px;
+		width:55px;
+		height:55px;
 	}
 </style>
 </head>
@@ -24,7 +27,7 @@
            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
              <span class="navbar-toggler-icon"></span>
            </button>
-           <image src="logo_color.png"></image>
+           <image src="<%=request.getContextPath()%>/share_pic/logo_color.png"></image>
            <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                    <li class="nav-item active">
