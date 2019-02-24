@@ -16,7 +16,7 @@
 </style>
 </head>
 <body>
-	<div style="height:px ;"  >
+	<div style="height:60px ;"  >
 	</div>
 	<!-- Footer頭 -->
 	<footer class="container-fluid">

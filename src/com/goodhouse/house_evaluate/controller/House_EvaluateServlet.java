@@ -213,29 +213,6 @@ public class House_EvaluateServlet extends HttpServlet{
 				failureView.forward(req, res);
 			}
 		}
-		//刪除
-		if ("insert".equals(action)) {//來自add_house_evaluate.jsp請求
-			
-			List<String> errorMsgs = new LinkedList<String>();
-			// Store this set in the request scope, in case we need to
-			// send the ErrorPage view.
-			req.setAttribute("errorMsgs", errorMsgs);
-			
-			try {
-				
-				/***********************1.接收請求參數 - 輸入格式的錯誤處理*************************/
-				
-				
-				
-			} catch (Exception e) {
-				errorMsgs.add(e.getMessage());
-				RequestDispatcher failureView = req
-						.getRequestDispatcher("/front/house_evaluate/add_house_evaluate.jsp");
-				failureView.forward(req, res);
-			}
-			
-		
-		}
 		
 		//刪除
 		if ("delete".equals(action)) {
