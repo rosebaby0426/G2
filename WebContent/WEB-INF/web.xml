@@ -50,5 +50,9 @@
 		<servlet-name>Eel_Contract</servlet-name>
 		<url-pattern>/back/ele_contract/ele_contract.do</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Eel_Contract</servlet-name>
+		<url-pattern>/front/ele_contract/ele_contract.do</url-pattern>
+	</servlet-mapping>
 	
 </web-app>
