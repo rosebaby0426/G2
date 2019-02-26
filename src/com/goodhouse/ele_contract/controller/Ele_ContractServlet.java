@@ -119,7 +119,6 @@ public class Ele_ContractServlet extends HttpServlet{
 					}
 				}
 				
-				System.out.println(mem_id);
 				//檢查取出的會員id是否為空值
 				if(mem_id == null){
 					errorMsgs.add("姓名輸入錯誤");
