@@ -75,7 +75,7 @@ h4 {
 							<input type="submit" value="送出">
 						</form>
 					</li>
-					<il> <a href="select_contract.jsp">新增電子合約</a> </il>
+					
 				</ul>
 			</div>
 			<div class="row col-3"></div>
