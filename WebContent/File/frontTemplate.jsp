@@ -7,7 +7,7 @@
 <!-- Required meta tags -->
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<script src="<%=request.getContextPath()%>/file/jquery-1.12.4.min.js"></script>
+<script src="<%=request.getContextPath()%>/File/jquery-1.12.4.min.js"></script>
 <!-- Bootstrap CSS start-->
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/bootstrap/css/bootstrap.min.css">

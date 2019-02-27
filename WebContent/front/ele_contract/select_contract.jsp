@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="com.goodhouse.contract.model.*" %>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -24,6 +26,7 @@
 <div class="container-fluid">
 	<div class="row justfy-content-center">
 		<div class="row col-3">
+			<p>回首頁<a href="lan_select_page.jsp"><img src="<%=request.getContextPath()%>/share_pic/back1.gif" width="100" height="30 !important" ></a></p>
 			<%-- 錯誤表列 --%>
 			<c:if test="${not empty errorMsgs}">
 				<font style="color:red">請修正以下錯誤:</font>
@@ -44,8 +47,8 @@
 						<td>請選擇合約分類</td>
 						<td>
 							<select name="con_id">
-								<c:forEach var="ContractVO" items="${conSvc.all}">
-									<option value="${ContractVO.con_id}" ${(ContractVO.con_id == conVO.con_id)?'selected':''}>${ContractVO.con_name}
+								<c:forEach var="conVO" items="${conSvc.all}">
+									<option value="${conVO.con_id}" ${(conVO.con_id == conVO.con_id)?'selected':''}>${conVO.con_name}
 								</c:forEach>					
 							</select>
 						</td>

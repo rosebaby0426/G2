@@ -37,6 +37,7 @@ public class Ele_ContractServlet extends HttpServlet{
 		String action = req.getParameter("action");
 		HttpSession session = req.getSession();
 		
+		//後台的單一查詢
 		if("getOne_For_Display".equals(action)) {
 			
 			List<String> errorMsgs = new LinkedList<String>();
@@ -164,7 +165,7 @@ public class Ele_ContractServlet extends HttpServlet{
 			}
 		}
 		
-		//新增前的查詢
+		//前台新增前的查詢
 		if("select_contract".equals(action)) {
 			
 			List<String> errorMsgs = new LinkedList<String>();
@@ -211,8 +212,7 @@ public class Ele_ContractServlet extends HttpServlet{
 			}
 			
 		}
-		//新增
-
+		//前台新增
 		if(("insert").equals(action)) {
 			
 			
@@ -224,7 +224,6 @@ public class Ele_ContractServlet extends HttpServlet{
 				
 				/*****1接收請求參數******************/
 				String con_id = req.getParameter("con_id");
-				System.out.println(con_id);
 				
 				String mem_name = req.getParameter("mem_name");
 				String mem_id = null;
@@ -382,6 +381,7 @@ public class Ele_ContractServlet extends HttpServlet{
 				eleConVO.setEle_con_status(ele_con_status);
 				eleConVO.setBill_paymenttype(bill_paymenttype);
 				eleConVO.setEle_con_note(ele_con_note);
+				
 				if (!errorMsgs.isEmpty()) {
 					req.setAttribute("eleConVO", eleConVO); // 含有輸入格式錯誤的eleConVO物件,也存入req
 					RequestDispatcher failureView = req
@@ -406,5 +406,240 @@ public class Ele_ContractServlet extends HttpServlet{
 			
 		}
 		
+		//前台房東修改前的查詢
+		if("getOne_For_Update".equals(action)) {
+			
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				/*****1接收請求參數*************************/
+				String ele_con_id = req.getParameter("ele_con_id");
+				
+				/*****2開始查資料*********************/
+				Ele_ContractService eleConSvc = new Ele_ContractService();
+				Ele_ContractVO eleConVO = eleConSvc.getOneEC(ele_con_id);
+				
+				/*****3查詢成功準備轉交資料************************/
+				
+				req.setAttribute("eleConVO", eleConVO);
+				String url = "/front/ele_contract/update_ele_contract.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url);
+				successView.forward(req, res);
+				
+			} catch (Exception e) {
+				errorMsgs.add("無法取得要修改的資料:" + e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front/ele_contract/update_ele_contract.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
+		//前台房東修改資料
+		if("update".equals(action)) {
+			
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				/*****1接收請求參數*********************/
+				//電子合約編號
+				String ele_con_id = req.getParameter("ele_con_id");
+				
+				//合約分類編號
+				String con_id = req.getParameter("con_id");
+				
+				//會員編號
+				String mem_id = req.getParameter("mem_id");
+				
+				//會員身分證字號
+				String mem_idnumber = req.getParameter("mem_idnumber");
+				String mem_idnumberReg = "^[A-Z]{1}[1-2]{1}[0-9]{8}$";
+				if (mem_idnumber == null || mem_idnumber.trim().length() == 0) {
+					errorMsgs.add("會員身份證字號不能空白");
+				} else if(!mem_idnumber.matches(mem_idnumberReg)) {
+					errorMsgs.add("會員身分證字號格式(一個大寫英文字母 + 9個數字 所組成)是錯誤，請重新輸入 ");
+				}
+				
+				//房東編號
+				String lan_id = req.getParameter("lan_id");
+				
+				//房東身分證字號
+				String lan_idnumber = req.getParameter("lan_idnumber");
+				String lan_idnumberReg = "^[A-Z]{1}[1-2]{1}[0-9]{8}$";
+				if(lan_idnumber == null || lan_idnumber.trim().length() == 0) {
+					errorMsgs.add("房東身份證字號不能空白");
+				}else if(!lan_idnumber.matches(lan_idnumberReg)) {
+					errorMsgs.add("房東身分證字號格式(一個大寫英文字母 + 9個數字 所組成)是錯誤，請重新輸入 ");
+				}
+				
+				//房屋編號
+				String hou_id = req.getParameter("hou_id");
+				
+				//租金
+				String rent_money = req.getParameter("ele_rent_money").trim();
+				String rent_moneyReq = "^[0-9]*$";
+				if(!rent_money.matches(rent_moneyReq)) {
+					errorMsgs.add("租金不能含有字元或符號，只能是數字，請重新輸入");
+				}
+				Integer ele_rent_money = Integer.parseInt(rent_money);
+				if(ele_rent_money <= 0 ) {
+					errorMsgs.add("租金不能空白、0或負數，請重新輸入");
+				}
+				
+				//押金比對
+				String deposit_money = req.getParameter("ele_deposit_money");
+				String deposit_moneyReq = "^[0-9]*$";
+				if(!deposit_money.matches(deposit_moneyReq)) {
+					errorMsgs.add("租金不能含有字元或符號，只能是數字，請重新輸入");
+				} 
+				Integer ele_deposit_money = Integer.parseInt(deposit_money);
+				if(ele_deposit_money <= 0) {
+					errorMsgs.add("押金不能空白、0或負數，請重新輸入");
+				} 
+				
+				//租賃期限比對
+				String rent_time = req.getParameter("ele_rent_time");
+				String rent_timeReq = "^[0-9]*$";
+				if(!rent_time.matches(rent_timeReq)) {
+					errorMsgs.add("租賃期限不能含有字元或符號，只能是數字，請重新輸入");
+				}
+				Integer ele_rent_time = Integer.parseInt(rent_time);
+				if(ele_rent_time <= 0) {
+					errorMsgs.add("租賃期限不能空白、0或負數，請重新輸入");
+				}
+				
+				//租賃起訖日
+				Date ele_rent_f_day = null;
+				
+				try {
+					ele_rent_f_day = Date.valueOf(req.getParameter("ele_rent_f_day"));
+				} catch (IllegalArgumentException e) {
+					ele_rent_f_day = new Date(System.currentTimeMillis());
+					errorMsgs.add("請輸入日期");
+				}
+				
+				//租賃結束日
+				Date ele_rent_l_day = null;
+				
+				try {
+					ele_rent_l_day = Date.valueOf(req.getParameter("ele_rent_l_day"));
+				} catch (IllegalArgumentException e) {
+					ele_rent_l_day = new Date(System.currentTimeMillis());
+					errorMsgs.add("請輸入日期");
+				}
+				
+				//簽約日期
+				Date ele_singdate = null;
+				
+				try {
+					ele_singdate = Date.valueOf(req.getParameter("ele_singdate"));
+				} catch (IllegalArgumentException e) {
+					ele_singdate = new Date(System.currentTimeMillis());
+					errorMsgs.add("請輸入日期");
+				}
+				
+				//合約狀態
+				String ele_con_status = req.getParameter("ele_con_status");
+				
+				//繳費型態
+				String bill_paymenttype = req.getParameter("bill_paymenttype");
+				
+				//合約備註
+				String ele_con_note = req.getParameter("ele_con_note");
+				
+				Ele_ContractVO eleConVO = new Ele_ContractVO();
+				
+				eleConVO.setEle_con_id(ele_con_id);
+				eleConVO.setCon_id(con_id);
+				eleConVO.setMem_id(mem_id);
+				eleConVO.setMem_idnumber(mem_idnumber);
+				eleConVO.setLan_id(lan_id);
+				eleConVO.setLan_idnumber(lan_idnumber);
+				eleConVO.setHou_id(hou_id);
+				eleConVO.setEle_rent_money(ele_rent_money);
+				eleConVO.setEle_deposit_money(ele_deposit_money);
+				eleConVO.setEle_rent_time(ele_rent_time);
+				eleConVO.setEle_rent_f_day(ele_rent_f_day);
+				eleConVO.setEle_rent_l_day(ele_rent_l_day);
+				eleConVO.setEle_singdate(ele_singdate);
+				eleConVO.setEle_con_status(ele_con_status);
+				eleConVO.setBill_paymenttype(bill_paymenttype);
+				eleConVO.setEle_con_note(ele_con_note);
+				
+				if (!errorMsgs.isEmpty()) {
+					req.setAttribute("eleConVO", eleConVO); 
+					// 含有輸入格式錯誤的eleConVO物件,也存入req
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/front/ele_contract/update_ele_contract.jsp");
+					failureView.forward(req, res);
+					return;
+				}
+				/*******2開始新增資料**************************************/
+				System.out.println(eleConVO.getEle_singdate());
+				Ele_ContractService eleConSvc = new Ele_ContractService();
+				eleConSvc.updateEC(eleConVO);
+				
+				/*******3新增成功，準備轉交****************************/
+				String url = "/front/ele_contract/lan_listOne_ele_contract.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); 
+				// 新增成功後轉交lan_listAll_ele_contract.jsp
+				successView.forward(req, res);
+				
+			} catch (Exception e) {
+				errorMsgs.add("修改資料失敗:"+e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front/ele_contract/update_ele_contract.jsp");
+				failureView.forward(req, res);
+			}
+			
+		}
+		
+		//房東的單一查詢
+		if("getOne_front".equals(action)) {
+			
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				/****1接收請求參數************************/
+				String ele_con_id = req.getParameter("ele_con_id");
+				
+				if(ele_con_id == null || ele_con_id.trim().length() == 0) {
+					errorMsgs.add("請輸入電子合約編號(ECON + 6個數字)");
+				}
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/front/ele_contract/lan_select_page.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+				
+				/****2開始查詢**********************/
+				Ele_ContractService eleConSvc = new Ele_ContractService();
+				Ele_ContractVO eleConVO = eleConSvc.getOneEC(ele_con_id);
+				
+				if(eleConVO == null) {
+					errorMsgs.add("查無資料");
+				}
+				if (!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/front/ele_contract/lan_select_page.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+				/*****3查詢完成準備轉交********************************/
+				req.setAttribute("eleConVO", eleConVO);
+				String url = "/front/ele_contract/lan_listOne_ele_contract.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url);
+				successView.forward(req, res);
+				
+			} catch (Exception e) {
+				errorMsgs.add("無法取得資料:" + e.getMessage());
+				RequestDispatcher failureView = req
+						.getRequestDispatcher("/front/ele_contract/lan_select_page.jsp");
+				failureView.forward(req, res);
+			}
+		}
 	}
 }
