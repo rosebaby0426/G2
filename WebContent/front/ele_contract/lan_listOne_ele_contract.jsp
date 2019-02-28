@@ -61,11 +61,11 @@
 						</tr>
 						<jsp:useBean id="mSvc" scope="page" class="com.goodhouse.member.model.MemService" />
 						<tr>
-							<td>租屋者姓名(會員)</td>
+							<td>房客姓名(會員)</td>
 							<td>${mSvc.getOneMem(eleConVO.mem_id).mem_name}</td>
 						</tr>
 						<tr>
-							<td>租屋者身分證字號(會員)</td>
+							<td>房客身分證字號(會員)</td>
 							<td>${eleConVO.mem_idnumber}</td>
 						</tr>
 						<jsp:useBean id="lanSvc" scope="page" class="com.goodhouse.landlord.model.LanService" />

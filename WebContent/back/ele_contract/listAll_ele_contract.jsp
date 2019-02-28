@@ -79,12 +79,12 @@
 				<table>
 					<tr>
 						<td>電子合約編號</td>
-						<td>合約分類編號</td>
-						<td>會員編號</td>
-						<td>會員身份證字號</td>
-						<td>房東編號</td>
+						<td>合約分類名稱</td>
+						<td>房客姓名</td>
+						<td>房客身份證字號</td>
+						<td>房東姓名</td>
 						<td>房東身份證字號</td>
-						<td>房屋編號</td>
+						<td>房屋名稱</td>
 						<td>每期租金</td>
 						<td>押金</td>
 						<td>租賃期限</td>
@@ -97,16 +97,19 @@
 						
 					</tr>
 					<%@ include file="page1.file" %> 
-					<jsp:useBean id="conSvc" scope="page" class="com.goodhouse.contract.ContractService"></jsp:useBean>
+					<jsp:useBean id="conSvc" scope="page" class="com.goodhouse.contract.model.ContractService"></jsp:useBean>
+					<jsp:useBean id="memSvc" scope="page" class="com.goodhouse.member.model.MemService"></jsp:useBean>
+					<jsp:useBean id="houSvc" scope="page" class="com.goodhouse.house.model.HouseService"></jsp:useBean>
+					<jsp:useBean id="lanSvc" scope="page" class="com.goodhouse.landlord.model.LanService"></jsp:useBean>
 					<c:forEach var="eleConVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 						<tr>
 							<td>${eleConVO.ele_con_id}</td>
-							<td>${eleConVO.con_id}</td>
-							<td>${eleConVO.mem_id}</td>
+							<td>${conSvc.getOneCon(eleConVO.con_id).con_name}</td>
+							<td>${memSvc.getOneMem(eleConVO.mem_id).mem_name}</td>
 							<td>${eleConVO.mem_idnumber}</td>
-							<td>${eleConVO.lan_id}</td>
+							<td>${memSvc.getOneMem(lanSvc.getOneLan(eleConVO.lan_id).mem_id).mem_name}</td>
 							<td>${eleConVO.lan_idnumber}</td>
-							<td>${eleConVO.hou_id}</td>
+							<td>${houSvc.getOneHouse(eleConVO.hou_id).hou_name}</td>
 							<td>${eleConVO.ele_rent_money}</td>
 							<td>${eleConVO.ele_deposit_money}</td>
 							<td>${eleConVO.ele_rent_time}</td>

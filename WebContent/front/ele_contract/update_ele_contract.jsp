@@ -35,7 +35,7 @@
 		<div class="row col-4">
 			<table>
 				<tr>
-					<td>修改</td>
+					<h3 style="color:blue">房東修改電子合約</h3>
 				</tr>
 				<tr>
 					<td>
@@ -85,12 +85,11 @@
 									<input type="text" name="mem_idnumber" value="<%=eleConVO.getMem_idnumber()%>"/>
 								</td>
 							</tr>
+							<jsp:useBean id="lanSvc" scope="page" class="com.goodhouse.landlord.model.LanService"></jsp:useBean>
 							<tr>
 								<td>房東姓名<font color=red><b>*</b></font></td>
 								<td>
-									<c:forEach var="memVO" items="${memSvc.all}">
-										<p>${(memVO.mem_id == eleConVO.mem_id) ? memVO.mem_name : "" }</p>
-									</c:forEach>
+									<p>${memSvc.getOneMem(lanSvc.getOneLan(eleConVO.lan_id).mem_id).mem_name}</p>
 								</td>
 							</tr>
 							<tr>
