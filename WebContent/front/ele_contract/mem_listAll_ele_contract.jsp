@@ -51,17 +51,17 @@ h4 {
 
 	<!-- 工作區開始 -->
 
-	<div class="container-fluid">
+	<div class="container">
 		<div class="row justfy-content-center">
 			<div class="row col-2">
 				<table id="table-1">
 					<p>
-						回首頁<a href="lan_select_page.jsp"><img
+						回首頁<a href="mem_select_page.jsp"><img
 							src="<%=request.getContextPath()%>/share_pic/back1.gif"
 							width="100" height="30 !important"></a>
 					</p>
 					<tr>
-						<td>所有電子合約資料 - listAll_ele_contract.jsp</td>
+						<td>屬於房客所有電子合約資料 - listAll_ele_contract.jsp</td>
 					</tr>
 				</table>
 				<%-- 錯誤表列 --%>
@@ -93,8 +93,7 @@ h4 {
 						<td>合約狀態</td>
 						<td>繳費型態</td>
 						<td>備註</td>
-						<td>修改</td>
-						<td>合約解除</td>
+						
 					</tr>
 					<%@ include file="page1.file"%>
 					<c:forEach var="eleConVO" items="${list}" begin="<%=pageIndex%>"
@@ -117,14 +116,7 @@ h4 {
 							<td>${eleConVO.bill_paymenttype}</td>
 							<td>${eleConVO.ele_con_note}</td>
 							<td>
-								<form method="post" action="ele_contract.do"
-									style="margin-bottom: 0px;">
-									<input type="hidden" name="ele_con_id"
-										value="${eleConVO.ele_con_id}"> 
-									<input type="hidden"
-										name="action" value="getOne_For_Update"> 
-									<input type="submit" value="修改">
-								</form>
+								
 							</td>
 						</tr>
 					</c:forEach>
@@ -136,7 +128,6 @@ h4 {
 
 	<!-- 工作區結束 -->
 
-	<jsp:include page="/FrontHeaderFooter/Footer.jsp" />
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS start-->
 	<script
