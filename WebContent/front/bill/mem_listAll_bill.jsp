@@ -3,9 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.goodhouse.bill.model.*"%>
 <%@ page import="java.util.*"%>
+
 <%
 	BillService billSvc = new BillService();
-	List<BillVO> list = billSvc.getAll();
+	List<BillVO> list = (List<BillVO>) session.getAttribute("billVOList");
 	pageContext.setAttribute("list",list);
 %>
 
@@ -55,17 +56,18 @@
 			<div class="row col-10" >
 				<table>
 					<tr>
-						<td>帳單編號</td>
-						<td>電子合約編號</td>
-						<td>員工編號</td>
-						<td>繳交費用</td>
-						<td>繳交日期</td>
-						<td>帳單產生日期</td>
-						<td>帳單繳費狀態</td>
-						<td>付款方式</td>
-						<td>繳費型態</td>
+						<th>帳單編號</th>
+						<th>電子合約編號</th>
+						<th>員工編號</th>
+						<th>繳交費用</th>
+						<th>繳交日期</th>
+						<th>帳單產生日期</th>
+						<th>帳單繳費狀態</th>
+						<th>付款方式</th>
+						<th>繳費型態</th>
 					</tr>
 					<%@ include file="page1.file" %>
+					
 					<c:forEach var="billVO" items="${list}" begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>" >
 						<tr>
 							<td>${billVO.bill_id}</td>

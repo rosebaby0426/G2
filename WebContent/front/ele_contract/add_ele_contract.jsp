@@ -66,7 +66,7 @@
 					<td>
 						<h3>新增電子合約 - add_ele_contract.jsp</h3>
 						<h4>
-						 <a href="select_page.jsp"><img src="<%=request.getContextPath()%>/share_pic/back1.gif" width="100" height="32" border="0">回首頁</a>
+						 <a href="lan_select_page.jsp"><img src="<%=request.getContextPath()%>/share_pic/back1.gif" width="100" height="32" border="0">回首頁</a>
 						</h4>
 					</td>
 				</tr>
@@ -108,10 +108,9 @@
 								</td>
 							</tr>
 							<tr>
-							
-							
 								<td>房東姓名<font color=red><b>*</b></font></td>
 								<td>
+									
 									<input type="text" name="lan_name" />
 								</td>
 							</tr>

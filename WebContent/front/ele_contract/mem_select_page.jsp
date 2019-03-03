@@ -3,6 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.goodhouse.ele_contract.model.*"%>
 
+<%
+	String mem_name = (String)session.getAttribute("mem_name");
+%>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -18,43 +22,33 @@
 	crossorigin="anonymous">
 <!-- Bootstrap CSS end-->
 <title></title>
-<style>
-table#table-1 {
-	width: 450px;
-	background-color: #CCCCFF;
-	margin-top: 5px;
-	margin-bottom: 10px;
-	border: 3px ridge Gray;
-	height: 80px;
-	text-align: center;
-}
 
-table#table-1 h4 {
-	color: red;
-	display: block;
-	margin-bottom: 1px;
-}
-
-h4 {
-	color: blue;
-	display: inline;
-}
 </style>
 
 </head>
 <body>
 	<jsp:include page="/FrontHeaderFooter/Header.jsp" />
-	<h1></h1>
+	<div style="margin-top:30px"></div>
 
 	<!-- 工作區開始 -->
 
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row justfy-content-center">
-			<div class="row col-3">
-				<h4>房客電子合約管理</h4>
-			</div>
-			<div class="row col-6">
-
+			
+				<h4>房客電子合約管理</h4><br>
+				<form method="post" action="ele_contract.do">
+					<input type="hidden" name="mem_name" value=<%=mem_name%>>
+					<input type="hidden" name="action" value="front_getMemEle_Contract">
+					<input type="submit" value="我的合約列表">
+				</form>
+				<form method="post" action="">
+					<input type="hidden" >
+					<input type="submit" value="申請續約">
+				</form>
+				<form method="post" action="">
+					<input type="hidden" >
+					<input type="submit" value="申請解約">
+				</form>
 				<%-- 錯誤表列 --%>
 				<c:if test="${not empty errorMsgs}">
 					<font style="color: red">請修正以下錯誤:</font>
@@ -64,18 +58,11 @@ h4 {
 						</c:forEach>
 					</ul>
 				</c:if>
-				<ul>
-					<li><a href="mem_listAll_ele_contract.jsp">List All</a></li>
+			</div>
+			<div class="row col-6">
 
-					<li>
-						<form method="post" action="ele_contract.do">
-							<b>輸入電子合約編號</b><br> 
-							<input type="text" name="ele_con_id" >
-							<input type="hidden" name="action" value="getOne_front">
-							<input type="submit" value="送出">
-						</form>
-					</li>
-				</ul>
+				
+				
 			</div>
 			<div class="row col-3"></div>
 		</div>

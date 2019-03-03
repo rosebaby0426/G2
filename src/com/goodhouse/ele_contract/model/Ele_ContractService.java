@@ -78,10 +78,10 @@ public class Ele_ContractService {
 		dao.update(ecVO);
 	}
 	
-	//刪除
-	public void deleteEC(String ele_con_id) {
-		dao.delete(ele_con_id);
-	}
+//	//刪除
+//	public void deleteEC(String ele_con_id) {
+//		dao.delete(ele_con_id);
+//	}
 	
 	//單一查詢
 	public Ele_ContractVO getOneEC(String ele_con_id) {
@@ -93,8 +93,13 @@ public class Ele_ContractService {
 		return dao.getAll();
 	}
 	
-	public List<Ele_ContractVO> getMemAll(String mem_id){
-		return dao.findByOther(mem_id);
+	//利用mem_id查詢全部
+	public List<Ele_ContractVO> getAllForEle_ConByMem_id(String mem_id){
+		return dao.getAllForEle_ConByMem_id(mem_id);
 	}
 	
+	//利用lan_id查詢全部
+	public List<Ele_ContractVO> getAllForEle_ConByLan_id(String lan_id){
+		return dao.getAllForEle_ConByLan_id(lan_id);
+	}
 }

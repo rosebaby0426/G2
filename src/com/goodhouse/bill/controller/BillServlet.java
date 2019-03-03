@@ -8,11 +8,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.goodhouse.bill.model.BillService;
 import com.goodhouse.bill.model.BillVO;
 import com.goodhouse.ele_contract.model.Ele_ContractService;
 import com.goodhouse.ele_contract.model.Ele_ContractVO;
+import com.goodhouse.landlord.model.LanService;
+import com.goodhouse.landlord.model.LanVO;
 import com.goodhouse.member.model.MemService;
 import com.goodhouse.member.model.MemVO;
 
@@ -27,7 +30,7 @@ public class BillServlet extends HttpServlet{
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		
-		//前台帳單編號單一查詢
+		//前台帳單編號單一查詢(房客)
 		if("bill_getOne_mem".equals(action)) {
 			
 			List<String> errorMsgs = new LinkedList<String>();
@@ -58,9 +61,17 @@ public class BillServlet extends HttpServlet{
 				if(billVO == null) {
 					errorMsgs.add("查無資料");
 				}
+				System.out.println("billVO = " +billVO);
+				
+				if(!errorMsgs.isEmpty()) {
+					RequestDispatcher failureView = req.getRequestDispatcher("/front/bill/mem_select_page.jsp");
+					failureView.forward(req, res);
+					return;//程式中斷
+				}
+				
 				
 				/******3查詢完成準備轉交************************/
-				req.setAttribute("billVO", billVO);
+				req.getSession().setAttribute("billVO", billVO);
 				String url = "/front/bill/mem_listOne.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
@@ -73,7 +84,7 @@ public class BillServlet extends HttpServlet{
 			}
 		}
 		
-		//前台使用者：輸入姓名查詢該會員的所有帳單
+		//前台使用者(房東)：輸入姓名查詢該會員的所有帳單
 		if("bill_getBy_mem_name".equals(action)) {
 			
 			List<String> errorMsgs = new LinkedList<String>();
@@ -99,7 +110,7 @@ public class BillServlet extends HttpServlet{
 				}
 				
 				if(!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req.getRequestDispatcher("/front/bill/mem_select_page.jsp");
+					RequestDispatcher failureView = req.getRequestDispatcher("/front/bill/lan_select_page.jsp");
 					failureView.forward(req, res);
 					return;//程式中斷
 				}
@@ -107,7 +118,7 @@ public class BillServlet extends HttpServlet{
 				/*****2開始查詢資料*******************************/
 				BillService billSvc = new BillService();
 				Ele_ContractService eleConSvc = new Ele_ContractService();
-				List<BillVO> list = new ArrayList();
+				List<BillVO> billVOlist = new ArrayList();
 				String ele_con_id = null;
 				String bill_id = null;
 				
@@ -126,11 +137,29 @@ public class BillServlet extends HttpServlet{
 //						}
 //					}
 //				}
+				HttpSession session = req.getSession();
+				//從session取出已登入的該房東會員名稱
+				String lan_id = null;
+				LanService lanSvc = new LanService();
+				String lan_name = session.getAttribute("mem_name").toString();
+				
+				for(MemVO mVO : mSvc.getAll()) {
+					if(lan_name.equals(mVO.getMem_name())) {
+						String lan_mem_id = mVO.getMem_id();
+						for(LanVO lanVO : lanSvc.getAll()) {
+							if(lan_mem_id.equals(lanVO.getMem_id())) {
+								lan_id = lanVO.getLan_id();
+							}
+						}
+					}
+				}
+				
+				
 				for(BillVO billVO : billSvc.getAll()) {
-					//把mem_id跟電子合約的mem_id做比對取出所屬的帳單
-					if( (eleConSvc.getOneEC( billVO.getEle_con_id() ).getMem_id() ).equals(mem_id) ){
+					//把mem_id跟電子合約的mem_id 及 lan_id 跟電子合約的lan_id 做比對取出該房東底下查的會員的帳單
+					if( (eleConSvc.getOneEC( billVO.getEle_con_id() ).getMem_id() ).equals(mem_id) &&  (eleConSvc.getOneEC( billVO.getEle_con_id()).getLan_id()).equals(lan_id) ){
 						bill_id = billVO.getBill_id();
-						list.add(billVO);
+						billVOlist.add(billVO);
 					}
 				}
 				
@@ -139,7 +168,8 @@ public class BillServlet extends HttpServlet{
 				}
 				
 				/*****3查詢完成準備轉交***************************/
-				req.setAttribute("billList", list);
+				req.setAttribute("lastPage", true);
+				req.setAttribute("billVOlist", billVOlist);
 				String url = "/front/bill/billList_for_oneMem.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
@@ -276,6 +306,123 @@ public class BillServlet extends HttpServlet{
 			} catch (Exception e) {
 				errorMsgs.add("無法取得資料" + e.getMessage());
 				RequestDispatcher failureView = req.getRequestDispatcher("/back/bill/back_select_page.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
+		//房客的全部帳單列表
+		if("billForMemListAll".equals(action)) {
+			
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				/***1接收請求參數************************/
+				String mem_name = req.getParameter("mem_name");
+				String mem_id = null;
+				
+				MemService mSvc = new MemService();
+				for(MemVO mVO : mSvc.getAll()) {
+					if(mem_name.equals(mVO.getMem_name())) {
+						mem_id = mVO.getMem_id();
+					}
+				}
+				
+				/****2準備查詢**********************/
+				BillService billSvc = new BillService();
+				Ele_ContractService eleConSvc = new Ele_ContractService();
+				List<Ele_ContractVO> eleConVOList = (List<Ele_ContractVO>) eleConSvc.getAllForEle_ConByMem_id(mem_id);
+				List<BillVO> billVOList = new ArrayList<BillVO>();
+				String bill_id = null;
+				
+				Iterator obj = eleConVOList.iterator();
+				while(obj.hasNext()) {
+					Ele_ContractVO eleConVO = (Ele_ContractVO)obj.next();
+					for(BillVO billVO : billSvc.getAll()) {
+						if(eleConVO.getEle_con_id().equals(billVO.getEle_con_id())) {
+							bill_id = billVO.getBill_id();
+							billVOList.add(billVO);
+						}
+					}
+				}
+				
+				if(billVOList.isEmpty()) {
+					errorMsgs.add("無資料");
+				}
+				/****3查詢完成準備轉交***************/
+				req.setAttribute("lastPage", true);
+				req.getSession().setAttribute("billVOList", billVOList);
+				String url = "/front/bill/mem_listAll_bill.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url);
+				successView.forward(req, res);
+				
+			} catch (Exception e) {
+				errorMsgs.add("無法取得資料" + e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher("/front/bill/mem_select_page.jsp");
+				failureView.forward(req, res);
+			}
+		}
+		
+		//(房東)所有房租帳單
+		if("billForLanListAll".equals(action)) {
+			
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			//TODO
+			
+			try {
+				/****1接收請求參數****************/
+				String mem_name = req.getParameter("mem_name");
+				
+				/******2開始查詢資料*****************/
+				String mem_id = null;
+				String lan_id = null;
+				
+				MemService mSvc = new MemService();
+				LanService lanSvc = new LanService();
+				//取得lan_id
+				for(MemVO mVO : mSvc.getAll()) {
+					if(mem_name.equals(mVO.getMem_name())) {
+						mem_id = mVO.getMem_id();
+						for(LanVO lanVO : lanSvc.getAll()) {
+							if(mem_id.equals(lanVO.getMem_id())) {
+								lan_id = lanVO.getLan_id();
+							}
+						}
+					}
+				}
+				
+				BillService billSvc = new BillService();
+				Ele_ContractService eleConSvc = new Ele_ContractService();
+				List<Ele_ContractVO> ele_contractForLanList = eleConSvc.getAllForEle_ConByLan_id(lan_id);
+				List<BillVO> billVOList = new ArrayList<BillVO>();
+				String bill_id = null;
+				
+				Iterator obj = ele_contractForLanList.iterator();
+				while(obj.hasNext()) {
+					Ele_ContractVO eleConVO = (Ele_ContractVO)obj.next();
+					for(BillVO billVO : billSvc.getAll()) {
+						if(eleConVO.getEle_con_id().equals(billVO.getEle_con_id())) {
+							bill_id = billVO.getBill_id();
+							billVOList.add(billVO);
+						}
+					}
+				}
+				
+				if(billVOList.isEmpty()) {
+					errorMsgs.add("無資料");
+				}
+				
+				/****3查詢完成準備轉交***************/
+				req.setAttribute("lastPage", true);
+				req.getSession().setAttribute("billVOList", billVOList);
+				String url = "/front/bill/lan_listAll_bill.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url);
+				successView.forward(req, res);
+				
+			} catch(Exception e) {
+				errorMsgs.add("無法取得資料" + e.getMessage());
+				RequestDispatcher failureView = req.getRequestDispatcher("/front/bill/lan_select_page.jsp");
 				failureView.forward(req, res);
 			}
 		}

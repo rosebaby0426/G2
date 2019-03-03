@@ -5,8 +5,8 @@
 
 <%
 	Ele_ContractService eleConSvc = new Ele_ContractService();
-	List<Ele_ContractVO> list = eleConSvc.getAll();
-	pageContext.setAttribute("list", list);
+	List<Ele_ContractVO> list = (List<Ele_ContractVO>) request.getAttribute("ele_contractForMemList");
+	pageContext.setAttribute("list",list);
 %>
 
 
@@ -51,7 +51,7 @@ h4 {
 
 	<!-- 工作區開始 -->
 
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row justfy-content-center">
 			<div class="row col-2">
 				<table id="table-1">

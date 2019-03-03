@@ -5,8 +5,8 @@
 
 <%
 	Ele_ContractService eleConSvc = new Ele_ContractService();
-	List<Ele_ContractVO> list = eleConSvc.getAll();
-	pageContext.setAttribute("list", list);
+	List<Ele_ContractVO> list = (List<Ele_ContractVO>) session.getAttribute("ele_contractForLanList");
+	pageContext.setAttribute("list",list);
 %>
 
 
@@ -61,7 +61,7 @@ h4 {
 							width="100" height="30 !important"></a>
 					</p>
 					<tr>
-						<td>所有電子合約資料 - listAll_ele_contract.jsp</td>
+						<td>所有電子合約資料 - lan_listAll_ele_contract.jsp</td>
 					</tr>
 				</table>
 				<%-- 錯誤表列 --%>
@@ -101,6 +101,7 @@ h4 {
 					<jsp:useBean id="memSvc" scope="page" class="com.goodhouse.member.model.MemService"></jsp:useBean>
 					<jsp:useBean id="houSvc" scope="page" class="com.goodhouse.house.model.HouseService"></jsp:useBean>
 					<jsp:useBean id="lanSvc" scope="page" class="com.goodhouse.landlord.model.LanService"></jsp:useBean>
+					
 					<c:forEach var="eleConVO" items="${list}" begin="<%=pageIndex%>"
 						end="<%=pageIndex+rowsPerPage-1%>">
 						<tr>

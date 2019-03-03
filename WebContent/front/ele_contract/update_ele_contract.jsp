@@ -39,7 +39,7 @@
 				</tr>
 				<tr>
 					<td>
-						<a href="select_page.jsp"><img src="<%=request.getContextPath()%>/share_pic/back1.gif" width="100" height="32" border="0">回首頁</a>
+						<a href="lan_select_page.jsp"><img src="<%=request.getContextPath()%>/share_pic/back1.gif" width="100" height="32" border="0">回首頁</a>
 					</td>
 				</tr>
 				<tr>

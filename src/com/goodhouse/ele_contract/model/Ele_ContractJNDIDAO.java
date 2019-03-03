@@ -43,8 +43,10 @@ public class Ele_ContractJNDIDAO implements Ele_ContractDAO_interface{
 			"SELECT ELE_CON_ID,CON_ID,MEM_ID,MEM_IDNUMBER,LAN_ID,LAN_IDNUMBER,HOU_ID," + 
 			" ELE_RENT_MONEY,ELE_DEPOSIT_MONEY,ELE_RENT_TIME,ELE_RENT_F_DAY,ELE_RENT_L_DAY,ELE_SINGDATE, " + 
 			" ELE_CON_STATUS,BILL_PAYMENTTYPE,ELE_CON_NOTE FROM ELE_CONTRACT ORDER BY ELE_CON_ID";
-	private static final String GET_ONE_MEM_STMT =//利用fk查詢所有資料
+	private static final String GET_ONE_MEM_STMT =//利用mem_id fk查詢所有資料
 			"SELECT * FROM ELE_CONTRACT WHERE MEM_ID = ?";
+	private static final String GET_ONE_LAN_STMT =//利用lan_id fk查詢所有資料
+			"select * from ele_contract where lan_id=?";
 	
 	@Override//新增
 	public void insert(Ele_ContractVO ecVO) {
@@ -152,42 +154,42 @@ public class Ele_ContractJNDIDAO implements Ele_ContractDAO_interface{
 			}
 		}
 	}
-	@Override
-	public void delete(String ele_con_id) {
-		
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		
-		try {
-			con = ds.getConnection();
-			pstmt = con.prepareStatement(DELETE);
-			//DELETE FROM KEYWORD WHERE KW_ID = ? 
-			
-			pstmt.setString(1, ele_con_id);
-			
-			pstmt.executeUpdate();
-			
-			
-		}catch (SQLException se) {
-			throw new RuntimeException("A database error occured. "
-					+ se.getMessage());
-		}finally {
-			if(pstmt != null) {
-				try {
-					pstmt.close();
-				} catch (SQLException e) {
-					e.printStackTrace(System.err);
-				}
-			}
-			if(con != null) {
-				try {
-					con.close();
-				} catch (SQLException e) {
-					e.printStackTrace(System.err);
-				}
-			}
-		}
-	}
+//	@Override
+//	public void delete(String ele_con_id) {
+//		
+//		Connection con = null;
+//		PreparedStatement pstmt = null;
+//		
+//		try {
+//			con = ds.getConnection();
+//			pstmt = con.prepareStatement(DELETE);
+//			//DELETE FROM KEYWORD WHERE KW_ID = ? 
+//			
+//			pstmt.setString(1, ele_con_id);
+//			
+//			pstmt.executeUpdate();
+//			
+//			
+//		}catch (SQLException se) {
+//			throw new RuntimeException("A database error occured. "
+//					+ se.getMessage());
+//		}finally {
+//			if(pstmt != null) {
+//				try {
+//					pstmt.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace(System.err);
+//				}
+//			}
+//			if(con != null) {
+//				try {
+//					con.close();
+//				} catch (SQLException e) {
+//					e.printStackTrace(System.err);
+//				}
+//			}
+//		}
+//	}
 	
 	@Override//單一查詢
 	public Ele_ContractVO findByPrimaryKey(String ele_con_id) {
@@ -332,8 +334,8 @@ public class Ele_ContractJNDIDAO implements Ele_ContractDAO_interface{
 		
 		return list;
 	}
-	@Override
-	public List<Ele_ContractVO> findByOther(String mem_id) {
+	@Override//利用mem_id fk查詢所有資料
+	public List<Ele_ContractVO> getAllForEle_ConByMem_id(String mem_id) {
 		List<Ele_ContractVO> list = new ArrayList();
 		Ele_ContractVO ecVO = null;
 		Connection con = null;
@@ -370,6 +372,7 @@ public class Ele_ContractJNDIDAO implements Ele_ContractDAO_interface{
 				/*
 				 "SELECT * FROM ELE_CONTRACT WHERE MEM_ID = ?";
 				 */
+				list.add(ecVO);
 			}
 			
 		} catch (SQLException se) {
@@ -402,5 +405,76 @@ public class Ele_ContractJNDIDAO implements Ele_ContractDAO_interface{
 		return list;
 	}
 	
-	
+	@Override//利用lan_id查詢全部
+	public List<Ele_ContractVO> getAllForEle_ConByLan_id(String lan_id) {
+		// TODO Auto-generated method stub
+		
+		List<Ele_ContractVO> list = new ArrayList();
+		Ele_ContractVO ecVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			con = ds.getConnection();
+			pstmt = con.prepareStatement(GET_ONE_LAN_STMT );
+			
+			pstmt.setString(1, lan_id);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ecVO = new Ele_ContractVO();
+				ecVO.setEle_con_id(rs.getString("ELE_CON_ID"));
+				ecVO.setCon_id(rs.getString("CON_ID"));
+				ecVO.setMem_id(rs.getString("MEM_ID"));
+				ecVO.setMem_idnumber(rs.getString("MEM_IDNUMBER"));
+				ecVO.setLan_id(rs.getString("LAN_ID"));
+				ecVO.setLan_idnumber(rs.getString("LAN_IDNUMBER"));
+				ecVO.setHou_id(rs.getString("HOU_ID"));
+				ecVO.setEle_rent_money(rs.getInt("ELE_RENT_MONEY"));
+				ecVO.setEle_deposit_money(rs.getInt("ELE_DEPOSIT_MONEY"));
+				ecVO.setEle_rent_time(rs.getInt("ELE_RENT_TIME"));
+				ecVO.setEle_rent_f_day(rs.getDate("ELE_RENT_F_DAY"));
+				ecVO.setEle_rent_l_day(rs.getDate("ELE_RENT_L_DAY"));
+				ecVO.setEle_singdate(rs.getDate("ELE_SINGDATE"));
+				ecVO.setEle_con_status(rs.getString("ELE_CON_STATUS"));
+				ecVO.setBill_paymenttype(rs.getString("BILL_PAYMENTTYPE"));
+				ecVO.setEle_con_note(rs.getString("ELE_CON_NOTE"));
+				
+				list.add(ecVO);
+				/*
+				 "SELECT * FROM ELE_CONTRACT WHERE LAN_ID = ?";
+				 */
+			}
+			
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		} finally {
+			if(rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace(System.err);
+				}
+			}
+			if(pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace(System.err);
+				}
+			}
+			if(con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		
+		return list;
+	}
 }

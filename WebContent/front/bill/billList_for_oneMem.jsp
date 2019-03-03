@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.goodhouse.bill.model.*"%>
@@ -9,15 +9,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<!-- Required meta tags -->
-	<meta name="viewport"
-		content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<script src="<%=request.getContextPath()%>/File/jquery-1.12.4.min.js"></script>
-	<!-- Bootstrap CSS start-->
-	<link rel="stylesheet"
-		href="<%=request.getContextPath()%>/bootstrap/css/bootstrap.min.css">
-	<!-- Bootstrap CSS end-->
-	<title></title>
+
 	<style>
 	  table#table-1 {
 		background-color: #CCCCFF;
@@ -40,24 +32,24 @@
 </head>
 <body>
 	<jsp:include page="/FrontHeaderFooter/Header.jsp" />
-	<h1></h1>
+	<div style="padding-top:30px"></div>
 
-	<!-- ¤u§@°Ï¶}©l -->
+	<!-- å·¥ä½œå€é–‹å§‹ -->
 	
 	<div class="container">
 		<div class="row justfy-content-center">
 			<div class="row col-3">
 				<table id="table-1">
-					<p>¦^­º­¶<a href="mem_select_page.jsp"><img src="<%=request.getContextPath()%>/share_pic/back1.gif" width="100	" height="30 !important" ></a></p>
+					<p>å›é¦–é <a href="lan_select_page.jsp"><img src="<%=request.getContextPath()%>/share_pic/back1.gif" width="100	" height="30 !important" ></a></p>
 					<tr>
 						<td>
-							¬Y·|­ûªº©Ò¦³±b³æ¸ê®Æ - billList_for_oneMem.jsp
+							æŸæœƒå“¡çš„æ‰€æœ‰å¸³å–®è³‡æ–™ - billList_for_oneMem.jsp
 						</td>
 					</tr>
 				</table>
-				<%-- ¿ù»~ªí¦C --%>
+				<%-- éŒ¯èª¤è¡¨åˆ— --%>
 				<c:if test="${not empty errorMsgs}">
-					<font style="color:red">½Ğ­×¥¿¥H¤U¿ù»~:</font>
+					<font style="color:red">è«‹ä¿®æ­£ä»¥ä¸‹éŒ¯èª¤:</font>
 					<ul>
 						<c:forEach var="message" items="${errorMsgs}">
 							<li style="color:red">${message}</li>
@@ -68,26 +60,26 @@
 			<div class="row col-9" >
 				<table>
 					<tr>
-						<td>±b³æ½s¸¹</td>
-						<td>·|­û©m¦W</td>
-						<td>­û¤u½s¸¹</td>
-						<td>Ãº¥æ¶O¥Î</td>
-						<td>Ãº¥æ¤é´Á</td>
-						<td>±b³æ²£¥Í®É¶¡</td>
-						<td>±b³æÃº¶Oª¬ºA</td>
-						<td>¥I´Ú¤è¦¡</td>
-						<td>Ãº¶O«¬ºA</td>
+						<td>å¸³å–®ç·¨è™Ÿ</td>
+						<td>æœƒå“¡å§“å</td>
+						<td>å“¡å·¥ç·¨è™Ÿ</td>
+						<td>ç¹³äº¤è²»ç”¨</td>
+						<td>ç¹³äº¤æ—¥æœŸ</td>
+						<td>å¸³å–®ç”¢ç”Ÿæ™‚é–“</td>
+						<td>å¸³å–®ç¹³è²»ç‹€æ…‹</td>
+						<td>ä»˜æ¬¾æ–¹å¼</td>
+						<td>ç¹³è²»å‹æ…‹</td>
 						
 					</tr>
 						<jsp:useBean id="mSvc" scope="page" class="com.goodhouse.member.model.MemService" />
 						<jsp:useBean id="eleConSvc" scope="page" class="com.goodhouse.ele_contract.model.Ele_ContractService" />
 						<%
-							List<BillVO> billList = (List<BillVO>) request.getAttribute("billList");
+							List<BillVO> billVOlist = (List<BillVO>) request.getAttribute("billVOlist");
 							
 							
-							for(int i = 0 ; i < billList.size() ; i++){
+							for(int i = 0 ; i < billVOlist.size() ; i++){
 								
-								BillVO billVO = billList.get(i);
+								BillVO billVO = billVOlist.get(i);
 								
 								String bill_id = billVO.getBill_id();
 								String ele_con_id = billVO.getEle_con_id();
@@ -120,9 +112,8 @@
 		</div>
 	</div>
 	
-	<!-- ¤u§@°Ïµ²§ô -->
+	<!-- å·¥ä½œå€çµæŸ -->
 	
-	<jsp:include page="/FrontHeaderFooter/Footer.jsp" />
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS start-->
 	<script src="<%=request.getContextPath()%>/bootstrap/jquery-3.3.1.min.js"
