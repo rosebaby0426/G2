@@ -61,7 +61,6 @@ h4 {
 					<li>
 						<form method="post" action="ele_contract.do">
 							<b>(房東自己的)查看所有合約</b>
-							<input type="hidden" name="mem_name" value="<%=mem_name%>">
 							<input type="hidden" name="action" value="lan_listAll">
 							<input type="submit" value="送出">
 						</form>
@@ -84,6 +83,13 @@ h4 {
 						</form>
 					</li>
 					<li> <a href="select_contract.jsp">新增電子合約</a> </li>
+					<li>
+						<form method="post" action="apply_conturct.do">
+							<b>合約處理列表</b>
+							<input type="hidden" name="action" value="lanApply_conturctListAll">
+							<input type="submit" value="送出">
+						</form>
+					</li>
 				</ul>
 			</div>
 			<div class="row col-3"></div>

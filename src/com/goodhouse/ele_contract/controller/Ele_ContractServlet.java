@@ -47,10 +47,18 @@ public class Ele_ContractServlet extends HttpServlet{
 			try {
 				/**1接收請求參數*****/
 				
-				String mem_name = req.getParameter("mem_name");
+//				String mem_name = req.getParameter("mem_name");
+				String mem_email = req.getParameter("mem_email");
 				
+//				String mem_id = null;
+				
+				for(MemVO mVO : mSvc.getAll()) {
+					if(mem_email.equals(mVO.getMem_email())) {
+//						mem_id = mVO.getMem_id();
+						req.getSession().setAttribute("mVO",mVO);
+					}
+				}
 				/**3查詢完成準備轉交****/
-				req.getSession().setAttribute("mem_name", mem_name);
 				String url = "/front/ele_contract/mem_select_page.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
@@ -644,6 +652,7 @@ public class Ele_ContractServlet extends HttpServlet{
 				Ele_ContractService eleConSvc = new Ele_ContractService();
 				Ele_ContractVO eleConVO = eleConSvc.getOneEC(ele_con_id);
 				
+				
 				if(eleConVO == null) {
 					errorMsgs.add("查無資料");
 				}
@@ -675,15 +684,10 @@ public class Ele_ContractServlet extends HttpServlet{
 			
 			try {
 				/****1接收請求參數************************/
-				String mem_name = req.getParameter("mem_name");
-				String mem_id = null;
+				MemVO mVO = (MemVO)session.getAttribute("mVO");
 				
-				MemService mSvc = new MemService();
-				for(MemVO mVO : mSvc.getAll()) {
-					if(mem_name.equals(mVO.getMem_name())) {
-						mem_id = mVO.getMem_id();
-					}
-				}
+				String mem_id = mVO.getMem_id();
+				
 				
 				/*****2準備查詢************************/
 				Ele_ContractService eleConSvc = new Ele_ContractService();
@@ -691,6 +695,8 @@ public class Ele_ContractServlet extends HttpServlet{
 				
 				if(ele_contractForMemList.isEmpty()) {
 					errorMsgs.add("沒有資料");
+					RequestDispatcher failure = req.getRequestDispatcher("/front/ele_contract/mem_select_page.jsp");
+					failure.forward(req, res);
 				}
 				
 				/*****3查詢完成準備轉交************************/
@@ -751,18 +757,13 @@ public class Ele_ContractServlet extends HttpServlet{
 				List<Ele_ContractVO> list = new ArrayList();
 				
 				//從session取出已登入的該房東會員名稱
-				String lan_name = session.getAttribute("mem_name").toString();
-				System.out.println("lan_name" + lan_name);
+				MemVO lanMemVO = (MemVO)session.getAttribute("mVO");
+				String lan_mem_id = lanMemVO.getMem_id();
 				String lan_id = null;
 				LanService lanSvc = new LanService();
-				for(MemVO mVO : mSvc.getAll()) {
-					if(lan_name.equals(mVO.getMem_name())) {
-						String lan_mem_id = mVO.getMem_id();
-						for(LanVO lanVO : lanSvc.getAll()) {
-							if(lan_mem_id.equals(lanVO.getMem_id())) {
-								lan_id = lanVO.getLan_id();
-							}
-						}
+				for(LanVO lanVO : lanSvc.getAll()) {
+					if(lan_mem_id.equals(lanVO.getMem_id())) {
+						lan_id = lanVO.getLan_id();
 					}
 				}
 				
@@ -771,7 +772,6 @@ public class Ele_ContractServlet extends HttpServlet{
 				for(Ele_ContractVO eleConVO : eleConSvc.getAll()) {
 					if( lan_id.equals(eleConVO.getLan_id()) && mem_id.equals(eleConVO.getMem_id())) {
 						ele_con_id = eleConVO.getEle_con_id();
-						System.out.println("ele_con_id" + ele_con_id);
 						list.add((Ele_ContractVO) eleConSvc.getOneEC(ele_con_id));
 					}
 				}
@@ -779,7 +779,7 @@ public class Ele_ContractServlet extends HttpServlet{
 				if(list.isEmpty()) {
 					errorMsgs.add("查無資料");
 				}
-				System.out.println("list = " + list);
+				
 				if (!errorMsgs.isEmpty()) {
 					RequestDispatcher failureView = req
 							.getRequestDispatcher("/front/ele_contract/lan_select_page.jsp");
@@ -809,22 +809,17 @@ public class Ele_ContractServlet extends HttpServlet{
 			
 			try {
 				/*****1接收請求參數*************************/
-				String mem_name = req.getParameter("mem_name");
+				MemVO lanMemVO = (MemVO) session.getAttribute("mVO");
+				String lan_mem_id = lanMemVO.getMem_email();
 				
 				/******2開始查詢資料*****************/
-				String mem_id = null;
 				String lan_id = null;
 				
 				MemService mSvc = new MemService();
 				LanService lanSvc = new LanService();
-				for(MemVO mVO : mSvc.getAll()) {
-					if(mem_name.equals(mVO.getMem_name())) {
-						mem_id = mVO.getMem_id();
-						for(LanVO lanVO : lanSvc.getAll()) {
-							if(mem_id.equals(lanVO.getMem_id())) {
-								lan_id = lanVO.getLan_id();
-							}
-						}
+				for(LanVO lanVO : lanSvc.getAll()) {
+					if(lan_mem_id.equals(lanVO.getMem_id())) {
+						lan_id = lanVO.getLan_id();
 					}
 				}
 				
