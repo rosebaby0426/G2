@@ -68,6 +68,10 @@
 		<servlet-name>Bill</servlet-name>
 		<url-pattern>/back/bill/bill.do</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Bill</servlet-name>
+		<url-pattern>/front/ele_contract/bill.do</url-pattern>
+	</servlet-mapping>
 	
 	<!-- 申請合約處理註冊 -->
 	<servlet>
@@ -79,5 +83,138 @@
 		<url-pattern>/front/ele_contract/apply_conturct.do</url-pattern>
 	</servlet-mapping>
 	
-	
+	<!-- 積分商城註冊 -->
+	<servlet>
+	    <servlet-name>PointgoodsServlet</servlet-name>
+	    <servlet-class>com.goodhouse.pointgoods.controller.PointgoodsServlet</servlet-class>
+  	</servlet>
+  	<servlet-mapping>
+    	<servlet-name>PointgoodsServlet</servlet-name>
+    	<url-pattern>/back/pointgoods/pg.do</url-pattern>
+  	</servlet-mapping>
+  
+  <!-- 積分商城照片註冊 -->
+  	<servlet>
+    	<servlet-name>PointgoodsServletPicture</servlet-name>
+    	<servlet-class>com.goodhouse.pointgoods.controller.PointgoodsServlet</servlet-class>
+  	</servlet>
+  	<servlet-mapping>
+    	<servlet-name>PointgoodsServletPicture</servlet-name>
+    	<url-pattern>/PointgoodsServlet</url-pattern>
+  	</servlet-mapping>
+  
+  <!-- 積分商城訂單註冊 -->
+  	<servlet>
+    	<servlet-name>Good_ordServlet</servlet-name>
+    	<servlet-class>com.goodhouse.good_ord.controller.Good_ordServlet</servlet-class>
+  	</servlet>
+  	<servlet-mapping>
+   		<servlet-name>Good_ordServlet</servlet-name>
+    	<url-pattern>/back/good_ord/go.do</url-pattern>
+  	</servlet-mapping>
+
+   <!-- 房屋註冊 前端 -->
+  <servlet>
+    <servlet-name>FrontHouseServlet</servlet-name>
+    <servlet-class>com.goodhouse.house.controller.HouseServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FrontHouseServlet</servlet-name>
+    <url-pattern>/front/house/hou.do</url-pattern>
+  </servlet-mapping>
+  
+   <!-- 房屋註冊 -->
+  	<servlet>
+    	<servlet-name>HouseServlet</servlet-name>
+    	<servlet-class>com.goodhouse.house.controller.HouseServlet</servlet-class>
+  	</servlet>
+  	<servlet-mapping>
+    	<servlet-name>HouseServlet</servlet-name>
+    	<url-pattern>/back/house/hou.do</url-pattern>
+  	</servlet-mapping>
+  
+ <!-- 房屋圖片-->
+  	<servlet>
+  		<servlet-name>HouseServletPicture</servlet-name>
+  		<servlet-class>com.goodhouse.house.controller.HouseServlet</servlet-class>
+  	</servlet>
+  	<servlet-mapping>
+  		<servlet-name>HouseServletPicture</servlet-name>
+  		<url-pattern>/HouseServlet</url-pattern>
+  	</servlet-mapping>
+  
+   <!-- 帳號檢舉註冊 -->
+  	<servlet>
+      	<servlet-name>Account_reportServlet</servlet-name>
+    	<servlet-class>com.goodhouse.account_report.controller.Account_reportServlet</servlet-class>
+  	</servlet>
+  	<servlet-mapping>
+    	<servlet-name>Account_reportServlet</servlet-name>
+    	<url-pattern>/back/account_report/acre.do</url-pattern>
+  	</servlet-mapping>
+  
+   <!-- 廣告檢舉註冊 -->
+  	<servlet>
+  		<servlet-name>Ad_reportServlet</servlet-name>
+  		<servlet-class>com.goodhouse.ad_report.controller.Ad_reportServlet</servlet-class>
+  	</servlet>
+  	<servlet-mapping>
+  		<servlet-name>Ad_reportServlet</servlet-name>
+  		<url-pattern>/back/ad_report/ad_rep.do</url-pattern>
+  	</servlet-mapping>
+   <!-- 廣告註冊 -->
+  <servlet>
+  	<servlet-name>AdServlet</servlet-name>
+  	<servlet-class>com.goodhouse.ad.controller.AdServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>AdServlet</servlet-name>
+  	<url-pattern>/back/ad/ad.do</url-pattern>
+  </servlet-mapping>  	
+  
+  <!--租屋問題註冊  -->
+	<servlet>
+	    <servlet-name>RentMessServlet</servlet-name>
+	    <servlet-class>com.goodhouse.rental_message.controller.RentMessServlet</servlet-class>
+  	</servlet>
+ 	<servlet-mapping>
+	    <servlet-name>RentMessServlet</servlet-name>
+	    <url-pattern>/back/rentMess/rentMess.do</url-pattern>
+  	</servlet-mapping>
+  <!--設備維修註冊  -->
+  	<servlet>
+	    <servlet-name>EquRepServlet</servlet-name>
+	    <servlet-class>com.goodhouse.equipment_repair.controller.EquRepServlet</servlet-class>
+ 	 </servlet>
+  	<servlet-mapping>
+	    <servlet-name>EquRepServlet</servlet-name>
+	    <url-pattern>/back/equRep/equRep.do</url-pattern>
+  	</servlet-mapping>
+  <!--房屋不可預約註冊  -->
+  	<servlet>
+	    <servlet-name>HouNoAppServlet</servlet-name>
+	    <servlet-class>com.goodhouse.house_noappointment.controller.HouNoAppServlet</servlet-class>
+  	</servlet>
+  	<servlet-mapping>
+	    <servlet-name>HouNoAppServlet</servlet-name>
+	    <url-pattern>/back/houNoApp/houNoApp.do</url-pattern>
+  	</servlet-mapping>
+  <!--預約看房註冊  -->
+  	<servlet>
+	    <servlet-name>AppointServlet</servlet-name>
+	    <servlet-class>com.goodhouse.appointment.controller.AppointServlet</servlet-class>
+  	</servlet>
+  	<servlet-mapping>
+	    <servlet-name>AppointServlet</servlet-name>
+	    <url-pattern>/back/appoint/appoint.do</url-pattern>
+  	</servlet-mapping>
+  <!--通知訊息註冊  //git上傳註解用無意義-->
+  	<servlet>
+	    <servlet-name>NoticeServlet</servlet-name>
+	    <servlet-class>com.goodhouse.notice.controller.NoticeServlet</servlet-class>
+  	</servlet>
+  	<servlet-mapping>
+	    <servlet-name>NoticeServlet</servlet-name>
+	    <url-pattern>/back/notice/notice.do</url-pattern>
+  	</servlet-mapping>
 </web-app>

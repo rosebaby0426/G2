@@ -74,4 +74,8 @@ public class HouseService {
 	public List<HouseVO> getAll(){
 		return dao.getAll();
 	}
+	
+	public HouseVO getOneByLanId(String lan_id) {
+		return dao.findByLanId(lan_id);
+	}
 }

@@ -3,6 +3,7 @@ package com.goodhouse.ele_contract.model;
 import java.sql.Date;
 import java.util.List;
 
+import com.goodhouse.bill.model.BillVO;
 import com.sun.beans.editors.IntegerEditor;
 
 public class Ele_ContractService {
@@ -102,4 +103,8 @@ public class Ele_ContractService {
 	public List<Ele_ContractVO> getAllForEle_ConByLan_id(String lan_id){
 		return dao.getAllForEle_ConByLan_id(lan_id);
 	}
+	
+//	public void addEC(Ele_ContractVO ecVO, List <BillVO> billVOlist) {
+//		dao.insert(ecVO, billVOlist);
+//	}
 }

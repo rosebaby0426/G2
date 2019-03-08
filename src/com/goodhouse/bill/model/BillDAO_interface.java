@@ -1,5 +1,6 @@
 package com.goodhouse.bill.model;
 
+import java.sql.Connection;
 import java.util.List;
 
 

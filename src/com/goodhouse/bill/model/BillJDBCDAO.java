@@ -17,17 +17,17 @@ public class BillJDBCDAO implements BillDAO_interface{
 	String passwd = "123456";
 	
 	private static final String INSERT_STMT = //新增
-			"INSERT INTO BILL (BILL_ID,ELE_CON_ID,EMP_ID,BILL_PAY,BILL_DATE,BILL_PRODUCETIME," + 
+			"INSERT INTO BILL (BILL_ID,ELE_CON_ID,BILL_PAY,BILL_DATE,BILL_PRODUCETIME," + 
 			"BILL_STATUS,BILL_PAYMETHOD,BILL_PAYMENTTYPE) VALUES (to_char(sysdate,'yyyymmdd')||'-B'||LPAD(BILL_SEQ.NEXTVAL,5,0)," + 
-			"?,?,?,?,?,?,?,?)";
+			"?,?,?,?,?,?,?)";
 	private static final String UPDATE = //修改
-			"UPDATE BILL SET ELE_CON_ID = ? , EMP_ID = ? , BILL_PAY = ? , BILL_DATE = ?  , BILL_PRODUCETIME = ? , BILL_STATUS = ? , BILL_PAYMETHOD = ? , BILL_PAYMENTTYPE = ? WHERE BILL_ID = ?";
+			"UPDATE BILL SET ELE_CON_ID = ?  , BILL_PAY = ? , BILL_DATE = ?  , BILL_PRODUCETIME = ? , BILL_STATUS = ? , BILL_PAYMETHOD = ? , BILL_PAYMENTTYPE = ? WHERE BILL_ID = ?";
 	private static final String DELETE = //刪除
 			"DELETE FROM BILL WHERE BILL_ID = ? ";
 	private static final String GET_ONE_STMT = //單一查詢
-			"SELECT BILL_ID , ELE_CON_ID , EMP_ID , BILL_PAY , BILL_DATE , BILL_PRODUCETIME , BILL_STATUS , BILL_PAYMETHOD , BILL_PAYMENTTYPE FROM BILL WHERE BILL_ID=?";
+			"SELECT BILL_ID , ELE_CON_ID , BILL_PAY , BILL_DATE , BILL_PRODUCETIME , BILL_STATUS , BILL_PAYMETHOD , BILL_PAYMENTTYPE FROM BILL WHERE BILL_ID=?";
 	private static final String GET_ALL_STMT = //查詢全部
-			"SELECT BILL_ID , ELE_CON_ID , EMP_ID , BILL_PAY , BILL_DATE , BILL_PRODUCETIME , BILL_STATUS , BILL_PAYMETHOD , BILL_PAYMENTTYPE FROM BILL ORDER BY BILL_ID";
+			"SELECT BILL_ID , ELE_CON_ID  , BILL_PAY , BILL_DATE , BILL_PRODUCETIME , BILL_STATUS , BILL_PAYMETHOD , BILL_PAYMENTTYPE FROM BILL ORDER BY BILL_ID";
 	
 	@Override//新增
 	public void insert(BillVO bVO) {
@@ -41,18 +41,17 @@ public class BillJDBCDAO implements BillDAO_interface{
 			pstmt = con.prepareStatement(INSERT_STMT);
 			
 			pstmt.setString(1, bVO.getEle_con_id());
-			pstmt.setString(2, bVO.getEmp_id());
-			pstmt.setInt(3, bVO.getBill_pay());
-			pstmt.setDate(4, bVO.getBill_date());
-			pstmt.setDate(5, bVO.getBill_producetime());
-			pstmt.setString(6, bVO.getBill_status());
-			pstmt.setString(7, bVO.getBill_paymethod());
-			pstmt.setString(8, bVO.getBill_paymenttype());
+			pstmt.setInt(2, bVO.getBill_pay());
+			pstmt.setDate(3, bVO.getBill_date());
+			pstmt.setDate(4, bVO.getBill_producetime());
+			pstmt.setString(5, bVO.getBill_status());
+			pstmt.setString(6, bVO.getBill_paymethod());
+			pstmt.setString(7, bVO.getBill_paymenttype());
 			
 			/*
-			 "INSERT INTO BILL (BILL_ID,ELE_CON_ID,EMP_ID,BILL_PAY,BILL_DATE,BILL_PRODUCETIME," + 
+			 "INSERT INTO BILL (BILL_ID,ELE_CON_ID,BILL_PAY,BILL_DATE,BILL_PRODUCETIME," + 
 			 "BILL_STATUS,BILL_PAYMETHOD,BILL_PAYMENTTYPE) VALUES (to_char(sysdate,'yyyymmdd')||'-B'||LPAD(BILL_SEQ.NEXTVAL,5,0)," + 
-			 "?,?,?,?,?,?,?,?)"
+			 "?,?,?,?,?,?,?)"
 			 */
 			pstmt.executeUpdate();
 			
@@ -92,16 +91,15 @@ public class BillJDBCDAO implements BillDAO_interface{
 			pstmt = con.prepareStatement(UPDATE);
 			
 			pstmt.setString(1, bVO.getEle_con_id());
-			pstmt.setString(2, bVO.getEmp_id());
-			pstmt.setInt(3, bVO.getBill_pay());
-			pstmt.setDate(4, bVO.getBill_date());
-			pstmt.setDate(5, bVO.getBill_producetime());
-			pstmt.setString(6, bVO.getBill_status());
-			pstmt.setString(7, bVO.getBill_paymethod());
-			pstmt.setString(8, bVO.getBill_paymenttype());
-			pstmt.setString(9, bVO.getBill_id());
+			pstmt.setInt(2, bVO.getBill_pay());
+			pstmt.setDate(3, bVO.getBill_date());
+			pstmt.setDate(4, bVO.getBill_producetime());
+			pstmt.setString(5, bVO.getBill_status());
+			pstmt.setString(6, bVO.getBill_paymethod());
+			pstmt.setString(7, bVO.getBill_paymenttype());
+			pstmt.setString(8, bVO.getBill_id());
 			
-			//"UPDATE BILL SET ELE_CON_ID = ? , EMP_ID = ? , BILL_PAY = ? , BILL_DATE = ?  , BILL_PRODUCETIME = ? , BILL_STATUS = ? , BILL_PAYMETHOD = ? , BILL_PAYMENTTYPE = ? WHERE BILL_ID = ?"
+			//"UPDATE BILL SET ELE_CON_ID = ? , BILL_PAY = ? , BILL_DATE = ?  , BILL_PRODUCETIME = ? , BILL_STATUS = ? , BILL_PAYMETHOD = ? , BILL_PAYMENTTYPE = ? WHERE BILL_ID = ?"
 			pstmt.executeUpdate();
 			
 		} catch(ClassNotFoundException e) {
@@ -191,7 +189,6 @@ public class BillJDBCDAO implements BillDAO_interface{
 				bVO = new BillVO();
 				bVO.setBill_id(rs.getString("BILL_ID"));
 				bVO.setEle_con_id(rs.getString("ELE_CON_ID"));
-				bVO.setEmp_id(rs.getString("EMP_ID"));
 				bVO.setBill_pay(rs.getInt("BILL_PAY"));
 				bVO.setBill_date(rs.getDate("BILL_DATE"));
 				bVO.setBill_producetime(rs.getDate("BILL_PRODUCETIME"));
@@ -200,7 +197,7 @@ public class BillJDBCDAO implements BillDAO_interface{
 				bVO.setBill_paymenttype(rs.getString("BILL_PAYMENTTYPE"));
 				
 			}
-		//SELECT BILL_ID , ELE_CON_ID , EMP_ID , BILL_PAY , BILL_DATE , BILL_PRODUCETIME , BILL_STATUS , BILL_PAYMETHOD , BILL_PAYMENTTYPE FROM BILL WHERE BILL_ID=?
+		//SELECT BILL_ID , ELE_CON_ID , BILL_PAY , BILL_DATE , BILL_PRODUCETIME , BILL_STATUS , BILL_PAYMETHOD , BILL_PAYMENTTYPE FROM BILL WHERE BILL_ID=?
 		
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException("Couldn't load database driver. "
@@ -257,7 +254,6 @@ public class BillJDBCDAO implements BillDAO_interface{
 				bVO = new BillVO();
 				bVO.setBill_id(rs.getString("BILL_ID"));
 				bVO.setEle_con_id(rs.getString("ELE_CON_ID"));
-				bVO.setEmp_id(rs.getString("EMP_ID"));
 				bVO.setBill_pay(rs.getInt("BILL_PAY"));
 				bVO.setBill_date(rs.getDate("BILL_DATE"));
 				bVO.setBill_producetime(rs.getDate("BILL_PRODUCETIME"));
@@ -300,5 +296,62 @@ public class BillJDBCDAO implements BillDAO_interface{
 		
 		return list;
 	}
+
+//	@Override//交易新增
+//	public void insert(Connection con, List <BillVO> billVOlist ,String eleConKey) {
+//		// TODO Auto-generated method stub
+//		PreparedStatement pstmt = null;
+//		
+//		try {
+//			Class.forName(driver);
+//			con = DriverManager.getConnection(url, userid, passwd);
+//			pstmt = con.prepareStatement(INSERT_STMT);
+//			
+//			for(BillVO billVO : billVOlist) {
+//				pstmt.setString(1, eleConKey);
+//				pstmt.setString(2, billVO.getEmp_id());
+//				pstmt.setInt(3, billVO.getBill_pay());
+//				pstmt.setDate(4, billVO.getBill_date());
+//				pstmt.setDate(5, billVO.getBill_producetime());
+//				pstmt.setString(6, billVO.getBill_status());
+//				pstmt.setString(7, billVO.getBill_paymethod());
+//				pstmt.setString(8, billVO.getBill_paymenttype());
+//				pstmt.executeUpdate();
+//			}
+//			/*
+//			 "INSERT INTO BILL (BILL_ID,ELE_CON_ID,EMP_ID,BILL_PAY,BILL_DATE,BILL_PRODUCETIME," + 
+//			 "BILL_STATUS,BILL_PAYMETHOD,BILL_PAYMENTTYPE) VALUES (to_char(sysdate,'yyyymmdd')||'-B'||LPAD(BILL_SEQ.NEXTVAL,5,0)," + 
+//			 "?,?,?,?,?,?,?,?)"
+//			 */
+//			
+//		} catch (ClassNotFoundException e){
+//			throw new RuntimeException("Couldn't load database driver. "
+//					+ e.getMessage());
+//		}catch (SQLException se) {
+//			try {
+//				con.rollback();
+//			} catch (SQLException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			throw new RuntimeException("A database error occured. "
+//					+ se.getMessage());
+//		}finally {
+//			if (pstmt != null) {
+//				try {
+//					pstmt.close();
+//				} catch (SQLException se) {
+//					se.printStackTrace(System.err);
+//				}
+//			}
+//			if (con != null) {
+//				try {
+//					con.close();
+//				} catch (Exception e) {
+//					e.printStackTrace(System.err);
+//				}
+//			}
+//		}
+//	}
 	
 }

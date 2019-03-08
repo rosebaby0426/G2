@@ -8,4 +8,5 @@ public interface HouseDAO_interface {
 		public void delete(String hou_id);
 		public HouseVO findByPrimaryKey(String hou_id);
 		public List<HouseVO> getAll();
+		public HouseVO findByLanId(String lan_id);
 }

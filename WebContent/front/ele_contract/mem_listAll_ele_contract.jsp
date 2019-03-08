@@ -13,18 +13,6 @@
 <!doctype html>
 <html lang="en">
 <head>
-<!-- Required meta tags -->
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<script src="<%=request.getContextPath()%>/file/jquery-1.12.4.min.js"></script>
-<!-- Bootstrap CSS start-->
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" href="<%=request.getContextPath()%>/File/all.css"
-	integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
-	crossorigin="anonymous">
-<!-- Bootstrap CSS end-->
-<title></title>
 <style>
 table#table-1 {
 	background-color: #CCCCFF;
@@ -43,6 +31,10 @@ h4 {
 	display: inline;
 }
 </style>
+	<script type="text/javascript">
+	
+		
+	</script>
 
 </head>
 <body>
@@ -93,7 +85,8 @@ h4 {
 						<td>合約狀態</td>
 						<td>繳費型態</td>
 						<td>備註</td>
-						
+						<td></td>
+						<td></td>
 					</tr>
 					<%@ include file="page1.file"%>
 					<jsp:useBean id="conSvc" scope="page" class="com.goodhouse.contract.model.ContractService"></jsp:useBean>
@@ -102,6 +95,7 @@ h4 {
 					<jsp:useBean id="lanSvc" scope="page" class="com.goodhouse.landlord.model.LanService"></jsp:useBean>
 					<c:forEach var="eleConVO" items="${list}" begin="<%=pageIndex%>"
 						end="<%=pageIndex+rowsPerPage-1%>">
+						
 						<tr>
 							<td>${eleConVO.ele_con_id}</td>
 							<td>${conSvc.getOneCon(eleConVO.con_id).con_name}</td>
@@ -116,11 +110,38 @@ h4 {
 							<td>${eleConVO.ele_rent_f_day}</td>
 							<td>${eleConVO.ele_rent_l_day}</td>
 							<td>${eleConVO.ele_singdate}</td>
-							<td>${eleConVO.ele_con_status}</td>
+							
+<%-- 							<c:forEach var="Ele_con_status" items="${Ele_con_statusList}"> --%>
+<%-- 								<c:if test="${Ele_con_status.status_no eq eleConVO.ele_con_status}"> --%>
+<%-- 									<td>${Ele_con_status.status_name}</td> --%>
+<%-- 								</c:if> --%>
+<%-- 							</c:forEach> --%>
+							<td id="ele_con_status">${eleConVO.ele_con_status}</td>
 							<td>${eleConVO.bill_paymenttype}</td>
 							<td>${eleConVO.ele_con_note}</td>
 							<td>
-								
+								<form method="post" action="apply_conturct.do">
+									<input type="hidden" name="action" value="apply_conturct">
+									<input type="hidden" name="ele_con_id" value="${eleConVO.ele_con_id}">
+									<input class="" type="submit" value="續約" id="renewORrelease" 
+													style='display:${(eleConVO.ele_con_status eq "s2") ? "" : "none"}'>
+								</form>
+							</td>
+							<td>
+								<form method="post" action="apply_conturct.do">
+									<input type="hidden" name="action" value="apply_conturct">
+									<input type="hidden" name="ele_con_id" value="${eleConVO.ele_con_id}">
+									<input class="" type="submit" value="解約" id="renewORrelease" 
+													style='display:${(eleConVO.ele_con_status eq "s2") ? "" : "none"}'>
+								</form>
+							</td>
+							<td>
+								<form method="post" action="apply_conturct.do">
+									<input type="hidden" name="action" value="eleConCheck">
+									<input type="hidden" name="ele_con_id" value="${eleConVO.ele_con_id}">
+									<input class="" type="submit" value="確認" id="eleConCheck" 
+													style='display:${(eleConVO.ele_con_status eq "s1") ? "" : "none"}'>
+								</form>
 							</td>
 						</tr>
 					</c:forEach>
@@ -131,19 +152,11 @@ h4 {
 	</div>
 
 	<!-- 工作區結束 -->
+<script>
 
-	<!-- Optional JavaScript -->
-	<!-- jQuery first, then Popper.js, then Bootstrap JS start-->
-	<script
-		src="<%=request.getContextPath()%>/bootstrap/jquery-3.3.1.slim.min.js"
-		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-		crossorigin="anonymous"></script>
-	<script src="<%=request.getContextPath()%>/bootstrap/popper.min.js"
-		integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
-		crossorigin="anonymous"></script>
-	<script
-		src="<%=request.getContextPath()%>/bootstrap/js/bootstrap.min.js"></script>
-	<!-- jQuery first, then Popper.js, then Bootstrap JS end-->
+
+
+</script>
 
 </body>
 </html>

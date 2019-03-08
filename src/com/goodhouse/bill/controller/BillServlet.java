@@ -1,6 +1,7 @@
 package com.goodhouse.bill.controller;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.*;
 
 import javax.servlet.RequestDispatcher;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.goodhouse.apply_conturct.model.Apply_ConturctVO;
 import com.goodhouse.bill.model.BillService;
 import com.goodhouse.bill.model.BillVO;
 import com.goodhouse.ele_contract.model.Ele_ContractService;
@@ -29,8 +31,9 @@ public class BillServlet extends HttpServlet{
 		
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
+		HttpSession session = req.getSession();
 		
-		//前台帳單編號單一查詢(房客)
+		//TODO 前台帳單編號單一查詢(房客)
 		if("bill_getOne_mem".equals(action)) {
 			
 			List<String> errorMsgs = new LinkedList<String>();
@@ -84,7 +87,7 @@ public class BillServlet extends HttpServlet{
 			}
 		}
 		
-		//前台使用者(房東)：輸入姓名查詢該會員的所有帳單
+		//TODO 前台使用者(房東)：輸入姓名查詢該會員的所有帳單
 		if("bill_getBy_mem_name".equals(action)) {
 			
 			List<String> errorMsgs = new LinkedList<String>();
@@ -137,7 +140,6 @@ public class BillServlet extends HttpServlet{
 //						}
 //					}
 //				}
-				HttpSession session = req.getSession();
 				//從session取出已登入的該房東會員名稱
 				String lan_id = null;
 				LanService lanSvc = new LanService();
@@ -181,7 +183,7 @@ public class BillServlet extends HttpServlet{
 			}
 		}
 		
-		//後臺使用者：單一編號查詢
+		//TODO 後臺使用者：單一編號查詢
 		if("back_getBy_bill_id".equals(action)) {
 			
 			List<String> errorMsgs = new LinkedList<String>();
@@ -232,7 +234,7 @@ public class BillServlet extends HttpServlet{
 			}
 		}
 		
-		//後台使用者：單一姓名查詢
+		//TODO 後台使用者：單一姓名查詢
 		if("back_getBy_mem_name".equals(action)) {
 			
 			List<String> errorMsgs = new LinkedList<String>();
@@ -310,7 +312,7 @@ public class BillServlet extends HttpServlet{
 			}
 		}
 		
-		//房客的全部帳單列表
+		//TODO 房客的全部帳單列表
 		if("billForMemListAll".equals(action)) {
 			
 			List<String> errorMsgs = new LinkedList<String>();
@@ -318,15 +320,8 @@ public class BillServlet extends HttpServlet{
 			
 			try {
 				/***1接收請求參數************************/
-				String mem_name = req.getParameter("mem_name");
-				String mem_id = null;
-				
-				MemService mSvc = new MemService();
-				for(MemVO mVO : mSvc.getAll()) {
-					if(mem_name.equals(mVO.getMem_name())) {
-						mem_id = mVO.getMem_id();
-					}
-				}
+				MemVO mVO = (MemVO) session.getAttribute("mVO");
+				String mem_id = mVO.getMem_id();
 				
 				/****2準備查詢**********************/
 				BillService billSvc = new BillService();
@@ -363,12 +358,12 @@ public class BillServlet extends HttpServlet{
 			}
 		}
 		
-		//(房東)所有房租帳單
+		//TODO (房東)所有房租帳單
 		if("billForLanListAll".equals(action)) {
 			
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
-			//TODO
+			
 			
 			try {
 				/****1接收請求參數****************/
@@ -424,6 +419,130 @@ public class BillServlet extends HttpServlet{
 				errorMsgs.add("無法取得資料" + e.getMessage());
 				RequestDispatcher failureView = req.getRequestDispatcher("/front/bill/lan_select_page.jsp");
 				failureView.forward(req, res);
+			}
+		}
+		
+		//新增第一筆帳單
+		if("creatBill".equals(action)) {
+			
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				/***1接收請求參數********/
+				//電子合約編號
+				String ele_con_id = req.getParameter("ele_con_id");
+				System.out.println(ele_con_id);
+				//繳交費用
+				Integer bill_pay = Integer.parseInt(req.getParameter("bill_pay"));
+				//信用卡錯誤驗證
+				try {
+					
+					String phovisa = null;
+					String phovisa0 = req.getParameter("phovisa0");
+					String phovisa1 = req.getParameter("phovisa1");
+					String phovisa2 = req.getParameter("phovisa2");
+					String phovisa3 = req.getParameter("phovisa3");
+					Integer test = null;
+					test = new Integer(phovisa0);
+					phovisa = phovisa0;
+					test = new Integer(phovisa1);
+					phovisa += phovisa1 ;
+					test = new Integer(phovisa2);
+					phovisa += phovisa2;
+					test = new Integer(phovisa3);
+					phovisa += phovisa3;
+					if(phovisa.length() != 16) {
+						errorMsgs.add("信用卡號碼長度錯誤");
+					}
+				} catch (Exception e) {
+					errorMsgs.add("信用卡號碼為數字");
+				}
+				//繳交日期
+				java.sql.Date bill_date = Date.valueOf(req.getParameter("bill_date"));
+				//帳單產生時間
+				java.sql.Date bill_producetime = Date.valueOf(req.getParameter("bill_producetime"));
+				//帳單繳費狀態
+				String bill_status = req.getParameter("bill_status");
+				//付款方式
+				String bill_paymethod = req.getParameter("bill_paymethod");
+				//繳費型態
+				String bill_paymenttype = req.getParameter("bill_paymenttype");
+				
+				
+				BillVO billVO = new BillVO();
+				billVO.setEle_con_id(ele_con_id);
+				billVO.setBill_pay(bill_pay);
+				billVO.setBill_date(bill_date);
+				billVO.setBill_producetime(bill_producetime);
+				billVO.setBill_status(bill_status);
+				billVO.setBill_paymethod(bill_paymethod);
+				billVO.setBill_paymenttype(bill_paymenttype);
+				
+				if (!errorMsgs.isEmpty()) {
+					req.setAttribute("billVO", billVO); // 含有輸入格式錯誤的billVO物件,也存入req
+					RequestDispatcher failureView = req
+							.getRequestDispatcher("/front/bill/creatFirstBill.jsp");
+					failureView.forward(req, res);
+					return;
+				}
+				
+				/**2準備新增**********/
+				BillService billSvc = new BillService();
+				billSvc.addB(billVO);
+				
+				//繳費完改變電子合約狀態
+				Ele_ContractService eleConSvc = new Ele_ContractService();
+				Ele_ContractVO eleConVO = eleConSvc.getOneEC(ele_con_id);
+				eleConVO.setEle_con_id(eleConVO.getEle_con_id());
+				eleConVO.setCon_id(eleConVO.getCon_id());
+				eleConVO.setMem_idnumber(eleConVO.getMem_idnumber());
+				eleConVO.setLan_id(eleConVO.getLan_id());
+				eleConVO.setLan_idnumber(eleConVO.getLan_idnumber());
+				eleConVO.setHou_id(eleConVO.getHou_id());
+				eleConVO.setEle_rent_money(eleConVO.getEle_rent_money());
+				eleConVO.setEle_deposit_money(eleConVO.getEle_deposit_money());
+				eleConVO.setEle_rent_time(eleConVO.getEle_rent_time());
+				eleConVO.setEle_rent_f_day(eleConVO.getEle_rent_f_day());
+				eleConVO.setEle_rent_l_day(eleConVO.getEle_rent_l_day());
+				eleConVO.setEle_singdate(eleConVO.getEle_singdate());
+				
+				if(bill_status.equals("s3")) {
+					eleConVO.setEle_con_status("s2");
+				}
+				
+				eleConVO.setBill_paymenttype(eleConVO.getBill_paymenttype());
+				eleConVO.setEle_con_note(eleConVO.getEle_con_note());
+				req.setAttribute("lastPage", true);
+				
+
+				/*******3新增成功，準備轉交****************************/
+				MemVO mVO = (MemVO) session.getAttribute("mVO");
+				List<Ele_ContractVO> eleConVOList = (List<Ele_ContractVO>) eleConSvc.getAllForEle_ConByMem_id(mVO.getMem_id());
+				List<BillVO> billVOList = new ArrayList<BillVO>();
+				String bill_id = null;
+				Iterator obj = eleConVOList.iterator();
+				while(obj.hasNext()) {
+					Ele_ContractVO eleConVO2 = (Ele_ContractVO)obj.next();
+					for(BillVO billVO2 : billSvc.getAll()) {
+						if(eleConVO2.getEle_con_id().equals(billVO2.getEle_con_id())) {
+							bill_id = billVO2.getBill_id();
+							billVOList.add(billVO);
+						}
+					}
+				}
+				/****3查詢完成準備轉交***************/
+				req.setAttribute("lastPage", true);
+				req.setAttribute("ele_contractForMemList", billVOList);
+				String url = "/front/ele_contract/mem_listAll_ele_contract.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url);
+				successView.forward(req, res);
+				
+				
+			} catch(Exception e) {
+				errorMsgs.add("無法取得資料" + e.getMessage());
+				RequestDispatcher failure = req.getRequestDispatcher("/front/bill/creatFirstBill.jsp");
+				failure.forward(req, res);
 			}
 		}
 	}

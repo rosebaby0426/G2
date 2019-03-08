@@ -13,6 +13,9 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import com.goodhouse.bill.model.BillJNDIDAO;
+import com.goodhouse.bill.model.BillVO;
+
 public class Ele_ContractJNDIDAO implements Ele_ContractDAO_interface{
 	private static DataSource ds = null;
 	static {
@@ -477,4 +480,81 @@ public class Ele_ContractJNDIDAO implements Ele_ContractDAO_interface{
 		
 		return list;
 	}
+//	@Override
+//	public void insert(Ele_ContractVO ecVO, List<BillVO> billVOlist) {
+//		// TODO Auto-generated method stub
+//		Connection con = null;
+//		PreparedStatement pstmt = null;
+//		String eleConKey = null;
+//		
+//		try {
+//			con = ds.getConnection();
+//			//將AutoCommit關閉
+//			con.setAutoCommit(false);
+//			//新增電子合約
+//			String cols[] = {"ELE_CON_ID"};
+//			pstmt = con.prepareStatement(INSERT_STMT,cols);
+//			/*
+//			"INSERT INTO ELE_CONTRACT (ELE_CON_ID,CON_ID,MEM_ID,MEM_IDNUMBER,LAN_ID,LAN_IDNUMBER,HOU_ID," + 
+//			"ELE_RENT_MONEY,ELE_DEPOSIT_MONEY,ELE_RENT_TIME,ELE_RENT_F_DAY,ELE_RENT_L_DAY,ELE_SINGDATE," + 
+//			"ELE_CON_STATUS,BILL_PAYMENTTYPE,ELE_CON_NOTE) VALUES ('ECON'||LPAD(ELE_CON_SEQ.NEXTVAL,6,0)," + 
+//			"?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+//			*/
+//			pstmt.setString(1, ecVO.getCon_id());
+//			pstmt.setString(2, ecVO.getMem_id());
+//			pstmt.setString(3, ecVO.getMem_idnumber());
+//			pstmt.setString(4, ecVO.getLan_id());
+//			pstmt.setString(5, ecVO.getLan_idnumber());
+//			pstmt.setString(6, ecVO.getHou_id());
+//			pstmt.setInt(7, ecVO.getEle_rent_money());
+//			pstmt.setInt(8, ecVO.getEle_deposit_money());
+//			pstmt.setInt(9, ecVO.getEle_rent_time());
+//			pstmt.setDate(10, ecVO.getEle_rent_f_day());
+//			pstmt.setDate(11, ecVO.getEle_rent_l_day());
+//			pstmt.setDate(12, ecVO.getEle_singdate());
+//			pstmt.setString(13, ecVO.getEle_con_status());
+//			pstmt.setString(14, ecVO.getBill_paymenttype());
+//			pstmt.setString(15, ecVO.getEle_con_note());
+//			
+//			pstmt.executeUpdate();
+//			ResultSet rs = pstmt.getGeneratedKeys();
+//			if(rs.next()) {
+//				eleConKey = rs.getString(1);
+//			}
+//			rs.close();
+//			
+//			//新增帳單明細
+//			BillJNDIDAO billDAO = new BillJNDIDAO();
+//			billDAO.insert(con, billVOlist, eleConKey);
+//			
+//			con.commit();
+//			con.setAutoCommit(true);
+//			
+//		} catch (SQLException se) {
+//			try {
+//				con.rollback();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//				throw new RuntimeException("A database error occured. "
+//						+ e.getMessage());
+//			}
+//			throw new RuntimeException("A database error occured. "
+//					+ se.getMessage());
+//		} finally {
+//			if (pstmt != null) {
+//				try {
+//					pstmt.close();
+//				} catch (SQLException se) {
+//					se.printStackTrace(System.err);
+//				}
+//			}
+//			if (con != null) {
+//				try {
+//					con.close();
+//				} catch (Exception e) {
+//					e.printStackTrace(System.err);
+//				}
+//			}
+//		}
+//	}
 }

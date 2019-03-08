@@ -43,16 +43,7 @@ h4 {
 	<div class="container-fluid">
 		<div class="row justfy-content-center">
 			<div class="row col-2">
-				<table id="table-1">
-					<p>
-						回首頁<a href="lan_select_page.jsp"><img
-							src="<%=request.getContextPath()%>/share_pic/back1.gif"
-							width="100" height="30 !important"></a>
-					</p>
-					<tr>
-						<td>所有電子合約資料 - lan_listAll_ele_contract.jsp</td>
-					</tr>
-				</table>
+				
 				<%-- 錯誤表列 --%>
 				<c:if test="${not empty errorMsgs}">
 					<font style="color: red">請修正以下錯誤:</font>
@@ -64,6 +55,17 @@ h4 {
 				</c:if>
 			</div>
 			<div class="row col-10	">
+				<table id="table-1">
+					<p>
+						回首頁<a href="lan_select_page.jsp"><img
+							src="<%=request.getContextPath()%>/share_pic/back1.gif"
+							width="100" height="30 !important"></a>
+					</p>
+					<tr>
+						<td>所有電子合約資料 - lan_listAll_ele_contract.jsp</td>
+					</tr>
+				</table><br>
+				<%@ include file="page1.file"%><br>
 				<table>
 					<tr>
 						<td>電子合約編號</td>
@@ -83,9 +85,8 @@ h4 {
 						<td>繳費型態</td>
 						<td>備註</td>
 						<td>修改</td>
-						<td>合約解除</td>
 					</tr>
-					<%@ include file="page1.file"%>
+					
 					<jsp:useBean id="conSvc" scope="page" class="com.goodhouse.contract.model.ContractService"></jsp:useBean>
 					<jsp:useBean id="memSvc" scope="page" class="com.goodhouse.member.model.MemService"></jsp:useBean>
 					<jsp:useBean id="houSvc" scope="page" class="com.goodhouse.house.model.HouseService"></jsp:useBean>
@@ -108,7 +109,7 @@ h4 {
 							<td>${eleConVO.ele_rent_l_day}</td>
 							<td>${eleConVO.ele_singdate}</td>
 							<td>${eleConVO.ele_con_status}</td>
-							<td>${eleConVO.bill_paymenttype}</td>
+							<td >${eleConVO.bill_paymenttype}</td>
 							<td>${eleConVO.ele_con_note}</td>
 							<td>
 								<form method="post" action="ele_contract.do"
@@ -131,18 +132,7 @@ h4 {
 	<!-- 工作區結束 -->
 
 	<jsp:include page="/FrontHeaderFooter/Footer.jsp" />
-	<!-- Optional JavaScript -->
-	<!-- jQuery first, then Popper.js, then Bootstrap JS start-->
-	<script
-		src="<%=request.getContextPath()%>/bootstrap/jquery-3.3.1.slim.min.js"
-		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-		crossorigin="anonymous"></script>
-	<script src="<%=request.getContextPath()%>/bootstrap/popper.min.js"
-		integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
-		crossorigin="anonymous"></script>
-	<script
-		src="<%=request.getContextPath()%>/bootstrap/js/bootstrap.min.js"></script>
-	<!-- jQuery first, then Popper.js, then Bootstrap JS end-->
+
 
 </body>
 </html>

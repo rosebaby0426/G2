@@ -4,8 +4,6 @@
 <%@ page import="com.goodhouse.bill.model.*"%>
 <%@ page import="javax.servlet.http.HttpSession" %>
 
-
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -62,7 +60,6 @@
 					<tr>
 						<td>帳單編號</td>
 						<td>會員姓名</td>
-						<td>員工編號</td>
 						<td>繳交費用</td>
 						<td>繳交日期</td>
 						<td>帳單產生時間</td>
@@ -83,7 +80,6 @@
 								
 								String bill_id = billVO.getBill_id();
 								String ele_con_id = billVO.getEle_con_id();
-								String emp_id = billVO.getEmp_id();
 								Integer bill_pay = billVO.getBill_pay();
 								Date bill_date = billVO.getBill_date();
 								Date bill_producetime = billVO.getBill_producetime();
@@ -94,7 +90,6 @@
 							<tr>
 								<td><%=bill_id%></td>
 								<td><%=mSvc.getOneMem( eleConSvc.getOneEC(ele_con_id).getMem_id() ).getMem_name() %></td>
-								<td><%=emp_id%></td>
 								<td><%=bill_pay%></td>
 								<td><%=bill_date%></td>
 								<td><%=bill_producetime%></td>
@@ -114,16 +109,5 @@
 	
 	<!-- 工作區結束 -->
 	
-	<!-- Optional JavaScript -->
-	<!-- jQuery first, then Popper.js, then Bootstrap JS start-->
-	<script src="<%=request.getContextPath()%>/bootstrap/jquery-3.3.1.min.js"
-		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-		crossorigin="anonymous"></script>
-	<script src="<%=request.getContextPath()%>/bootstrap/popper.min.js"
-		integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
-		crossorigin="anonymous"></script>
-	<script src="<%=request.getContextPath()%>/bootstrap/js/bootstrap.min.js"></script>
-	<!-- jQuery first, then Popper.js, then Bootstrap JS end-->
-
 </body>
 </html>

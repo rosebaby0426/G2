@@ -32,7 +32,6 @@
 						<tr>
 							<th>帳單編號</th>
 							<th>電子合約編號</th>
-							<th>員工編號</th>
 							<th>繳交費用</th>
 							<th>繳交日期</th>
 							<th>帳單產生日期</th>
@@ -45,7 +44,6 @@
 						<tr>
 							<td>${billVO.bill_id}</td>
 							<td>${billVO.ele_con_id}</td>
-							<td>${billVO.emp_id}</td>
 							<td>${billVO.bill_pay}</td>
 							<td>${billVO.bill_date}</td>
 							<td>${billVO.bill_producetime}</td>

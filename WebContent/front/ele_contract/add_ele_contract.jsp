@@ -1,26 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="java.util.*"%>
 <%@ page import="com.goodhouse.ele_contract.model.*"%>
 <%@ page import="com.goodhouse.contract.model.*" %>
-
+<%@ page import="com.goodhouse.member.model.*" %>
+<%@ page import="com.goodhouse.landlord.model.*" %>
+<%@ page import="com.goodhouse.house.model.*" %>
 <%
 	ContractVO conVO = (ContractVO) session.getAttribute("conVO");
 	Ele_ContractVO eleConVO = (Ele_ContractVO) request.getAttribute("eleConVO");
+	MemVO mVO = (MemVO) session.getAttribute("mVO");
 %>
 
 <!doctype html>
 <html lang="en">
 <head>
-<!-- Required meta tags -->
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<script src="<%=request.getContextPath()%>/File/jquery-1.12.4.min.js"></script>
-<!-- Bootstrap CSS start-->
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/bootstrap/css/bootstrap.min.css">
-<!-- Bootstrap CSS end-->
-
 <style>
 	  table#table-1 {
 		background-color: #CCCCFF;
@@ -89,6 +84,7 @@
 				<p type="hidden" name="con_content" value="<%=conVO.getCon_content()%>" >
 				<form method="post" action="ele_contract.do" name="form1">
 						<table style="width:800px">
+						
 							<tr>
 								<td>合約分類名稱<font color=red><b>*</b></font></td>
 								<td>
@@ -110,8 +106,16 @@
 							<tr>
 								<td>房東姓名<font color=red><b>*</b></font></td>
 								<td>
-									
-									<input type="text" name="lan_name" />
+								<%
+									String lan_id= null;
+									LanService lanSvc = new LanService();
+									for(LanVO lanVO : lanSvc.getAll()){
+										if(mVO.getMem_id().equals(lanVO.getMem_id())){
+											lan_id = lanVO.getLan_id();
+										}
+									}
+								%>
+									<p><%=mVO.getMem_name()%></p>
 								</td>
 							</tr>
 							<tr>
@@ -120,7 +124,6 @@
 									<input type="text" name="lan_idnumber" value="<%=(eleConVO==null)? "" : eleConVO.getLan_idnumber()%>"/>
 								</td>
 							</tr>
-							<jsp:useBean id="houSvc" scope="page" class="com.goodhouse.house.model.HouseService"/>
 							<!-- 
 							<tr>
 								<td>房屋<font color=red><b>*</b></font></td>
@@ -133,12 +136,13 @@
 								</td>
 							</tr>
 							 -->
+							<jsp:useBean id="houSvc" scope="page" class="com.goodhouse.house.model.HouseService"/>
 							<tr>
 								<td>房屋<font color=red><b>*</b></font></td>
 								<td>
 									<select size="1" name="hou_id" style="overflow:hidden; text-overflow:ellipsis;white-space:nowrap;width:225px;">
 										<c:forEach var="houVO" items="${houSvc.all}">
-											<option value="${houVO.hou_id}"}>${houVO.hou_name}
+												<option value="${houVO.hou_id}"/>${houVO.hou_name}
 										</c:forEach>
 									</select>
 								</td>
@@ -156,7 +160,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td>租賃期限<font color=red><b>*</b></font></td>
+								<td>租賃期限(幾個月)<font color=red><b>*</b></font></td>
 								<td>
 									<input type="text" name="ele_rent_time" value="<%=(eleConVO==null)? "" : eleConVO.getEle_rent_time()%>"/>
 								</td>
@@ -179,25 +183,17 @@
 									<input type="text" name="ele_singdate" id="ele_singdate" value="<%=(eleConVO==null)? "" : eleConVO.getEle_singdate()%>"/>
 								</td>
 							</tr>
-							<tr>
-								<td>合約狀態<font color=red><b>*</b></font></td>
-								<td>
-									<select name="ele_con_status" style="overflow:hidden; text-overflow:ellipsis;white-space:nowrap;width:225px;">
-										<c:forEach var="ele_con_status" items="${Ele_con_statusList}">
-											<option value="${ele_con_status.status_no_name}" >${ele_con_status.status_name}
-										</c:forEach>
-									</select>
-								</td>
-							</tr>
+							
 							
 							<tr>
 								<td>繳費型態<font color=red><b>*</b></font></td>
 								<td>
-									<select name="bill_paymenttype" style="overflow:hidden; text-overflow:ellipsis;white-space:nowrap;width:225px;">
-										<c:forEach var="bill_paymenttype" items="${Bill_PaymentTypeList}">
-											<option value="${bill_paymenttype.type_no_name}" >${bill_paymenttype.type_name}
-										</c:forEach>
-									</select>
+									<p>${Bill_PaymentTypeMap['p1'].type_name}</p>
+<!-- 									<select name="bill_paymenttype" style="overflow:hidden; text-overflow:ellipsis;white-space:nowrap;width:225px;"> -->
+<%-- 										<c:forEach var="entry" items="${Bill_PaymentTypeMap}"> --%>
+<%-- 											<option value="${entry.key}" >${entry.value.type_name} --%>
+<%-- 										</c:forEach> --%>
+<!-- 									</select> -->
 								</td>
 							</tr>
 							<tr>
@@ -210,7 +206,11 @@
 					</p>	
 						<input type="hidden" name="action" value="insert">
 						<input type="hidden" name="con_id" value="<%=conVO.getCon_id()%>"/>
-						<input type="submit" name="送出新增">
+						<input type="hidden" name="ele_con_status" value="s1">
+						<input type="hidden" name="bill_paymenttype" value="${Bill_PaymentTypeMap['p1'].type_no}"/>
+						<input type="hidden" name="lan_id" value="<%=lan_id%>"/>
+						
+						<input type="submit" value="送出">
 				</form>
 		</div>
 	</div>
@@ -279,17 +279,7 @@ $('#ele_singdate').datetimepicker({
 </script>
 
 	<!-- 工作區結束 -->
-	
-	<!-- Optional JavaScript -->
-	<!-- jQuery first, then Popper.js, then Bootstrap JS start-->
-	<script src="<%=request.getContextPath()%>/bootstrap/jquery-3.3.1.slim.min.js"
-		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-		crossorigin="anonymous"></script>
-	<script src="<%=request.getContextPath()%>/bootstrap/popper.min.js"
-		integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
-		crossorigin="anonymous"></script>
-	<script src="<%=request.getContextPath()%>/bootstrap/js/bootstrap.min.js"></script>
-	<!-- jQuery first, then Popper.js, then Bootstrap JS end-->
+<jsp:include page="/FrontHeaderFooter/Footer.jsp" />
 
 </body>
 </html>

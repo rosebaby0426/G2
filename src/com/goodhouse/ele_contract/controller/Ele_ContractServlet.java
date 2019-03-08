@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.goodhouse.bill.model.BillVO;
 import com.goodhouse.contract.model.ContractService;
 import com.goodhouse.contract.model.ContractVO;
 import com.goodhouse.ele_contract.model.Ele_ContractService;
@@ -22,6 +23,7 @@ import com.goodhouse.landlord.model.LanService;
 import com.goodhouse.landlord.model.LanVO;
 import com.goodhouse.member.model.MemService;
 import com.goodhouse.member.model.MemVO;
+import com.goodhouse.bill.model.*;
 
 public class Ele_ContractServlet extends HttpServlet{
 
@@ -37,6 +39,7 @@ public class Ele_ContractServlet extends HttpServlet{
 		String action = req.getParameter("action");
 		HttpSession session = req.getSession();
 		
+		//TODO 測試登入
 		if("test_login".equals(action)) {
 			
 			List<String> errorMsgs = new LinkedList<String>();
@@ -74,7 +77,7 @@ public class Ele_ContractServlet extends HttpServlet{
 		
 		
 		
-		//後台的單一查詢
+		//TODO 後台的單一查詢
 		if("getOne_For_Display".equals(action)) {
 			
 			List<String> errorMsgs = new LinkedList<String>();
@@ -130,7 +133,7 @@ public class Ele_ContractServlet extends HttpServlet{
 			}
 		}
 		
-		//後台使用者：用姓名查詢出該會員的所有電子合約資料
+		//TODO 後台使用者：用姓名查詢出該會員的所有電子合約資料
 		if("getNameForEle_Contract".equals(action)) {
 			
 			List<String> errorMsgs = new LinkedList<String>();
@@ -205,7 +208,7 @@ public class Ele_ContractServlet extends HttpServlet{
 			}
 		}
 		
-		//前台房東新增前的查詢
+		//TODO 前台房東新增前的查詢
 		if("select_contract".equals(action)) {
 			
 			List<String> errorMsgs = new LinkedList<String>();
@@ -252,7 +255,7 @@ public class Ele_ContractServlet extends HttpServlet{
 			}
 			
 		}
-		//前台房東新增
+		//TODO 前台房東新增
 		if(("insert").equals(action)) {
 			
 			
@@ -264,7 +267,6 @@ public class Ele_ContractServlet extends HttpServlet{
 				
 				/*****1接收請求參數******************/
 				String con_id = req.getParameter("con_id");
-				System.out.println("con_id"+con_id);
 				String mem_name = req.getParameter("mem_name");
 				String mem_id = null;
 				if(mem_name == null || mem_name.trim().length()== 0) {
@@ -292,29 +294,29 @@ public class Ele_ContractServlet extends HttpServlet{
 					errorMsgs.add("會員身分證字號格式(一個大寫英文字母 + 9個數字 所組成)是錯誤，請重新輸入 ");
 				}
 				//比對房東姓名
-				String lan_id = null;
-				String lan_name = req.getParameter("lan_name");
-				if(lan_name == null || lan_name.trim().length() == 0) {
-					errorMsgs.add("房東姓名不能空白");
-				}
-				
-				MemService mSvc1 = new MemService();
-				LanService lanSvc = new LanService();
-				//利用房東姓名去比對是否為會員
-				for(MemVO mVO : mSvc1.getAll()) {
-					if(mVO.getMem_name().equals(lan_name)) {
-						mem_id = mVO.getMem_id();
-						//利用取出的會員id來去比對是否為房東
-						for(LanVO lanVO : lanSvc.getAll()) {
-							if(lanVO.getMem_id().equals(mem_id)) {
-								lan_id = lanVO.getLan_id();
-							}
-						}
-					}
-				}
-				if(lan_id == null || lan_id.trim().length() == 0) {
-					errorMsgs.add("姓名輸入錯誤(與會員姓名一致)");
-				}
+				String lan_id = req.getParameter("lan_id");;
+//				String lan_name = req.getParameter("lan_name");
+//				if(lan_name == null || lan_name.trim().length() == 0) {
+//					errorMsgs.add("房東姓名不能空白");
+//				}
+//				
+//				MemService mSvc1 = new MemService();
+//				LanService lanSvc = new LanService();
+//				//利用房東姓名去比對是否為會員
+//				for(MemVO mVO : mSvc1.getAll()) {
+//					if(mVO.getMem_name().equals(lan_name)) {
+//						mem_id = mVO.getMem_id();
+//						//利用取出的會員id來去比對是否為房東
+//						for(LanVO lanVO : lanSvc.getAll()) {
+//							if(lanVO.getMem_id().equals(mem_id)) {
+//								lan_id = lanVO.getLan_id();
+//							}
+//						}
+//					}
+//				}
+//				if(lan_id == null || lan_id.trim().length() == 0) {
+//					errorMsgs.add("姓名輸入錯誤(與會員姓名一致)");
+//				}
 				
 				//比對房東身分證字號
 				String lan_idnumber = req.getParameter("lan_idnumber");
@@ -429,6 +431,7 @@ public class Ele_ContractServlet extends HttpServlet{
 				String url = "/front/ele_contract/lan_listAll_ele_contract.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAll_ele_contract.jsp
 				successView.forward(req, res);
+				
 			}catch (Exception e) {
 				errorMsgs.add(e.getMessage());
 				RequestDispatcher failureView = req
@@ -438,7 +441,7 @@ public class Ele_ContractServlet extends HttpServlet{
 			
 		}
 		
-		//前台房東修改前的查詢
+		//TODO 前台房東修改前的查詢
 		if("getOne_For_Update".equals(action)) {
 			
 			List<String> errorMsgs = new LinkedList<String>();
@@ -467,7 +470,7 @@ public class Ele_ContractServlet extends HttpServlet{
 			}
 		}
 		
-		//前台房東修改資料
+		//TODO 前台房東修改資料
 		if("update".equals(action)) {
 			
 			List<String> errorMsgs = new LinkedList<String>();
@@ -628,7 +631,7 @@ public class Ele_ContractServlet extends HttpServlet{
 			
 		}
 		
-		//房東的單一查詢
+		//TODO 房東的單一查詢
 		if("getOne_front".equals(action)) {
 			
 			List<String> errorMsgs = new LinkedList<String>();
@@ -676,7 +679,7 @@ public class Ele_ContractServlet extends HttpServlet{
 			}
 		}
 		
-		//顯示房客的所有列表
+		//TODO 顯示房客的所有列表
 		if("front_getMemEle_Contract".equals(action)) {
 			
 			List<String> errorMsgs = new LinkedList<String>();
@@ -844,5 +847,7 @@ public class Ele_ContractServlet extends HttpServlet{
 			}
 			
 		}
+		
+		
 	}
 }

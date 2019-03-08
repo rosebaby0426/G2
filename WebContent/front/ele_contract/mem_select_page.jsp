@@ -3,10 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.goodhouse.ele_contract.model.*"%>
 
-<%
-	String mem_name = (String)session.getAttribute("mem_name");
-%>
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -24,18 +20,10 @@
 			<div class="row col-8">
 				<h4>房客電子合約管理</h4><br>
 				<form method="post" action="ele_contract.do">
-					<input type="hidden" name="mem_name" value=<%=mem_name%>>
 					<input type="hidden" name="action" value="front_getMemEle_Contract">
 					<input type="submit" value="我的合約列表">
 				</form>
-				<form method="post" action="">
-					<input type="hidden" >
-					<input type="submit" value="申請續約">
-				</form>
-				<form method="post" action="">
-					<input type="hidden" >
-					<input type="submit" value="申請解約">
-				</form>
+				
 				<%-- 錯誤表列 --%>
 				<c:if test="${not empty errorMsgs}">
 					<font style="color: red">請修正以下錯誤:</font>
