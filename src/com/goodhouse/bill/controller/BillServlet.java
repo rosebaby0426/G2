@@ -16,6 +16,8 @@ import com.goodhouse.bill.model.BillService;
 import com.goodhouse.bill.model.BillVO;
 import com.goodhouse.ele_contract.model.Ele_ContractService;
 import com.goodhouse.ele_contract.model.Ele_ContractVO;
+import com.goodhouse.house.model.HouseService;
+import com.goodhouse.house.model.HouseVO;
 import com.goodhouse.landlord.model.LanService;
 import com.goodhouse.landlord.model.LanVO;
 import com.goodhouse.member.model.MemService;
@@ -513,6 +515,25 @@ public class BillServlet extends HttpServlet{
 				
 				eleConVO.setBill_paymenttype(eleConVO.getBill_paymenttype());
 				eleConVO.setEle_con_note(eleConVO.getEle_con_note());
+				eleConSvc.updateEC(eleConVO);
+				
+				//簽約完成改變房屋出租狀態
+//				HouseService houSvc = new HouseService();
+//				HouseVO houVO = houSvc.getOneHouse(eleConVO.getHou_id());
+//				
+//				houVO.setHou_id(houVO.getHou_id());
+//				houVO.setHou_name(houVO.getHou_name());
+//				houVO.setHou_type(houVO.getHou_type());
+//				houVO.setHou_size(houVO.getHou_size());
+//				houVO.setHou_property(houVO.getHou_property());
+//				houVO.setHou_parkspace(houVO.getHou_parkspace());
+//				houVO.setHou_cook(houVO.getHou_cook());
+//				houVO.setHou_managefee(houVO.getHou_managefee());
+//				houVO.setHou_address(houVO.getHou_address());
+//				houVO.setLan_id(houVO.getLan_id());
+//				houVO.setHou_rent(houVO.getHou_rent());
+//				
+				
 				req.setAttribute("lastPage", true);
 				
 
@@ -571,6 +592,7 @@ public class BillServlet extends HttpServlet{
 				billVO.setBill_paymenttype(billVO.getBill_paymenttype());
 				
 				billSvc.updateB(billVO);
+				
 				
 				/***3狀態改完準備轉交************/
 				req.setAttribute("lastPage", true);
