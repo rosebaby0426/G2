@@ -813,22 +813,15 @@ public class Ele_ContractServlet extends HttpServlet{
 			try {
 				/*****1接收請求參數*************************/
 				MemVO lanMemVO = (MemVO) session.getAttribute("mVO");
-				String lan_mem_id = lanMemVO.getMem_email();
-				
-				/******2開始查詢資料*****************/
+				String lan_mem_id = lanMemVO.getMem_id();
+//				
+//				/******2開始查詢資料*****************/
 				String lan_id = null;
-				
-				MemService mSvc = new MemService();
 				LanService lanSvc = new LanService();
-				for(LanVO lanVO : lanSvc.getAll()) {
-					if(lan_mem_id.equals(lanVO.getMem_id())) {
-						lan_id = lanVO.getLan_id();
-					}
-				}
+				lan_id = lanSvc.getOneLanByMemId(lan_mem_id).getLan_id();
 				
 				Ele_ContractService eleConSvc = new Ele_ContractService();
 				List<Ele_ContractVO> ele_contractForLanList = eleConSvc.getAllForEle_ConByLan_id(lan_id);
-				
 				if (ele_contractForLanList.isEmpty()) {
 					errorMsgs.add("沒有資料");
 				}

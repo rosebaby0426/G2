@@ -109,7 +109,7 @@ h4 {
 							<td>${eleConVO.ele_rent_l_day}</td>
 							<td>${eleConVO.ele_singdate}</td>
 							<td>${eleConVO.ele_con_status}</td>
-							<td >${eleConVO.bill_paymenttype}</td>
+							<td>${eleConVO.bill_paymenttype}</td>
 							<td>${eleConVO.ele_con_note}</td>
 							<td>
 								<form method="post" action="ele_contract.do"

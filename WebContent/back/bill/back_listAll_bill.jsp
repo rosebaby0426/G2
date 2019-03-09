@@ -79,8 +79,9 @@
 							<td>
 								<form method="post" action="bill.do">
 									<input type="hidden" name="action" value="payMoneyToLan">
+									<input type="hidden" name="bill_id" value="${billVO.bill_id}">
 									<input type="submit" name="" value="撥款"
-											style='display:${(billVO.bill_status eq "s3") ? "none" : ""}'>
+											style='display:${(billVO.bill_status eq "s3") ? "" : "none"}'>
 								</form>
 							</td>
 						</tr>

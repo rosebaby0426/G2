@@ -545,5 +545,45 @@ public class BillServlet extends HttpServlet{
 				failure.forward(req, res);
 			}
 		}
+		
+		//TODO 後台管理員撥款給房東
+		if("payMoneyToLan".equals(action)) {
+			
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			try {
+				/***1取得請求參數****************/
+				String bill_id = req.getParameter("bill_id");
+				
+				/***2查詢資料更改狀態********************/
+				BillService billSvc = new BillService();
+				BillVO billVO = billSvc.getOneB(bill_id);
+				
+				billVO.setBill_id(billVO.getBill_id());
+				billVO.setEle_con_id(billVO.getEle_con_id());
+				billVO.setBill_pay(billVO.getBill_pay());
+				billVO.setBill_date(billVO.getBill_date());
+				billVO.setBill_producetime(billVO.getBill_producetime());
+				if(billVO.getBill_status().equals("s3")) {
+					billVO.setBill_status("s4");
+				}
+				billVO.setBill_paymenttype(billVO.getBill_paymenttype());
+				
+				billSvc.updateB(billVO);
+				
+				/***3狀態改完準備轉交************/
+				req.setAttribute("lastPage", true);
+				String url = "/back/bill/back_listAll_bill.jsp";
+				RequestDispatcher success = req.getRequestDispatcher(url);
+				success.forward(req, res);
+				
+			} catch(Exception e) {
+				errorMsgs.add("無法取得資料" + e.getMessage());
+				RequestDispatcher failure = req.getRequestDispatcher("/front/bill/creatFirstBill.jsp");
+				failure.forward(req, res);
+			}
+			
+		}
 	}
 }
