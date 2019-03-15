@@ -3,6 +3,7 @@ package com.goodhouse.member.model;
 import java.sql.Date;
 import java.util.List;
 
+import com.goodhouse.employee.model.EmpVO;
 
 public class MemService {
 
@@ -61,6 +62,10 @@ public class MemService {
 		}
 	public MemVO getOneMem(String mem_id) {
 		return dao.findByPrimaryKey(mem_id);
+		}
+	
+	public MemVO getOneMem(String mem_email, String mem_password) {
+		return dao.findByEmail(mem_email, mem_password);
 		}
 	
 	public List <MemVO> getAll(){

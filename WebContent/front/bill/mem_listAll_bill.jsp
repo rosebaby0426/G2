@@ -40,13 +40,13 @@
 				</c:if>
 				</table>
 			</div>
-			<div class="row col-10" >
+			<div class="row col-10 text-center" >
 				<table>
 					<tr>
 						<th>帳單編號</th>
 						<th>電子合約編號</th>
 						<th>繳交費用</th>
-						<th>繳交日期</th>
+						<th>繳交期限</th>
 						<th>帳單產生日期</th>
 						<th>帳單繳費狀態</th>
 						<th>付款方式</th>

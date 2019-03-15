@@ -2,10 +2,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.goodhouse.ele_contract.model.*"%>
+<%@ page import="com.goodhouse.member.model.*"%>
 
 <%
+    String mem_id = ((MemVO)session.getAttribute("mVO")).getMem_id();
 	Ele_ContractService eleConSvc = new Ele_ContractService();
-	List<Ele_ContractVO> list = (List<Ele_ContractVO>) request.getAttribute("ele_contractForMemList");
+	List<Ele_ContractVO> list = eleConSvc.getAllForEle_ConByMem_id(mem_id);
 	pageContext.setAttribute("list",list);
 %>
 
@@ -43,30 +45,23 @@ h4 {
 
 	<!-- 工作區開始 -->
 
-	<div class="container-fluid">
-		<div class="row justfy-content-center">
-			<div class="row col-2">
-				<table id="table-1">
+	<div class="container">
+		<div class="row ">
+			<div class="row col-12	">
+				<div>
 					<p>
 						回首頁<a href="mem_select_page.jsp"><img
 							src="<%=request.getContextPath()%>/share_pic/back1.gif"
 							width="100" height="30 !important"></a>
-					</p>
-					<tr>
-						<td>屬於房客所有電子合約資料 - listAll_ele_contract.jsp</td>
-					</tr>
-				</table>
-				<%-- 錯誤表列 --%>
-				<c:if test="${not empty errorMsgs}">
-					<font style="color: red">請修正以下錯誤:</font>
-					<ul>
-						<c:forEach var="message" items="${errorMsgs}">
-							<li style="color: red">${message}</li>
-						</c:forEach>
-					</ul>
-				</c:if>
-			</div>
-			<div class="row col-10	">
+					</p><br>
+					<%-- 錯誤表列 --%>
+					<c:if test="${not empty errorMsgs}">
+						<font style="color: red"></font>
+							<c:forEach var="message" items="${errorMsgs}">
+								<p style="color: red">${message}</p><br>
+							</c:forEach>
+					</c:if>
+				</div>
 				<table>
 					<tr>
 						<td>電子合約編號</td>
@@ -88,17 +83,17 @@ h4 {
 						<td></td>
 						<td></td>
 					</tr>
+					<jsp:useBean id="conSvc" scope="page" class="com.goodhouse.contract.model.ContractService"/>
+					<jsp:useBean id="memSvc" scope="page" class="com.goodhouse.member.model.MemService"/>
+					<jsp:useBean id="houSvc" scope="page" class="com.goodhouse.house.model.HouseService"/>
+					<jsp:useBean id="lanSvc" scope="page" class="com.goodhouse.landlord.model.LanService"/>
 					<%@ include file="page1.file"%>
-					<jsp:useBean id="conSvc" scope="page" class="com.goodhouse.contract.model.ContractService"></jsp:useBean>
-					<jsp:useBean id="memSvc" scope="page" class="com.goodhouse.member.model.MemService"></jsp:useBean>
-					<jsp:useBean id="houSvc" scope="page" class="com.goodhouse.house.model.HouseService"></jsp:useBean>
-					<jsp:useBean id="lanSvc" scope="page" class="com.goodhouse.landlord.model.LanService"></jsp:useBean>
 					<c:forEach var="eleConVO" items="${list}" begin="<%=pageIndex%>"
 						end="<%=pageIndex+rowsPerPage-1%>">
 						
 						<tr>
 							<td>${eleConVO.ele_con_id}</td>
-							<td>${conSvc.getOneCon(eleConVO.con_id).con_name}</td>
+							<td>${conSvc.getOneCon(eleConVO.con_id).getCon_name()}</td>
 							<td>${memSvc.getOneMem(eleConVO.mem_id).mem_name}</td>
 							<td>${eleConVO.mem_idnumber}</td>
 							<td>${memSvc.getOneMem(lanSvc.getOneLan(eleConVO.lan_id).mem_id).mem_name}</td>
@@ -111,13 +106,18 @@ h4 {
 							<td>${eleConVO.ele_rent_l_day}</td>
 							<td>${eleConVO.ele_singdate}</td>
 							
-<%-- 							<c:forEach var="Ele_con_status" items="${Ele_con_statusList}"> --%>
-<%-- 								<c:if test="${Ele_con_status.status_no eq eleConVO.ele_con_status}"> --%>
-<%-- 									<td>${Ele_con_status.status_name}</td> --%>
-<%-- 								</c:if> --%>
-<%-- 							</c:forEach> --%>
-							<td id="ele_con_status">${eleConVO.ele_con_status}</td>
-							<td>${eleConVO.bill_paymenttype}</td>
+							<c:forEach var="Ele_con_status" items="${Ele_con_statusList}">
+								<c:if test="${Ele_con_status.status_no eq eleConVO.ele_con_status}">
+									<td>${Ele_con_status.status_name}</td>
+								</c:if>
+							</c:forEach>
+							
+							<c:forEach var="Bill_PaymentType" items="${Bill_PaymentTypeMap}">
+								<c:if test="${Bill_PaymentType.key eq eleConVO.bill_paymenttype}">
+									<td>${Bill_PaymentType.value.type_name}</td>
+								</c:if>
+							</c:forEach>
+							
 							<td>${eleConVO.ele_con_note}</td>
 							<td>
 								<form method="post" action="apply_conturct.do">
@@ -150,7 +150,7 @@ h4 {
 			</div>
 		</div>
 	</div>
-
+<jsp:include page="/FrontHeaderFooter/Footer.jsp" />
 	<!-- 工作區結束 -->
 <script>
 

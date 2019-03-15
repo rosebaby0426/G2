@@ -42,10 +42,10 @@ public class BillStatusTool extends HttpServlet{
 		
 		list.add(new BillStatus("s1","待確認待繳款"));
 		list.add(new BillStatus("s2","待繳款"));
-		list.add(new BillStatus("s3","已繳款 待撥款"));
-		list.add(new BillStatus("s4","已撥款"));
-		list.add(new BillStatus("s6","延期待繳款"));
-		list.add(new BillStatus("s7","逾期未繳款"));
+		list.add(new BillStatus("s3","已繳款待撥款"));
+		list.add(new BillStatus("s4","已繳款已撥款"));
+		list.add(new BillStatus("s5","延期待繳款"));
+		list.add(new BillStatus("s6","逾期未繳款"));
 		
 		getServletContext().setAttribute("BillStatusList", list);
 	}

@@ -9,7 +9,7 @@ public class BillVO implements java.io.Serializable{
 	private String bill_id;//帳單編號
 	private String ele_con_id;//電子合約編號
 	private Integer bill_pay;//繳交費用
-	private Date bill_date;//繳交日期
+	private Date bill_date;//繳費期限
 	private Date bill_producetime;//帳單產生日期
 	private String bill_status;//帳單繳費狀態
 	private String bill_paymethod;//付款方式

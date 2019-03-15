@@ -10,6 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.goodhouse.apply_conturct.model.Apply_ConturctVO;
 import com.goodhouse.bill.model.BillService;
@@ -35,59 +39,7 @@ public class BillServlet extends HttpServlet{
 		String action = req.getParameter("action");
 		HttpSession session = req.getSession();
 		
-		//TODO 前台帳單編號單一查詢(房客)
-		if("bill_getOne_mem".equals(action)) {
-			
-			List<String> errorMsgs = new LinkedList<String>();
-			req.setAttribute("errorMsgs", errorMsgs);
-			
-			try {
-				/****1接收請求參數******************/
-				//帳單編號
-				String bill_id = req.getParameter("bill_id");
-				if(bill_id == null || bill_id.trim().length() == 0) {
-					errorMsgs.add("帳單編號不能空白，請重新輸入");
-				}
-				// 如 ~ 帳單編號：20190226-B00001
-				String bill_idReq = "^[0-9]{8}[-]{1}[B]{1}[0-9]{5}$";
-				if(!bill_id.trim().matches(bill_idReq)) {
-					errorMsgs.add("帳單編號輸入格式 ( 如：20190226-B00001，含 - 共15碼 ) 錯誤，請重新輸入");
-				}
-				if (!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req.getRequestDispatcher("/front/bill/mem_select_page.jsp");
-					failureView.forward(req, res);
-					return;//程式中斷
-				}
-				
-				/******2準備查詢***********************/
-				BillService billSvc = new BillService();
-				BillVO billVO = billSvc.getOneB(bill_id);
-				
-				if(billVO == null) {
-					errorMsgs.add("查無資料");
-				}
-				System.out.println("billVO = " +billVO);
-				
-				if(!errorMsgs.isEmpty()) {
-					RequestDispatcher failureView = req.getRequestDispatcher("/front/bill/mem_select_page.jsp");
-					failureView.forward(req, res);
-					return;//程式中斷
-				}
-				
-				
-				/******3查詢完成準備轉交************************/
-				req.getSession().setAttribute("billVO", billVO);
-				String url = "/front/bill/mem_listOne.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url);
-				successView.forward(req, res);
-				
-				
-			} catch (Exception e) {
-				errorMsgs.add("無法取得資料");
-				RequestDispatcher failureView = req.getRequestDispatcher("/front/bill/mem_select_page.jsp");
-				failureView.forward(req, res);
-			}
-		}
+		
 		
 		//TODO 前台使用者(房東)：輸入姓名查詢該會員的所有帳單
 		if("bill_getBy_mem_name".equals(action)) {
@@ -274,21 +226,6 @@ public class BillServlet extends HttpServlet{
 				String ele_con_id = null;
 				String bill_id = null;
 				
-				//利用mem_id找出該會員的電子合約
-				//eleConSvc.getOneEC( billVO.getEle_con_id() ).getMem_id().equals( mSvc.getOneMem(mem_id).mem_id )
-//				for(Ele_ContractVO eleConVO : eleConSvc.getAll()) {
-//					//把每筆所取出的資料跟使用者做比對
-//					if(mem_id.equals(eleConVO.getMem_id())) {
-//						//利用找到的電子合約物件與帳單所有物件比對電子合約編號
-//						for(BillVO billVO : billSvc.getAll()) {
-//							//符合電子合約編號的帳單物件才取出
-//							if(eleConVO.getEle_con_id().equals(billVO.getEle_con_id())) {
-//								bill_id = billVO.getBill_id();
-//								list.add(billVO);
-//							}
-//						}
-//					}
-//				}
 				for(BillVO billVO : billSvc.getAll()) {
 					//把mem_id跟電子合約的mem_id做比對取出所屬的帳單
 					if( (eleConSvc.getOneEC( billVO.getEle_con_id() ).getMem_id() ).equals(mem_id) ){
@@ -369,25 +306,16 @@ public class BillServlet extends HttpServlet{
 			
 			try {
 				/****1接收請求參數****************/
-				String mem_name = req.getParameter("mem_name");
+				MemVO mVO = (MemVO) session.getAttribute("mVO");
+				String mem_id = mVO.getMem_id();
 				
 				/******2開始查詢資料*****************/
-				String mem_id = null;
-				String lan_id = null;
-				
 				MemService mSvc = new MemService();
 				LanService lanSvc = new LanService();
+				
 				//取得lan_id
-				for(MemVO mVO : mSvc.getAll()) {
-					if(mem_name.equals(mVO.getMem_name())) {
-						mem_id = mVO.getMem_id();
-						for(LanVO lanVO : lanSvc.getAll()) {
-							if(mem_id.equals(lanVO.getMem_id())) {
-								lan_id = lanVO.getLan_id();
-							}
-						}
-					}
-				}
+				LanVO lanVO = lanSvc.getOneLanByMemId(mem_id);
+				String lan_id = lanVO.getLan_id();
 				
 				BillService billSvc = new BillService();
 				Ele_ContractService eleConSvc = new Ele_ContractService();
@@ -425,7 +353,7 @@ public class BillServlet extends HttpServlet{
 		}
 		
 		//新增第一筆帳單
-		if("creatBill".equals(action)) {
+		if("creatFirstBill".equals(action)) {
 			
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
@@ -496,6 +424,7 @@ public class BillServlet extends HttpServlet{
 				//繳費完改變電子合約狀態
 				Ele_ContractService eleConSvc = new Ele_ContractService();
 				Ele_ContractVO eleConVO = eleConSvc.getOneEC(ele_con_id);
+				
 				eleConVO.setEle_con_id(eleConVO.getEle_con_id());
 				eleConVO.setCon_id(eleConVO.getCon_id());
 				eleConVO.setMem_idnumber(eleConVO.getMem_idnumber());
@@ -515,46 +444,50 @@ public class BillServlet extends HttpServlet{
 				
 				eleConVO.setBill_paymenttype(eleConVO.getBill_paymenttype());
 				eleConVO.setEle_con_note(eleConVO.getEle_con_note());
+				
 				eleConSvc.updateEC(eleConVO);
 				
 				//簽約完成改變房屋出租狀態
-//				HouseService houSvc = new HouseService();
-//				HouseVO houVO = houSvc.getOneHouse(eleConVO.getHou_id());
-//				
-//				houVO.setHou_id(houVO.getHou_id());
-//				houVO.setHou_name(houVO.getHou_name());
-//				houVO.setHou_type(houVO.getHou_type());
-//				houVO.setHou_size(houVO.getHou_size());
-//				houVO.setHou_property(houVO.getHou_property());
-//				houVO.setHou_parkspace(houVO.getHou_parkspace());
-//				houVO.setHou_cook(houVO.getHou_cook());
-//				houVO.setHou_managefee(houVO.getHou_managefee());
-//				houVO.setHou_address(houVO.getHou_address());
-//				houVO.setLan_id(houVO.getLan_id());
-//				houVO.setHou_rent(houVO.getHou_rent());
-//				
+				HouseService houSvc = new HouseService();
+				HouseVO houVO = houSvc.getOneHouse(eleConVO.getHou_id());
+				
+				houVO.setHou_id(houVO.getHou_id());
+				houVO.setHou_name(houVO.getHou_name());
+				houVO.setHou_type(houVO.getHou_type());
+				houVO.setHou_size(houVO.getHou_size());
+				houVO.setHou_property("已出租");
+				houVO.setHou_parkspace(houVO.getHou_parkspace());
+				houVO.setHou_cook(houVO.getHou_cook());
+				houVO.setHou_managefee(houVO.getHou_managefee());
+				houVO.setHou_address(houVO.getHou_address());
+				houVO.setLan_id(houVO.getLan_id());
+				houVO.setHou_rent(houVO.getHou_rent());
+				
+				houSvc.update(houVO);
 				
 				req.setAttribute("lastPage", true);
 				
-
-				/*******3新增成功，準備轉交****************************/
-				MemVO mVO = (MemVO) session.getAttribute("mVO");
-				List<Ele_ContractVO> eleConVOList = (List<Ele_ContractVO>) eleConSvc.getAllForEle_ConByMem_id(mVO.getMem_id());
-				List<BillVO> billVOList = new ArrayList<BillVO>();
-				String bill_id = null;
-				Iterator obj = eleConVOList.iterator();
-				while(obj.hasNext()) {
-					Ele_ContractVO eleConVO2 = (Ele_ContractVO)obj.next();
-					for(BillVO billVO2 : billSvc.getAll()) {
-						if(eleConVO2.getEle_con_id().equals(billVO2.getEle_con_id())) {
-							bill_id = billVO2.getBill_id();
-							billVOList.add(billVO);
-						}
+				/*****webSocket功能啟動*****************/
+				Set<Session> allSessions = (Set<Session>)getServletContext().getAttribute("webSocketSession");
+				
+				JSONObject eleConDone = new JSONObject();
+				
+				try {
+					eleConDone.put("eleConDoneMsgs", "又有房子被租走了喔!!請加緊腳步搶好房喔!!!");
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				
+				String doneMsg = eleConDone.toString();
+				System.out.println(doneMsg);
+				for(Session webSession : allSessions) {
+					if (webSession.isOpen()) {
+						webSession.getAsyncRemote().sendText(doneMsg);
 					}
 				}
+				
 				/****3查詢完成準備轉交***************/
 				req.setAttribute("lastPage", true);
-				req.setAttribute("ele_contractForMemList", billVOList);
 				String url = "/front/ele_contract/mem_listAll_ele_contract.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
@@ -593,7 +526,6 @@ public class BillServlet extends HttpServlet{
 				
 				billSvc.updateB(billVO);
 				
-				
 				/***3狀態改完準備轉交************/
 				req.setAttribute("lastPage", true);
 				String url = "/back/bill/back_listAll_bill.jsp";
@@ -601,6 +533,7 @@ public class BillServlet extends HttpServlet{
 				success.forward(req, res);
 				
 			} catch(Exception e) {
+				e.printStackTrace();
 				errorMsgs.add("無法取得資料" + e.getMessage());
 				RequestDispatcher failure = req.getRequestDispatcher("/front/bill/creatFirstBill.jsp");
 				failure.forward(req, res);

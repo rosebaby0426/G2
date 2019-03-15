@@ -24,6 +24,7 @@
 					<input type="submit" value="我的合約列表">
 				</form>
 				
+				
 				<%-- 錯誤表列 --%>
 				<c:if test="${not empty errorMsgs}">
 					<font style="color: red">請修正以下錯誤:</font>

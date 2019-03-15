@@ -217,4 +217,35 @@
 	    <servlet-name>NoticeServlet</servlet-name>
 	    <url-pattern>/back/notice/notice.do</url-pattern>
   	</servlet-mapping>
+  	
+  	<!--會員濾器註冊  -->	
+  	<filter>
+    <filter-name>frontLoginFilter</filter-name>
+    <filter-class>frontFilters.FrontLoginFilter</filter-class>
+  	</filter>
+  	<filter-mapping>
+    	<filter-name>frontLoginFilter</filter-name>
+    	<url-pattern>/front/member/listOneMem.jsp</url-pattern>
+    	<dispatcher>REQUEST</dispatcher>
+    	<dispatcher>FORWARD</dispatcher>
+    	<dispatcher>INCLUDE</dispatcher>
+    	<dispatcher>ERROR</dispatcher>
+    	<dispatcher>ASYNC</dispatcher>
+  	</filter-mapping>
+  
+     <!--後台員工濾器註冊  -->
+  	<filter>
+    	<filter-name>backLoginFilter</filter-name>
+    	<filter-class>backFilters.BackLoginFilter</filter-class>
+  	</filter>
+  	<filter-mapping>
+    	<filter-name>backLoginFilter</filter-name>
+    	<url-pattern>/back/employee/select_page.jsp</url-pattern>
+    	<dispatcher>REQUEST</dispatcher>
+    	<dispatcher>FORWARD</dispatcher>
+    	<dispatcher>INCLUDE</dispatcher>
+    	<dispatcher>ERROR</dispatcher>
+    	<dispatcher>ASYNC</dispatcher>
+  	</filter-mapping>
+  
 </web-app>

@@ -4,14 +4,13 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.util.List;
 
-import com.goodhouse.keyword.model.KeyWordVO;
 
 public class BillService {
 
 	private BillDAO_interface dao ;
 	
 	public BillService() {
-		dao = new BillJDBCDAO();
+		dao = new BillJNDIDAO();
 	}
 	
 	//新增
@@ -76,6 +75,13 @@ public class BillService {
 			return dao.getAll();
 		}
 		
+		public List<BillVO> getBillByEleContractId(String ele_contract_id){
+			return dao.findByEleContractId(ele_contract_id);
+		}
+		
+		public List<BillVO> getListByEleContractBetweenRentTime (String ele_contract_id){
+			return dao.findByEleContractRentTime(ele_contract_id);
+		}
 //		public void addB(Connection con, List <BillVO> billVOlist ,String eleConKey) {
 //			dao.insert(con, billVOlist, eleConKey);
 //		}

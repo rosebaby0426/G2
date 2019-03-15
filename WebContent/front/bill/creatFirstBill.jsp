@@ -12,7 +12,7 @@
 <meta charset="UTF-8">
 	
 </head>
-<body>
+<body onload="connect();" onunload="disconnect();">
 <jsp:include page="/FrontHeaderFooter/Header.jsp" />
 	<div class="row-12">
 		<%-- 錯誤表列 --%>
@@ -70,7 +70,7 @@
 				java.sql.Date bill_date = new java.sql.Date(System.currentTimeMillis());
 				java.sql.Date bill_producetime = new java.sql.Date(System.currentTimeMillis());
 			%>
-			<input type="hidden" name="action" value="creatBill">
+			<input type="hidden" name="action" value="creatFirstBill">
 			<input type="hidden" name="ele_con_id" value="${eleConVO.ele_con_id}">
 			<input type="hidden" name="bill_pay" value="${eleConVO.ele_rent_money + eleConVO.ele_deposit_money}">
 			<input type="hidden" name="bill_date" value="<%=bill_date%>">
@@ -78,7 +78,7 @@
 			<input type="hidden" name="bill_status" value="s3">
 			<input type="hidden" name="bill_paymethod" value="VISACard">
 			<input type="hidden" name="bill_paymenttype" value="${eleConVO.bill_paymenttype}">
-			<input type="submit" value="確認付款">
+			<input type="submit" value="確認付款" id="sendMessage" >
 		</form>
 	</div>
 	<script>
@@ -90,9 +90,39 @@
 				obj.focus();
 			}
 		}
+		
+		//////////////////////////////////////////////////////webSocket功能
+		
+// 		var eleConDone = "/EleConDoneWebSocket";
+// 		var host = window.location.host;
+// 	    var path = window.location.pathname;
+// 	    var webCtx = path.substring(0, path.indexOf('/', 1));
+// 	    var endPointURL = "ws://" + window.location.host + webCtx + eleConDone;
+		
+// 	    var webSocket;
+	    
+// 		function connect(){
+// 			// 建立 websocket 物件
+// 			webSocket = new WebSocket(endPointURL);
+			
+// 			webSocket.onopen = function(event) {
+				
+// 			};
+			
+// 			webSocket.onmessage = function(event) {
+// 		        var jsonObj = JSON.parse(event.data);
+// 		        alert(jsonObj.eleConDoneMsgs);
+// 			};
+
+// 			webSocket.onclose = function(event) {
+// 			};
+// 		}
+		
+	
+		
 	</script>
 	
-	
+	<jsp:include page="/FrontHeaderFooter/Footer.jsp"></jsp:include>
 
 </body>
 </html>

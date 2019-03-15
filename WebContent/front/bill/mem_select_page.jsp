@@ -33,16 +33,14 @@
 					<li>
 						<form method="post" action="bill.do">
 							<b>(房客)我的帳單列表</b>
-							<input type="hidden" name="mem_name" value="<%=mem_name%>">
 							<input type="hidden" name="action" value="billForMemListAll">
 							<input type="submit" value="送出">
 						</form>
 					</li>
 					<li>
 						<form method="post" action="bill.do">
-							<b>輸入我的帳單編號</b><br> 
-							<input type="text" name="bill_id" >
-							<input type="hidden" name="action" value="bill_getOne_mem">
+							<b>(房客)要繳交房租</b>
+							<input type="hidden" name="action" value="billForMemListAll">
 							<input type="submit" value="送出">
 						</form>
 					</li>
@@ -52,12 +50,9 @@
 	</div>
 
 
-
-
-
 	<!-- 工作區結束 -->
 
-
+<jsp:include page="/FrontHeaderFooter/Footer.jsp" />
 
 </body>
 </html>

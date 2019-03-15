@@ -1,6 +1,7 @@
 package com.goodhouse.bill.model;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,6 +29,13 @@ public class BillJDBCDAO implements BillDAO_interface{
 			"SELECT BILL_ID , ELE_CON_ID , BILL_PAY , BILL_DATE , BILL_PRODUCETIME , BILL_STATUS , BILL_PAYMETHOD , BILL_PAYMENTTYPE FROM BILL WHERE BILL_ID=?";
 	private static final String GET_ALL_STMT = //查詢全部
 			"SELECT BILL_ID , ELE_CON_ID  , BILL_PAY , BILL_DATE , BILL_PRODUCETIME , BILL_STATUS , BILL_PAYMETHOD , BILL_PAYMENTTYPE FROM BILL ORDER BY BILL_ID";
+	private static final String GET_ONE_BY_ELE_CONTRACT_ID = 
+			"select * from bill where ele_con_id =?";
+	private static final String GET_LIST_BETWEEN_ELE_CONTRACT_RENT_TIME =//查詢帳單日期
+			"select * from bill where ele_con_id=? and bill_date between" + 
+			"(select ele_rent_f_day from ele_contract where ele_con_id=?)" + 
+			"and (select ele_rent_l_day from ele_contract where ele_con_id=? )";
+	
 	
 	@Override//新增
 	public void insert(BillVO bVO) {
@@ -297,61 +305,145 @@ public class BillJDBCDAO implements BillDAO_interface{
 		return list;
 	}
 
-//	@Override//交易新增
-//	public void insert(Connection con, List <BillVO> billVOlist ,String eleConKey) {
-//		// TODO Auto-generated method stub
-//		PreparedStatement pstmt = null;
-//		
-//		try {
-//			Class.forName(driver);
-//			con = DriverManager.getConnection(url, userid, passwd);
-//			pstmt = con.prepareStatement(INSERT_STMT);
-//			
-//			for(BillVO billVO : billVOlist) {
-//				pstmt.setString(1, eleConKey);
-//				pstmt.setString(2, billVO.getEmp_id());
-//				pstmt.setInt(3, billVO.getBill_pay());
-//				pstmt.setDate(4, billVO.getBill_date());
-//				pstmt.setDate(5, billVO.getBill_producetime());
-//				pstmt.setString(6, billVO.getBill_status());
-//				pstmt.setString(7, billVO.getBill_paymethod());
-//				pstmt.setString(8, billVO.getBill_paymenttype());
-//				pstmt.executeUpdate();
-//			}
-//			/*
-//			 "INSERT INTO BILL (BILL_ID,ELE_CON_ID,EMP_ID,BILL_PAY,BILL_DATE,BILL_PRODUCETIME," + 
-//			 "BILL_STATUS,BILL_PAYMETHOD,BILL_PAYMENTTYPE) VALUES (to_char(sysdate,'yyyymmdd')||'-B'||LPAD(BILL_SEQ.NEXTVAL,5,0)," + 
-//			 "?,?,?,?,?,?,?,?)"
-//			 */
-//			
-//		} catch (ClassNotFoundException e){
-//			throw new RuntimeException("Couldn't load database driver. "
-//					+ e.getMessage());
-//		}catch (SQLException se) {
-//			try {
-//				con.rollback();
-//			} catch (SQLException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
+	@Override
+	public List<BillVO> findByEleContractId(String ele_con_id) {
+		// TODO Auto-generated method stub
+		List<BillVO> list = new ArrayList();
+		BillVO bVO = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_ONE_BY_ELE_CONTRACT_ID);
+			//private static final String GET_ONE_BY_ELE_CONTRACT_ID = 
+			//"select * from bill where ele_con_id =?";
+			pstmt.setString(1, ele_con_id);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				bVO = new BillVO();
+				bVO.setBill_id(rs.getString("BILL_ID"));
+				bVO.setEle_con_id(rs.getString("ELE_CON_ID"));
+				bVO.setBill_pay(rs.getInt("BILL_PAY"));
+				bVO.setBill_date(rs.getDate("BILL_DATE"));
+				bVO.setBill_producetime(rs.getDate("BILL_PRODUCETIME"));
+				bVO.setBill_status(rs.getString("BILL_STATUS"));
+				bVO.setBill_paymethod(rs.getString("BILL_PAYMETHOD"));
+				bVO.setBill_paymenttype(rs.getString("BILL_PAYMENTTYPE"));
+				
+				list.add(bVO);
+			}
+		
+		}  catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+		} catch(SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+		} finally {
+			if(rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace(System.err);
+				}
+			}
+			if(pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace(System.err);
+				}
+			}
+			if(con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		
+		return list;
+	}
+
+	@Override//查出電子合約的租賃期限的所有帳單
+	public List<BillVO> findByEleContractRentTime(String ele_con_id) {
+		// TODO Auto-generated method stub
+		List<BillVO> list = new ArrayList();
+		BillVO bVO = null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_LIST_BETWEEN_ELE_CONTRACT_RENT_TIME);
+			/*"select * from bill where ele_con_id=? and bill_date between" + 
+			"(select ele_rent_f_day from ele_contract where ele_con_id=?)" + 
+			"and (select ele_rent_l_day from ele_contract where ele_con_id=? )";
+			*/
+			System.out.println("ele_con_id " + ele_con_id);
+			pstmt.setString(1, ele_con_id);
+			pstmt.setString(2, ele_con_id);
+			pstmt.setString(3, ele_con_id);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				
+				bVO = new BillVO();
+				bVO.setBill_id(rs.getString("BILL_ID"));
+				bVO.setEle_con_id(rs.getString("ELE_CON_ID"));
+				bVO.setBill_pay(rs.getInt("BILL_PAY"));
+				bVO.setBill_date(rs.getDate("BILL_DATE"));
+				bVO.setBill_producetime(rs.getDate("BILL_PRODUCETIME"));
+				bVO.setBill_status(rs.getString("BILL_STATUS"));
+				bVO.setBill_paymethod(rs.getString("BILL_PAYMETHOD"));
+				bVO.setBill_paymenttype(rs.getString("BILL_PAYMENTTYPE"));
+				
+				list.add(bVO);
+			}
+		
+		}  catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+		} catch(SQLException se) {
 //			throw new RuntimeException("A database error occured. "
 //					+ se.getMessage());
-//		}finally {
-//			if (pstmt != null) {
-//				try {
-//					pstmt.close();
-//				} catch (SQLException se) {
-//					se.printStackTrace(System.err);
-//				}
-//			}
-//			if (con != null) {
-//				try {
-//					con.close();
-//				} catch (Exception e) {
-//					e.printStackTrace(System.err);
-//				}
-//			}
-//		}
-//	}
+			se.printStackTrace();
+		} finally {
+			if(rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace(System.err);
+				}
+			}
+			if(pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace(System.err);
+				}
+			}
+			if(con != null) {
+				try {
+					con.close();
+				} catch (SQLException e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		
+		return list;
+	}
+
 	
 }

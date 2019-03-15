@@ -43,15 +43,12 @@ h4 {
 	<div class="container-fluid">
 		<div class="row justfy-content-center">
 			<div class="row col-2">
-				
 				<%-- 錯誤表列 --%>
 				<c:if test="${not empty errorMsgs}">
-					<font style="color: red">請修正以下錯誤:</font>
-					<ul>
+					<font style="color: red"></font>
 						<c:forEach var="message" items="${errorMsgs}">
-							<li style="color: red">${message}</li>
+							<p style="color: red">${message}</p><br>
 						</c:forEach>
-					</ul>
 				</c:if>
 			</div>
 			<div class="row col-10	">
@@ -108,8 +105,19 @@ h4 {
 							<td>${eleConVO.ele_rent_f_day}</td>
 							<td>${eleConVO.ele_rent_l_day}</td>
 							<td>${eleConVO.ele_singdate}</td>
-							<td>${eleConVO.ele_con_status}</td>
-							<td>${eleConVO.bill_paymenttype}</td>
+							
+							<c:forEach var="Ele_con_status" items="${Ele_con_statusList}">
+								<c:if test="${Ele_con_status.status_no eq eleConVO.ele_con_status}">
+									<td>${Ele_con_status.status_name}</td>
+								</c:if>
+							</c:forEach>
+							
+							<c:forEach var="Bill_PaymentType" items="${Bill_PaymentTypeMap}">
+								<c:if test="${Bill_PaymentType.key eq eleConVO.bill_paymenttype}">
+									<td>${Bill_PaymentType.value.type_name}</td>
+								</c:if>
+							</c:forEach>
+							
 							<td>${eleConVO.ele_con_note}</td>
 							<td>
 								<form method="post" action="ele_contract.do"
@@ -118,7 +126,8 @@ h4 {
 										value="${eleConVO.ele_con_id}"> 
 									<input type="hidden"
 										name="action" value="getOne_For_Update"> 
-									<input type="submit" value="修改">
+									<input type="submit" value="修改" 
+											style='display:${(eleConVO.ele_con_status eq "s1") ? "" : "none"}'>
 								</form>
 							</td>
 						</tr>
