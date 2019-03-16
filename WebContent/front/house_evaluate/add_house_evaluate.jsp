@@ -1,9 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.goodhouse.house_evaluate.model.*"%>
-
+<%@ page import="com.goodhouse.member.model.*"%>
 <%
-  House_EvaluateVO heVO = (House_EvaluateVO) request.getAttribute("House_EvaluateVO");
+	House_EvaluateVO heVO = (House_EvaluateVO) request.getAttribute("House_EvaluateVO");
+	MemVO memVO = (MemVO)session.getAttribute("memVO");
 //House_EvaluateServlet.java (Concroller) 存入req的House_EvaluateVO物件 (包括幫忙取出的House_EvaluateVO 也包括輸入資料錯誤時的House_EvaluateVO物件)
 %>
 

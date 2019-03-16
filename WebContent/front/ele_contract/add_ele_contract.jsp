@@ -10,7 +10,7 @@
 <%
 	ContractVO conVO = (ContractVO) session.getAttribute("conVO");
 	Ele_ContractVO eleConVO = (Ele_ContractVO) request.getAttribute("eleConVO");
-	MemVO mVO = (MemVO) session.getAttribute("mVO");
+	MemVO mVO = (MemVO) session.getAttribute("memVO");
 %>
 
 <!doctype html>

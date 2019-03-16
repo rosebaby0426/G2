@@ -133,56 +133,71 @@ AppointVO appointVO = appointSvc.getOneAppoint(appoint_id);
 						</div>
 					</div>
 				</div>
-				<div class="row">131231311232+檢舉按鈕</div>
+				<div class="row">131231311232+檢舉按鈕
+					<input type="submit" value="檢舉">
+				</div>
 				<div class="row">
 					<div class="col-sm-12">
 						<ul class="nav nav-tabs" role="tablist">
-							<li class="nav-item"><a class="nav-link active"
-								href="#profile" role="tab" data-toggle="tab" id="note">備註</a></li>
-							<li class="nav-item"><a class="nav-link" href="#buzz"
-								role="tab" data-toggle="tab">問與答</a></li>
-							<li class="nav-item"><a class="nav-link" href="#references"
-								role="tab" data-toggle="tab">預約行程</a></li>
+							<li class="nav-item">
+								<a class="nav-link active" href="#profile" role="tab" data-toggle="tab" id="note">備註</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#buzz" role="tab" data-toggle="tab">問與答</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#references" role="tab" data-toggle="tab">預約行程</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#evaluate" role="tab" data-toggle="tab">我要評價</a>
+							</li>
 						</ul>
 
 						<!-- Tab panes -->
 						<div class="tab-content">
+						
 							<div role="tabpanel" class="tab-pane fade in active" id="profile">
 								<div class="myrow"><%=houVO.getHou_note()%></div>
-
 							</div>
+							
 							<div role="tabpanel" class="tab-pane fade" id="buzz">問與答</div>
+							
 							<div role="tabpanel" class="tab-pane fade" id="references">
-							<FORM METHOD="post" ACTION="appoint.do" name="form1">
-							<table>
-							<tr>
-								<td>
-								<c:forEach var="houNoAppVO" items="${houNoAppSvc.all}">
-									<c:if test="${houNoAppVO.hou_id == houVO.hou_id }">
-			                    		<div><h5>不可預約時間</h5></div>
-			                    		<div><h5>${houNoAppVO.hou_noapp_date}</h5></div>
-			                    	</c:if>
-                				</c:forEach>
-                				</td><p>
-							</tr>
 							
-							<tr>
-							<td>
-								選擇預約看房時間<br>
-								<input name="appoint_date" id="f_date1" type="text">
-							
-							</td>
-							</tr>
-							
-							</table>
-							<input type="hidden" name="action" value="insert">
-							<input type="submit" value="送出新增">
-							</FORM>	
-								
-								
+								<FORM METHOD="post" ACTION="appoint.do" name="form1">
+									<table>
+									<tr>
+										<td>
+										<c:forEach var="houNoAppVO" items="${houNoAppSvc.all}">
+											<c:if test="${houNoAppVO.hou_id == houVO.hou_id }">
+					                    		<div><h5>不可預約時間</h5></div>
+					                    		<div><h5>${houNoAppVO.hou_noapp_date}</h5></div>
+					                    	</c:if>
+		                				</c:forEach>
+		                				</td><p>
+									</tr>
+									
+									<tr>
+										<td>
+											選擇預約看房時間<br>
+											<input name="appoint_date" id="f_date1" type="text">
+										</td>
+									</tr>
+									</table>
+									<input type="hidden" name="action" value="insert">
+									<input type="submit" value="送出新增">
+								</FORM>	
 							</div>
+							
+							<div role="tabpanel" class="tab-pane fade in active" id="evaluate">
+								<form action="">
+									13131
+								</form>
+							</div>
+							
 						</div>
 					</div>
+					
 				</div>
 			</div>
 		</div>

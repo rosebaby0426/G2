@@ -5,7 +5,7 @@
 <%@ page import="com.goodhouse.member.model.*"%>
 
 <%
-    String mem_id = ((MemVO)session.getAttribute("mVO")).getMem_id();
+    String mem_id = ((MemVO)session.getAttribute("memVO")).getMem_id();
 	Ele_ContractService eleConSvc = new Ele_ContractService();
 	List<Ele_ContractVO> list = eleConSvc.getAllForEle_ConByMem_id(mem_id);
 	pageContext.setAttribute("list",list);

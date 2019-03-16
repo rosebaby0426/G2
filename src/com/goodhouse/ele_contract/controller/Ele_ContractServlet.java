@@ -58,7 +58,7 @@ public class Ele_ContractServlet extends HttpServlet{
 				for(MemVO mVO : mSvc.getAll()) {
 					if(mem_email.equals(mVO.getMem_email())) {
 //						mem_id = mVO.getMem_id();
-						req.getSession().setAttribute("mVO",mVO);
+						req.getSession().setAttribute("memVO",mVO);
 					}
 				}
 				/**3查詢完成準備轉交****/
@@ -629,20 +629,7 @@ public class Ele_ContractServlet extends HttpServlet{
 			}
 		}
 		
-		//TODO 顯示房客的所有列表
-		if("front_getMemEle_Contract".equals(action)) {
-			
-				/****1接收請求參數************************/
-				/*****2準備查詢************************/
-				/*****3查詢完成準備轉交************************/
-				req.setAttribute("lastPage", true);
-				String url = "/front/ele_contract/mem_listAll_ele_contract.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url);
-				successView.forward(req, res);
-				
-		}
-		
-		//房東輸入房客姓名取得該房東的所有電子合約列表
+		//TODO 房東輸入房客姓名取得該房東的所有電子合約列表
 		if("lanGetMemEle_ContractByName".equals(action)) {
 			
 			List<String> errorMsgs = new LinkedList<String>();

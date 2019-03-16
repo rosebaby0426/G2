@@ -58,9 +58,11 @@
 					          房客
 					        </a>
 					        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					          <a class="dropdown-item" href="<%=request.getContextPath()%>/front/ele_contract/mem_select_page.jsp">我的合約列表</a>
+					          <a class="dropdown-item" href="<%=request.getContextPath()%>/front/ele_contract/mem_listAll_ele_contract.jsp">我的合約列表</a>
 					          <a class="dropdown-item" href="<%=request.getContextPath()%>/front/bill/mem_select_page.jsp">我的帳單列表</a>
 					          <a class="dropdown-item" href="<%=request.getContextPath()%>">我的積分紀錄</a>
+					          <a class="dropdown-item" href="<%=request.getContextPath()%>/front/house_evaluate/listAll_house_evaluate.jsp">我的評價</a>
+					          <a class="dropdown-item" href="<%=request.getContextPath()%>/front/house_evaluate/add_house_evaluate.jsp">我要評價</a>
 					        </div>
 					    </li>
                    </li>

@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 import com.goodhouse.house.model.*;
@@ -35,6 +36,7 @@ public class House_EvaluateServlet extends HttpServlet{
 		
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
+		HttpSession session = req.getSession();
 		
 		//單一查詢
 		if ("getOne_For_Display".equals(action)) { //來自select_page.jsp的要求
@@ -253,8 +255,6 @@ public class House_EvaluateServlet extends HttpServlet{
 		if ("insert".equals(action)) {
 			
 			List<String> errorMsgs = new LinkedList<String>();
-			// Store this set in the request scope, in case we need to
-			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
 			
 			MemService mSvc = new MemService();
@@ -335,5 +335,6 @@ public class House_EvaluateServlet extends HttpServlet{
 				failureView.forward(req, res);
 			}
 		}
+		
 	}
 }

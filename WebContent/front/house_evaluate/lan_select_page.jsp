@@ -36,22 +36,36 @@
 
 </head>
 <body bgcolor='white'>
-	<jsp:include page="/File/frontTemplate.jsp" />
+	<jsp:include page="/FrontHeaderFooter/Header.jsp" />
 	
-
+	<div class="container">
+		<div class="row justfy-content-center">
+			<div class="row col-12">
+			
+				<div>
+					<%-- 錯誤表列 --%>
+					<c:if test="${not empty errorMsgs}">
+						<font style="color: red"></font>
+							<c:forEach var="message" items="${errorMsgs}">
+								<p style="color: red">${message}</p>
+							</c:forEach>
+					</c:if>
+				</div>
+				
+				<div>
+					<form method="post" action="listAll_house_evaluate.jsp">
+						<input type="hidden" name="action" value="listAll_house_evaluate">
+						<input type="submit" value="查看所有評價" class="btn btn-outline-success btn-lg btn-block">
+					</form>
+				</div>
+				
+			</div>
+		</div>
+	
+	</div>
 	<h3>資料查詢:</h3>
 	
-	<c:if test="${not empty errorMsgs}">
-		<font style="color:red">請修正以下錯誤:</font>
-		<ul>
-		    <c:forEach var="message" items="${errorMsgs}">
-				<li style="color:red">${message}</li>
-			</c:forEach>
-		</ul>
-	</c:if>
-	
 	<ul>
-	  <li><a href='listAll_house_evaluate.jsp'>List</a> 所有評價列表  <br><br></li>
 	  
 	  <li>
 	    <FORM METHOD="post" ACTION="house_evaluate.do" >
@@ -70,11 +84,7 @@
   <li><a href='add_house_evaluate.jsp'>Add</a> 新增評價 </li>
 </ul>
 
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="<%=request.getContextPath()%>/bootstrap/jquery-3.3.1.slim.min.js"></script>
-<script src="<%=request.getContextPath()%>/bootstrap/popper.min.js"></script>
-<script src="<%=request.getContextPath()%>/bootstrap/js/bootstrap.min.js"></script>
 
+<jsp:include page="/FrontHeaderFooter/Footer.jsp" />
 </body>
 </html>
