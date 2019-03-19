@@ -42,8 +42,8 @@
 			<jsp:useBean id="houSvc" scope="page" class="com.goodhouse.house.model.HouseService"/>
 				<div>房   屋   租   賃   契   約   書</div>
 				<div>
-				立契約書人：出租人  <b> ${memSvc.getOneMem(lanSvc.getOneLan(eleConVO.lan_id).mem_id).mem_name}</b>（以下簡稱甲方）、
-				承租人  <b> ${memSvc.getOneMem(eleConVO.mem_id).mem_name}</b>（以下簡稱乙方），茲為房屋一部租賃、雙方議定契約條款如下：<br>
+				立契約書人：出租人  <b>${memSvc.getOneMem(lanSvc.getOneLan(eleConVO.lan_id).mem_id).mem_name}</b>（以下簡稱甲方）、
+				承租人  <b>${memSvc.getOneMem(eleConVO.mem_id).mem_name}</b>（以下簡稱乙方），茲為房屋一部租賃、雙方議定契約條款如下：<br>
 				第一條︰租賃房屋標示︰座落於<b>${houSvc.getOneHouse(eleConVO.hou_id).hou_address}</b>之鋼筋水泥建築洋式樓房。<br>
 				第二條︰出租部份︰廁所浴室及廚房共用（即租用一樓者共同使用一樓之衛生設備。租用二樓者共同使用二樓之衛生設備）。<br>
 				第三條︰租賃期間︰共<b><input type="text" name="ele_rent_time" value="${eleConVO.ele_rent_time} " class="btn btn-light"/></b>個月

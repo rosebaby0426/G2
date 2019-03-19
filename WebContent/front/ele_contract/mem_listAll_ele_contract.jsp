@@ -89,33 +89,33 @@
 							</c:forEach>
 							
 				      		<td>
-								<form method="post" action="apply_conturct.do">
+								<form method="post" action="<%=request.getContextPath()%>/front/ele_contract/apply_conturct.do">
 									<input type="hidden" name="action" value="apply_conturct">
 									<input type="hidden" name="ele_con_id" value="${eleConVO.ele_con_id}">
 									<input type="hidden" name="appConChoose" value="a2">
 									<input class="" type="submit" value="續約" id="renewORrelease" 
 													style='display:${(eleConVO.ele_con_status eq "s2") ? "" : "none"}'>
 								</form>
-								<form method="post" action="apply_conturct.do">
+								<form method="post" action="<%=request.getContextPath()%>/front/ele_contract/apply_conturct.do">
 									<input type="hidden" name="action" value="apply_conturct">
 									<input type="hidden" name="ele_con_id" value="${eleConVO.ele_con_id}">
 									<input type="hidden" name="appConChoose" value="a1">
 									<input class="" type="submit" value="解約" id="renewORrelease" 
 													style='display:${(eleConVO.ele_con_status eq "s2") ? "" : "none"}'>
 								</form>
-								<form method="post" action="apply_conturct.do">
+								<form method="post" action="<%=request.getContextPath()%>/front/ele_contract/apply_conturct.do">
 									<input type="hidden" name="action" value="eleConCheck">
 									<input type="hidden" name="ele_con_id" value="${eleConVO.ele_con_id}">
 									<input class="" type="submit" value="確認" id="eleConCheck" 
 													style='display:${(eleConVO.ele_con_status eq "s1") ? "" : "none"}'>
 								</form>
-								<form method="post" action="apply_conturct.do">
+								<form method="post" action="<%=request.getContextPath()%>/front/ele_contract/apply_conturct.do">
 									<input type="hidden" name="action" value="eleConCancle">
 									<input type="hidden" name="ele_con_id" value="${eleConVO.ele_con_id}">
 									<input class="" type="submit" value="取消合約" id="eleConCancle" 
 													style='display:${(eleConVO.ele_con_status eq "s1") ? "" : "none"}'>
 								</form>
-								<form method="post" action="ele_contract.do">
+								<form method="post" action="<%=request.getContextPath()%>/front/ele_contract/ele_contract.do">
 									<input type="hidden" name="action" value="getOne_For_look">
 									<input type="hidden" name="ele_con_id" value="${eleConVO.ele_con_id}">
 									<input class="" type="submit" value="查看" id="eleConCancle" 

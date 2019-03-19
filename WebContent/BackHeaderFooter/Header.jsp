@@ -33,10 +33,8 @@
 					房屋管理</a>
 					        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 					          <a class="dropdown-item" href="<%=request.getContextPath()%>/back/house/listAllHouse.jsp">房屋列表</a>
-					          <a class="dropdown-item" href="<%=request.getContextPath()%>">房屋維修</a>
 					          <a class="dropdown-item" href="<%=request.getContextPath()%>"></a>
-					          <a class="dropdown-item" href="<%=request.getContextPath()%>">我的評價紀錄</a>
-					          <a class="dropdown-item" href="<%=request.getContextPath()%>">我的最愛追蹤</a>
+					          <a class="dropdown-item" href="<%=request.getContextPath()%>"></a>
 					        </div>
                        </li>
   <!-- 廣告 --> 
@@ -58,7 +56,7 @@
 					電子合約管理</a>
 					        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 					          <a class="dropdown-item" href="<%=request.getContextPath()%>">電子合約列表</a>
-					          <a class="dropdown-item" href="<%=request.getContextPath()%>">電子合約審核</a>
+					          <a class="dropdown-item" href="<%=request.getContextPath()%>">電子合約列表</a>
 					          <a class="dropdown-item" href="<%=request.getContextPath()%>"></a>
 					          <a class="dropdown-item" href="<%=request.getContextPath()%>"></a>
 					          <a class="dropdown-item" href="<%=request.getContextPath()%>"></a>

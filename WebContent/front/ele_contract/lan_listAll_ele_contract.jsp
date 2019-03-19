@@ -9,6 +9,7 @@
 	String mem_id = ((MemVO)session.getAttribute("memVO")).getMem_id();
 	Ele_ContractService eleConSvc = new Ele_ContractService();
 	LanService lanSvc = new LanService();
+	
 	List<Ele_ContractVO> list = eleConSvc.getAllForEle_ConByLan_id(lanSvc.getOneLanByMemId(mem_id).getLan_id());
 	pageContext.setAttribute("list",list);
 %>
@@ -97,7 +98,7 @@
 									<input type="hidden" name="ele_con_id" value="${eleConVO.ele_con_id}"> 
 									<input type="hidden" name="action" value="getOne_For_look"> 
 									<input type="submit" value="查看" 
-											style='display:${(eleConVO.ele_con_status != "s1") ? "" : "none"}'>
+											style='display:${(eleConVO.ele_con_status eq "s1") ? "" : "none"}'>
 								</form>
 							</td>
 				    	</tr>

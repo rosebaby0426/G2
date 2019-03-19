@@ -49,16 +49,16 @@
 			<jsp:useBean id="lanSvc" scope="page" class="com.goodhouse.landlord.model.LanService" />
 <%-- 		<%@ include file="page1.file" %> --%>
 		  	<tbody>
-			    <tr>
 				<c:forEach var="House_EvaluateVO" items="${list}" >
+			    <tr>
 					<c:if test="${House_EvaluateVO.hou_id eq houSvc.getOneByLanId(lanSvc.getOneLanByMemId(memVO.mem_id).lan_id).hou_id}">
 					<td>${mSvc.getOneMem(House_EvaluateVO.mem_id).mem_name}</td>
 					<td>${houSvc.getOneHouse(House_EvaluateVO.hou_id).hou_address}</td>
 					<td>${House_EvaluateVO.hou_eva_grade}</td>
 					<td>${House_EvaluateVO.hou_eva_content}</td>
 					</c:if>
-				</c:forEach>
 			    </tr>
+				</c:forEach>
 		  	</tbody>
 		</table>
 <%-- 	<%@ include file="page2.file" %> --%>
