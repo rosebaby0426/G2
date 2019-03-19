@@ -20,7 +20,6 @@
 	<!-- 工作區開始 -->
 
 	<div class="container">
-		<div class="row justfy-content-center">
 			<div class="row col-2">
 				<p>回首頁<a href="lan_select_page.jsp"><img src="<%=request.getContextPath()%>/share_pic/back1.gif" width="100" height="30 !important" ></a></p><br>
 				<c:if test="${not empty errorMsgs}">
@@ -81,8 +80,6 @@
 								</p>
 				</div>
 			</div>
-		</div>
-	
 	</div>
 	<!-- 工作區結束 -->
 	<jsp:include page="/FrontHeaderFooter/Footer.jsp" />

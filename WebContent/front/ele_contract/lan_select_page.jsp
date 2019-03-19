@@ -33,7 +33,7 @@
 				<div style="width: 50rem">
 					<div class="card text-center" style="width: 50rem;">
 						<div class="card-body">
-							<form method="post" action="ele_contract.do">
+							<form method="post" action="<%=request.getContextPath()%>/front/ele_contract/lan_listAll_ele_contract.jsp">
 								<input type="hidden" name="action" value="lan_listAll">
 								<input type="submit" value="查看所有合約" class="btn btn-outline-success btn-lg btn-block">
 							</form>
@@ -72,6 +72,13 @@
 						<div class="card-body">
 							<form method="post" action="<%=request.getContextPath()%>/front/ele_contract/select_contract.jsp">
 								<input type="submit" value="新增電子合約" class="btn btn-outline-success btn-lg btn-block">
+							</form>
+						</div>
+					</div>
+					<div class="card text-center" style="width: 50rem;">
+						<div class="card-body">
+							<form method="post" action="<%=request.getContextPath()%>/front/bill/lan_listAll_bill.jsp">
+								<input type="submit" value="帳單列表" class="btn btn-outline-success btn-lg btn-block">
 							</form>
 						</div>
 					</div>

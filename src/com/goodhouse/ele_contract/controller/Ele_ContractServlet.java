@@ -6,7 +6,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -270,7 +278,7 @@ public class Ele_ContractServlet extends HttpServlet{
 				} else if(!mem_idnumber.matches(mem_idnumberReg)) {
 					errorMsgs.add("會員身分證字號格式(一個大寫英文字母 + 9個數字 所組成)是錯誤，請重新輸入 ");
 				}
-				//比對房東姓名
+				//房東
 				String lan_id = req.getParameter("lan_id");;
 				
 				//比對房東身分證字號
@@ -283,53 +291,77 @@ public class Ele_ContractServlet extends HttpServlet{
 				}
 				//比對房屋資料
 				String hou_id = req.getParameter("hou_id");
+				
 				//租金比對
-				String rent_money = req.getParameter("ele_rent_money").trim();
+				String rent_money = req.getParameter("ele_rent_money");
 				String rent_moneyReq = "^[0-9]*$";
-				if(!rent_money.matches(rent_moneyReq)) {
+				if(rent_money == null || rent_money.trim().length() == 0 ) {
+					errorMsgs.add("租金不能空白，請重新輸入");
+				} else if(!rent_money.matches(rent_moneyReq)) {
 					errorMsgs.add("租金不能含有字元或符號，只能是數字，請重新輸入");
 				}
-				Integer ele_rent_money = Integer.parseInt(rent_money);
-				if(ele_rent_money <= 0 ) {
-					errorMsgs.add("租金不能空白、0或負數，請重新輸入");
+				Integer ele_rent_money = null;
+				try {
+					ele_rent_money = Integer.parseInt(rent_money);
+					if(ele_rent_money <= 0 ) {
+						errorMsgs.add("租金不能是0或負數，請重新輸入");
+					}
+				} catch (NumberFormatException ne) {
+					errorMsgs.add("租金不能含有字元或符號，只能是數字，請重新輸入");
 				}
+				
 				//押金比對
 				String deposit_money = req.getParameter("ele_deposit_money");
 				String deposit_moneyReq = "^[0-9]*$";
-				if(!deposit_money.matches(deposit_moneyReq)) {
-					errorMsgs.add("租金不能含有字元或符號，只能是數字，請重新輸入");
-				} 
-				Integer ele_deposit_money = Integer.parseInt(deposit_money);
-				if(ele_deposit_money <= 0) {
-					errorMsgs.add("押金不能空白、0或負數，請重新輸入");
-				} 
+				if(deposit_money == null || deposit_money.trim().length() == 0) {
+					errorMsgs.add("押金不能空白，請重新輸入");
+				} else if(!deposit_money.matches(deposit_moneyReq)) {
+					errorMsgs.add("押金不能含有字元或符號，只能是數字，請重新輸入");
+				}
+				Integer ele_deposit_money = null;
+				try {
+					ele_deposit_money = Integer.parseInt(deposit_money);
+					if(ele_deposit_money <= 0) {
+						errorMsgs.add("押金不能是0或負數，請重新輸入");
+					} 
+				} catch (NumberFormatException ne) {
+					errorMsgs.add("押金不能含有字元或符號，只能是數字，請重新輸入");
+				}
+				
 				//租賃期限比對
 				String rent_time = req.getParameter("ele_rent_time");
 				String rent_timeReq = "^[0-9]*$";
-				if(!rent_time.matches(rent_timeReq)) {
+				if(rent_time == null || rent_time.trim().length() == 0) {
+					errorMsgs.add("租金不能空白，請重新輸入");
+				} else if(!rent_time.matches(rent_timeReq)) {
 					errorMsgs.add("租賃期限不能含有字元或符號，只能是數字，請重新輸入");
 				}
-				Integer ele_rent_time = Integer.parseInt(rent_time);
-				if(ele_rent_time <= 0) {
-					errorMsgs.add("租賃期限不能空白、0或負數，請重新輸入");
-				} 
+				Integer ele_rent_time = null;
+				try {
+					ele_rent_time = Integer.parseInt(rent_time);
+					if(ele_rent_time <= 0) {
+						errorMsgs.add("租賃期限不能是0或負數，請重新輸入");
+					}
+				} catch (NumberFormatException ne) {
+					errorMsgs.add("租賃期限不能含有字元或符號，只能是數字，請重新輸入");
+				}
 				//租賃起訖日
 				Date ele_rent_f_day = null;
 				
 				try {
 					ele_rent_f_day = Date.valueOf(req.getParameter("ele_rent_f_day"));
 				} catch (IllegalArgumentException e) {
-					ele_rent_f_day = new Date(System.currentTimeMillis());
+//					ele_rent_f_day = new Date(System.currentTimeMillis());
 					errorMsgs.add("請輸入日期");
 				}
-				//租賃結束日
 				
+				//租賃結束日
 				Date ele_rent_l_day = null;
 				
 				try {
 					ele_rent_l_day = Date.valueOf(req.getParameter("ele_rent_l_day"));
 				} catch (IllegalArgumentException e) {
-					ele_rent_l_day = new Date(System.currentTimeMillis());
+//					ele_rent_l_day = new Date(System.currentTimeMillis());
 					errorMsgs.add("請輸入日期");
 				}
 				//簽約日期
@@ -338,7 +370,7 @@ public class Ele_ContractServlet extends HttpServlet{
 				try {
 					ele_singdate = Date.valueOf(req.getParameter("ele_singdate"));
 				} catch (IllegalArgumentException e) {
-					ele_singdate = new Date(System.currentTimeMillis());
+//					ele_singdate = new Date(System.currentTimeMillis());
 					errorMsgs.add("請輸入日期");
 				}
 				//合約狀態
@@ -380,6 +412,18 @@ public class Ele_ContractServlet extends HttpServlet{
 				eleConSvc.addEC(eleConVO);
 				req.setAttribute("lastPage", true);
 				
+				/********新增完畢電子合約，寄e-mail通知房客**********************/
+				
+				String to = "rosebaby0426@gmail.com";
+			      
+			    String subject = "電子合約通知";
+			    LanService lanSvc = new LanService();
+//			    String passRandom = "慈慈測試";
+			    String messageText = "Hello! " + mSvc.getOneMem(mem_id).getMem_name() + "，" + mSvc.getOneMem(lanSvc.getOneLan(lan_id).getMem_id()).getMem_name()+ "已經將合約寄給妳囉，盡快確認喔"; 
+			       
+			    MailService mailService = new MailService();
+			    mailService.sendMail(to, subject, messageText);
+				
 				/*******3新增成功，準備轉交****************************/
 				List<Ele_ContractVO> ele_contractForLanList = eleConSvc.getAllForEle_ConByLan_id(lan_id);
 				req.getSession().setAttribute("ele_contractForLanList", ele_contractForLanList);
@@ -388,6 +432,7 @@ public class Ele_ContractServlet extends HttpServlet{
 				successView.forward(req, res);
 				
 			}catch (Exception e) {
+				e.printStackTrace();
 				errorMsgs.add("資料錯誤");
 				RequestDispatcher failureView = req
 						.getRequestDispatcher("/front/ele_contract/add_ele_contract.jsp");
@@ -456,44 +501,75 @@ public class Ele_ContractServlet extends HttpServlet{
 				//房屋編號
 				String hou_id = req.getParameter("hou_id");
 				
-				//租金
-				String rent_money = req.getParameter("ele_rent_money").trim();
+				//租金比對
+				String rent_money = req.getParameter("ele_rent_money");
 				String rent_moneyReq = "^[0-9]*$";
-				if(!rent_money.matches(rent_moneyReq)) {
+				if(rent_money == null || rent_money.trim().length() == 0 ) {
+					errorMsgs.add("租金不能空白，請重新輸入");
+				} else if(!rent_money.matches(rent_moneyReq)) {
 					errorMsgs.add("租金不能含有字元或符號，只能是數字，請重新輸入");
 				}
-				Integer ele_rent_money = Integer.parseInt(rent_money);
-				if(ele_rent_money <= 0 ) {
-					errorMsgs.add("租金不能空白、0或負數，請重新輸入");
+				Integer ele_rent_money = null;
+				try {
+					ele_rent_money = Integer.parseInt(rent_money);
+					if(ele_rent_money <= 0 ) {
+						errorMsgs.add("租金不能是0或負數，請重新輸入");
+					}
+				} catch (NumberFormatException ne) {
+					errorMsgs.add("租金不能含有字元或符號，只能是數字，請重新輸入");
 				}
 				
 				//押金比對
 				String deposit_money = req.getParameter("ele_deposit_money");
 				String deposit_moneyReq = "^[0-9]*$";
-				if(!deposit_money.matches(deposit_moneyReq)) {
-					errorMsgs.add("租金不能含有字元或符號，只能是數字，請重新輸入");
-				} 
-				Integer ele_deposit_money = Integer.parseInt(deposit_money);
-				if(ele_deposit_money <= 0) {
-					errorMsgs.add("押金不能空白、0或負數，請重新輸入");
-				} 
+				if(deposit_money == null || deposit_money.trim().length() == 0) {
+					errorMsgs.add("押金不能空白，請重新輸入");
+				} else if(!deposit_money.matches(deposit_moneyReq)) {
+					errorMsgs.add("押金不能含有字元或符號，只能是數字，請重新輸入");
+				}
+				Integer ele_deposit_money = null;
+				try {
+					ele_deposit_money = Integer.parseInt(deposit_money);
+					if(ele_deposit_money <= 0) {
+						errorMsgs.add("押金不能是0或負數，請重新輸入");
+					} 
+				} catch (NumberFormatException ne) {
+					errorMsgs.add("押金不能含有字元或符號，只能是數字，請重新輸入");
+				}
 				
 				//租賃期限比對
 				String rent_time = req.getParameter("ele_rent_time");
-				String rent_timeReq = "^[0-9]*$";
-				if(!rent_time.matches(rent_timeReq)) {
-					errorMsgs.add("租賃期限不能含有字元或符號，只能是數字，請重新輸入");
-				}
-				Integer ele_rent_time = Integer.parseInt(rent_time);
-				if(ele_rent_time <= 0) {
-					errorMsgs.add("租賃期限不能空白、0或負數，請重新輸入");
-				}
+//				String rent_timeReq = "[0-1][0-9]";
 				
-				//租賃起訖日
-				Date ele_rent_f_day = null;
+				if(rent_time == null || rent_time.trim().length() == 0) {
+					errorMsgs.add("租賃期限不能空白，請重新輸入");
+				} 
+//				else if(!rent_time.matches(rent_timeReq)) {
+//					errorMsgs.add("租賃期限不能含有字元或符號，只能是數字，請重新輸入");
+//				}
+				
+				Integer ele_rent_time = null;
 				
 				try {
-					ele_rent_f_day = Date.valueOf(req.getParameter("ele_rent_f_day"));
+					
+					if(rent_time != null) {
+						rent_time = rent_time.trim();
+					}
+					ele_rent_time = Integer.parseInt(rent_time);
+					if(ele_rent_time <= 0) {
+						errorMsgs.add("租賃期限不能是0或負數，請重新輸入");
+					}
+				} catch (NumberFormatException ne) {
+					errorMsgs.add("租賃期限只能是數字，請重新輸入");
+				}
+			
+				//租賃起訖日
+				Date ele_rent_f_day = null;
+				String ele_rent_f_day_str = req.getParameter("ele_rent_f_day");
+				try {
+					if(ele_rent_f_day_str != null) {
+						ele_rent_f_day = Date.valueOf(ele_rent_f_day_str);
+					}
 				} catch (IllegalArgumentException e) {
 					ele_rent_f_day = new Date(System.currentTimeMillis());
 					errorMsgs.add("請輸入日期");
@@ -524,6 +600,7 @@ public class Ele_ContractServlet extends HttpServlet{
 				
 				//繳費型態
 				String bill_paymenttype = req.getParameter("bill_paymenttype");
+				System.out.println("bill_paymenttype = "+bill_paymenttype);
 				
 				//合約備註
 				String ele_con_note = req.getParameter("ele_con_note");
@@ -547,8 +624,8 @@ public class Ele_ContractServlet extends HttpServlet{
 				eleConVO.setBill_paymenttype(bill_paymenttype);
 				eleConVO.setEle_con_note(ele_con_note);
 				
+				req.setAttribute("eleConVO", eleConVO); 
 				if (!errorMsgs.isEmpty()) {
-					req.setAttribute("eleConVO", eleConVO); 
 					// 含有輸入格式錯誤的eleConVO物件,也存入req
 					RequestDispatcher failureView = req
 							.getRequestDispatcher("/front/ele_contract/update_ele_contract.jsp");
@@ -567,6 +644,7 @@ public class Ele_ContractServlet extends HttpServlet{
 				successView.forward(req, res);
 				
 			} catch (Exception e) {
+				e.printStackTrace();
 				errorMsgs.add("修改資料失敗");
 				RequestDispatcher failureView = req
 						.getRequestDispatcher("/front/ele_contract/update_ele_contract.jsp");
@@ -706,44 +784,70 @@ public class Ele_ContractServlet extends HttpServlet{
 						.getRequestDispatcher("/front/ele_contract/lan_select_page.jsp");
 				failureView.forward(req, res);
 			}
+		
+		
 		}
-		
-		//顯示房東的所有電子合約列表
-		if("lan_listAll".equals(action)) {
+		//TODO 房東查資料
+		if("getOne_For_look".equals(action)) {
 			
-			List<String> errorMsgs = new LinkedList<String>();
-			req.setAttribute("errorMsgs", errorMsgs);
+			/*****1接收請求參數*************************/
+			String ele_con_id = req.getParameter("ele_con_id");
 			
-			try {
-				/*****1接收請求參數*************************/
-				MemVO lanMemVO = (MemVO) session.getAttribute("mVO");
-				String lan_mem_id = lanMemVO.getMem_id();
-				
-//				/******2開始查詢資料*****************/
-				String lan_id = null;
-				LanService lanSvc = new LanService();
-				lan_id = lanSvc.getOneLanByMemId(lan_mem_id).getLan_id();
-				
-				Ele_ContractService eleConSvc = new Ele_ContractService();
-				List<Ele_ContractVO> ele_contractForLanList = eleConSvc.getAllForEle_ConByLan_id(lan_id);
-//				if (ele_contractForLanList.isEmpty()) {
-//					errorMsgs.add("沒有資料");
-//				}
-				
-				/****3查詢完成準備轉交******************/
-				req.setAttribute("lastPage", true);
-				req.getSession().setAttribute("ele_contractForLanList", ele_contractForLanList);
-				String url = "/front/ele_contract/lan_listAll_ele_contract.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url);
-				successView.forward(req, res);
-				
-			} catch(Exception e) {
-				errorMsgs.add("沒有資料");
-				RequestDispatcher failureView = req.getRequestDispatcher("/front/ele_contract/lan_select_page.jsp");
-				failureView.forward(req, res);
-			}
+			/*****2開始查資料*********************/
+			Ele_ContractService eleConSvc = new Ele_ContractService();
+			Ele_ContractVO eleConVO = eleConSvc.getOneEC(ele_con_id);
+			
+			/*****3查詢成功準備轉交資料************************/
+			
+			req.setAttribute("eleConVO", eleConVO);
+			String url = "/front/ele_contract/lan_listOne_ele_contract.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url);
+			successView.forward(req, res);
+			
 		}
+	}
+	
+	
+	//TODO 寄出e-mail通知
+	public class MailService {
 		
-		
+		// 設定傳送郵件:至收信人的Email信箱,Email主旨,Email內容
+		public void sendMail(String to, String subject, String messageText) {
+				
+		   try {
+			   // 設定使用SSL連線至 Gmail smtp Server
+			   Properties props = new Properties();
+			   props.put("mail.smtp.host", "smtp.gmail.com");
+			   props.put("mail.smtp.socketFactory.port", "465");
+			   props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+			   props.put("mail.smtp.auth", "true");
+			   props.put("mail.smtp.port", "465");
+
+	       // ●設定 gmail 的帳號 & 密碼 (將藉由你的Gmail來傳送Email)
+	       // ●須將myGmail的【安全性較低的應用程式存取權】打開
+		     final String myGmail = "ixlogic.wu@gmail.com";//寄件者自己的帳號
+		     final String myGmail_password = "BBB45678";//寄件者自己的密碼
+		     javax.mail.Session session = javax.mail.Session.getInstance(props, new Authenticator() {
+				   protected PasswordAuthentication getPasswordAuthentication() {
+					   return new PasswordAuthentication(myGmail, myGmail_password);
+				   }
+			   });
+
+			   Message message = new MimeMessage(session);
+			   message.setFrom(new InternetAddress(myGmail));
+			   message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(to));
+			  
+			   //設定信中的主旨  
+			   message.setSubject(subject);
+			   //設定信中的內容 
+			   message.setText(messageText);
+
+			   Transport.send(message);
+			   System.out.println("傳送成功!");
+	     }catch (MessagingException e){
+		     System.out.println("傳送失敗!");
+		     e.printStackTrace();
+	     }
+	   }
 	}
 }

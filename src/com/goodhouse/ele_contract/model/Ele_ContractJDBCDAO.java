@@ -10,7 +10,6 @@ import java.util.List;
 
 import com.goodhouse.bill.model.BillJDBCDAO;
 import com.goodhouse.bill.model.BillVO;
-import com.goodhouse.keyword.model.KeyWordVO;
 
 public class Ele_ContractJDBCDAO implements Ele_ContractDAO_interface{
 	

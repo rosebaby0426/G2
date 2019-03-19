@@ -2,6 +2,9 @@ package com.goodhouse.house.model;
 
 import java.io.*;
 import java.util.List;
+import java.util.Map;
+
+import com.goodhouse.ele_contract.model.Ele_ContractVO;
 
 public class HouseService {
 	private HouseDAO_interface dao;
@@ -36,6 +39,10 @@ public class HouseService {
 		return ar1;
 	}
 	
+	public void addHouse(HouseVO houVO) {
+		dao.insert(houVO);
+	}
+	
 	public HouseVO updateHouse(String hou_id ,String hou_name, String hou_type, 
 			String hou_size, String hou_property, String hou_parkspace,
 			String hou_cook, String hou_managefee, String hou_address,
@@ -63,10 +70,9 @@ public class HouseService {
 	}
 	
 	//預留給 Struts 2 用的
-	public void update(HouseVO houVO) {
-		dao.update(houVO);
-	}
-
+		public void update(HouseVO houVO) {
+			dao.update(houVO);
+		}
 	
 	public void deleteHouse(String hou_id){
 		dao.delete(hou_id);
@@ -78,6 +84,14 @@ public class HouseService {
 	
 	public List<HouseVO> getAll(){
 		return dao.getAll();
+	}
+	public List<HouseVO> getAll(Map<String, String[]> map){
+		return dao.getAll(map);
+	}
+	
+	//利用lan_id查詢全部
+	public List<HouseVO> getAllFor_Hou_Lan_id(String lan_id){
+		return dao.getAllFor_Hou_Lan_id(lan_id);
 	}
 	
 	public HouseVO getOneByLanId(String lan_id) {

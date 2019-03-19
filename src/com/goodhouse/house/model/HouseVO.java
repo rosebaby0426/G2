@@ -5,7 +5,7 @@ public class HouseVO implements java.io.Serializable{
 	private String hou_name;
 	private String hou_type;
 	private String hou_size;
-	private String hou_property;//已出租，未出租
+	private String hou_property;
 	private String hou_parkspace;
 	private String hou_cook;
 	private String hou_managefee;

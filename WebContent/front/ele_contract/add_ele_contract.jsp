@@ -49,13 +49,11 @@
 </head>
 <body>
 	<jsp:include page="/FrontHeaderFooter/Header.jsp" />
-	<h1></h1>
 
 	<!-- 工作區開始 -->
 
 <div class="container">
 	<div class="row justfy-content-center">
-		<div class="row col-12 justfy-content-center" >
 			<table id="table-1">
 				<tr>
 					<td>
@@ -71,7 +69,7 @@
 						<c:if test="${not empty errorMsgs}">
 							<font style="color:red">請修正以下錯誤:</font>
 							<c:forEach var="message" items="${errorMsgs}">
-								<b style="color:red">${message}</b>
+								<b style="color:red">${message}</b><br>
 							</c:forEach>
 						</c:if>
 					</td>
@@ -85,10 +83,12 @@
 				<%
 					String lan_id= null;
 					LanService lanSvc = new LanService();
+					MemService memSvc = new MemService();
 					lan_id = lanSvc.getOneLanByMemId(mVO.getMem_id()).getLan_id();
+					pageContext.setAttribute("lan_id", lan_id);
 				%>
 				立契約書人：出租人   <b><%=mVO.getMem_name()%></b>（以下簡稱甲方）、
-				承租人       <b><input type="text" name="mem_name" class="btn btn-light"/></b> （以下簡稱乙方），茲為房屋一部租賃、雙方議定契約條款如下：<br>
+				承租人       <b><input type="text" name="mem_name" class="btn btn-light" value="<%=(eleConVO==null)? "" : memSvc.getOneMem(eleConVO.getMem_id()).getMem_name()%>"/></b> （以下簡稱乙方），茲為房屋一部租賃、雙方議定契約條款如下：<br>
 				第一條︰租賃房屋地址︰
 				<div class="form-group">
 				<label for="exampleFormControlSelect1"></label>
@@ -120,7 +120,7 @@
 										立契約書人  甲            方：<%=mVO.getMem_name()%><br>
 												身分證字號：<input type="text" name="lan_idnumber" value="<%=(eleConVO==null)? "" : eleConVO.getLan_idnumber()%>" class="btn btn-light"/><br>
 
-												乙            方：<input type="text" name="mem_name" class="btn btn-light"/><br>
+												乙            方：<input type="text" name="mem_name" class="btn btn-light" value="<%=(eleConVO==null)? "" : memSvc.getOneMem(eleConVO.getMem_id()).getMem_name()%>"/><br>
 												身份證字號：<input type="text" name="mem_idnumber" value="<%= (eleConVO==null)? "" : eleConVO.getMem_idnumber()%>" class="btn btn-light"/><br>
 
 												簽約日：<input type="text" name="ele_singdate" id="ele_singdate" value="<%=(eleConVO==null)? "" : eleConVO.getEle_singdate()%>" class="btn btn-light"/><br>
@@ -133,7 +133,6 @@
 						
 						<input type="submit" value="送出" class="btn btn-outline-secondary">
 				</form>
-		</div>
 	</div>
 </div>
 
