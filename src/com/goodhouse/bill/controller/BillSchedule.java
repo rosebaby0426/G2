@@ -24,7 +24,7 @@ import com.goodhouse.ele_contract.controller.Ele_ContractStatusTool.Ele_con_stat
 import com.goodhouse.ele_contract.model.Ele_ContractService;
 import com.goodhouse.ele_contract.model.Ele_ContractVO;
 
-@WebServlet(name="/BillSchedule" , loadOnStartup = 1 ,urlPatterns="/BillSchedule")
+//@WebServlet(name="/BillSchedule" , loadOnStartup = 1 ,urlPatterns="/BillSchedule")
 public class BillSchedule extends HttpServlet{
 
 	Timer timerSch ;

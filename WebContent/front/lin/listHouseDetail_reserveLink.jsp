@@ -320,7 +320,10 @@ input[type="checkbox"].switch_1{
 											
 											<dt class="col-sm-3">請寫下評論</dt>
 											<dd class="col-sm-9">
-												<textarea name="hou_eva_content" rows="3" cols=50 class="houEevaContent"></textarea>
+												<div class="form-group">
+													<label for="exampleFormControlTextarea1"></label>
+													<textarea name="hou_eva_content" rows="3" cols=50 class="houEevaContent form-control" id="exampleFormControlTextarea1"></textarea>
+												</div>
 											</dd>
 										</dl>
 									<input type="hidden" name="action" value="insert2">
@@ -339,7 +342,7 @@ input[type="checkbox"].switch_1{
 								  <tbody>
 								  <c:forEach var="houEvaVO" items="${houEvaList}" varStatus="houEva">
 								    <tr class="hou_eva_vo" >
-								      	<td>${houEvaVO.hou_eva_grade}</td>
+								      	<td>${houEvaVO.hou_eva_grade.substring(2)}</td>
 								      	<td>${houEvaVO.hou_eva_content}</td>
 								    </tr>
 								   </c:forEach>
@@ -415,6 +418,8 @@ input[type="checkbox"].switch_1{
  </script>
  <script type="text/javascript">
 /****************************以下慈慈的評價功能********************************************/
+ 
+ //****評價按鈕送出發生事件*******//
 		 	$('#submitEva').click(function(){
 		 		var hou_eva_grade=0;
 		 		
@@ -438,8 +443,12 @@ input[type="checkbox"].switch_1{
 					dataType: "json",
 					
 					success: function(data){
+						
+							var evaluate = data.hou_eva_grade;
+							var evaGrade = evaluate.substr(2);
+							var gradeNo = evaluate.substr(1,1);
 							
-							$('tbody').append( '<tr> <td>'+ data.hou_eva_grade +'</td> <td>' + data.hou_eva_content + '</td> </tr>');
+							$('tbody').append( '<tr> <td>'+ evaGrade +'</td> <td>' + data.hou_eva_content + '</td> </tr>');
 							
 							$("input:radio[name='hou_eva_grade']").prop("checked",false) ;
 							$(".houEevaContent").val("") ;

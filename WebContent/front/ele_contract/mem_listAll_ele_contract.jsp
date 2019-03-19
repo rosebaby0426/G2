@@ -54,7 +54,7 @@
 				      		<th scope="col">租賃期限</th>
 				      		<th scope="col">租賃起訖日</th>
 				      		<th scope="col">租賃結束日</th>
-				      		<th scope="col">簽約日期</th>
+<!-- 				      		<th scope="col">簽約日期</th> -->
 				      		<th scope="col">合約狀態</th>
 				      		<th scope="col">繳費型態</th>
 				      		<th scope="col"></th>
@@ -71,10 +71,10 @@
 				      		<td>${houSvc.getOneHouse(eleConVO.hou_id).hou_name}</td>
 				      		<td>${eleConVO.ele_rent_money}</td>
 				      		<td>${eleConVO.ele_deposit_money}</td>
-				      		<td>${eleConVO.ele_rent_time}</td>
+				      		<td>${eleConVO.ele_rent_time}個月</td>
 				      		<td>${eleConVO.ele_rent_f_day}</td>
 				      		<td>${eleConVO.ele_rent_l_day}</td>
-				      		<td>${eleConVO.ele_singdate}</td>
+<%-- 				      		<td>${eleConVO.ele_singdate}</td> --%>
 				      		
 				      		<c:forEach var="Ele_con_status" items="${Ele_con_statusList}">
 								<c:if test="${Ele_con_status.status_no eq eleConVO.ele_con_status}">
@@ -93,32 +93,32 @@
 									<input type="hidden" name="action" value="apply_conturct">
 									<input type="hidden" name="ele_con_id" value="${eleConVO.ele_con_id}">
 									<input type="hidden" name="appConChoose" value="a2">
-									<input class="" type="submit" value="續約" id="renewORrelease" 
+									<input class="btn btn-outline-danger" type="submit" value="續約" id="renewORrelease" 
 													style='display:${(eleConVO.ele_con_status eq "s2") ? "" : "none"}'>
 								</form>
 								<form method="post" action="<%=request.getContextPath()%>/front/ele_contract/apply_conturct.do">
 									<input type="hidden" name="action" value="apply_conturct">
 									<input type="hidden" name="ele_con_id" value="${eleConVO.ele_con_id}">
 									<input type="hidden" name="appConChoose" value="a1">
-									<input class="" type="submit" value="解約" id="renewORrelease" 
+									<input class="btn btn-outline-danger" type="submit" value="解約" id="renewORrelease" 
 													style='display:${(eleConVO.ele_con_status eq "s2") ? "" : "none"}'>
 								</form>
 								<form method="post" action="<%=request.getContextPath()%>/front/ele_contract/apply_conturct.do">
 									<input type="hidden" name="action" value="eleConCheck">
 									<input type="hidden" name="ele_con_id" value="${eleConVO.ele_con_id}">
-									<input class="" type="submit" value="確認" id="eleConCheck" 
+									<input class="btn btn-outline-danger" type="submit" value="確認" id="eleConCheck" 
 													style='display:${(eleConVO.ele_con_status eq "s1") ? "" : "none"}'>
 								</form>
 								<form method="post" action="<%=request.getContextPath()%>/front/ele_contract/apply_conturct.do">
 									<input type="hidden" name="action" value="eleConCancle">
 									<input type="hidden" name="ele_con_id" value="${eleConVO.ele_con_id}">
-									<input class="" type="submit" value="取消合約" id="eleConCancle" 
+									<input class="btn btn-outline-danger" type="submit" value="取消合約" id="eleConCancle" 
 													style='display:${(eleConVO.ele_con_status eq "s1") ? "" : "none"}'>
 								</form>
 								<form method="post" action="<%=request.getContextPath()%>/front/ele_contract/ele_contract.do">
 									<input type="hidden" name="action" value="getOne_For_look">
 									<input type="hidden" name="ele_con_id" value="${eleConVO.ele_con_id}">
-									<input class="" type="submit" value="查看" id="eleConCancle" 
+									<input class="btn btn-outline-danger" type="submit" value="查看" id="eleConCancle" 
 													style='display:${(eleConVO.ele_con_status != "s1") ? "" : "none"}'>
 								</form>
 							</td>
